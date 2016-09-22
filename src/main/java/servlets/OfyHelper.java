@@ -19,10 +19,6 @@ package servlets;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import com.googlecode.objectify.ObjectifyService;
-
-import user.User;
-
 /**
  * OfyHelper, a ServletContextListener, is setup in web.xml to run before a JSP is run.  This is
  * required to let JSP's access Ofy.
