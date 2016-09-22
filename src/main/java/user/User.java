@@ -2,17 +2,23 @@ package user;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
+import java.util.ArrayList;
+
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
+import budgeter.BudgetTerm;
+
 @Entity
 public class User{
 	@Id private Long id;
 	@Index public String email;
 	public String nickname;
+	private Long currentBudgetTermKey;
+	private ArrayList<Long> previousBudgetTermKeys;
 
 	public User() {
 		this.email = null;
@@ -43,7 +49,7 @@ public class User{
 		return user;
 	}
 
-	public static User getOrInsert(String email) {
+	private static User getOrInsert(String email) {
 		User user = ofy().load().type(User.class).filter("email", email).first().now();
 		if (user == null) {
 			user = new User(email);
@@ -60,4 +66,23 @@ public class User{
 		UserService userService = UserServiceFactory.getUserService();
 		return userService.getCurrentUser();
 	}
+	
+	public void endTerm() {
+		// TODO end current term
+	}
+	
+	public void startNewTerm(BudgetTerm term) {
+		// TODO start new term. If a term currently exists,
+		// put it into the history and remove from current.
+	}
+	
+	public BudgetTerm getCurrentBudgetTerm() {
+		// TODO get current budget term
+		return new BudgetTerm();
+	}
+	public ArrayList<BudgetTerm> getPreviousBudgetTerms() {
+		// TODO get previous budget terms
+		return new ArrayList<BudgetTerm>();
+	}
+	
 }
