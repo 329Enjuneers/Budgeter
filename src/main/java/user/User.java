@@ -11,9 +11,10 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 import budgeter.BudgetTerm;
+import datastore.BasicEntity;
 
 @Entity
-public class User{
+public class User extends BasicEntity {
 	@Id private Long id;
 	@Index public String email;
 	public String nickname;
@@ -43,7 +44,7 @@ public class User{
 		User user = getOrInsert(googleUser.getEmail());
 		if (user.nickname == null) {
 			user.nickname = googleUser.getNickname();
-			ofy().save().entity(user).now();
+			user.save();
 		}
 
 		return user;
@@ -53,7 +54,7 @@ public class User{
 		User user = ofy().load().type(User.class).filter("email", email).first().now();
 		if (user == null) {
 			user = new User(email);
-			ofy().save().entity(user).now();
+			user.save();
 		}
 		return user;
 	}

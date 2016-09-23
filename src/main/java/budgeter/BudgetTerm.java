@@ -5,7 +5,9 @@ import java.util.Date;
 
 import com.googlecode.objectify.annotation.Id;
 
-public class BudgetTerm {
+import datastore.BasicEntity;
+
+public class BudgetTerm extends BasicEntity {
 	@Id private Long id;
 	private  ArrayList<Long> groupKeys;
 	private Date startDate;

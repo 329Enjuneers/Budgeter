@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import com.googlecode.objectify.annotation.Id;
 
-public class BudgetGroup {
+import datastore.BasicEntity;
+
+public class BudgetGroup extends BasicEntity {
 	@Id private Long id;
 	public String name;
 	private float amountAllocated;
