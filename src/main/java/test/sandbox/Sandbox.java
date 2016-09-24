@@ -6,7 +6,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.VoidWork;
 
 import budgeter.Expense;
-import datastore.Datastore;
+import datastore.QueryFactory;
 
 /*
  * File for local testing/development
@@ -24,7 +24,8 @@ public class Sandbox {
 		    	Expense exp = new Expense("Wal-mart", "Dollar", (float) 5.3);
 				exp.save();
 				System.out.println("Saved:" + exp);
-				System.out.println("Fetched: " + Datastore.getEntityById(Expense.class, exp.getId()));
+				QueryFactory qryFactory = new QueryFactory(Expense.class);
+				System.out.println("Fetched: " + qryFactory.getEntityById(exp.getId()));
 		    }
 		});
 		

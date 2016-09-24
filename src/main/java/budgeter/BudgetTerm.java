@@ -9,7 +9,7 @@ import datastore.BasicEntity;
 
 public class BudgetTerm extends BasicEntity {
 	@Id private Long id;
-	private  ArrayList<Long> groupKeys;
+	private  ArrayList<Long> groupIds;
 	private Date startDate;
 	private Date endDate;
 	private float income;

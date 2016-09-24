@@ -10,7 +10,7 @@ public class BudgetGroup extends BasicEntity {
 	@Id private Long id;
 	public String name;
 	private float amountAllocated;
-	private ArrayList<Long> expenseKeys;
+	private ArrayList<Long> expenseIds;
 	private ArrayList<String> receiptUrls;
 	
 	public BudgetGroup() {} // required for objectify

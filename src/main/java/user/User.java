@@ -4,22 +4,21 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.ArrayList;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 import budgeter.BudgetTerm;
 import datastore.BasicEntity;
+import datastore.QueryFactory;
 
 @Entity
 public class User extends BasicEntity {
 	@Id private Long id;
 	@Index public String email;
 	public String nickname;
-	private Long currentBudgetTermKey;
-	private ArrayList<Long> previousBudgetTermKeys;
+	private Long currentBudgetTermId;
+	private ArrayList<Long> previousBudgetTermIds;
 
 	public User() {
 		this.email = null;
@@ -36,7 +35,7 @@ public class User extends BasicEntity {
 	}
 
 	public static User getCurrentUser() {
-		com.google.appengine.api.users.User googleUser = getCurrentGoogleUser();
+		GoogleUser googleUser = GoogleUser.getCurrentUser();
 		if (googleUser == null) {
 			return null;
 		}
@@ -51,7 +50,7 @@ public class User extends BasicEntity {
 	}
 
 	private static User getOrInsert(String email) {
-		User user = ofy().load().type(User.class).filter("email", email).first().now();
+		User user = User.get(email);
 		if (user == null) {
 			user = new User(email);
 			user.save();
@@ -61,11 +60,6 @@ public class User extends BasicEntity {
 
 	public static User get(String email) {
 		return ofy().load().type(User.class).filter("email", email).first().now();
-	}
-
-	private static com.google.appengine.api.users.User getCurrentGoogleUser() {
-		UserService userService = UserServiceFactory.getUserService();
-		return userService.getCurrentUser();
 	}
 	
 	public void endTerm() {
@@ -78,12 +72,18 @@ public class User extends BasicEntity {
 	}
 	
 	public BudgetTerm getCurrentBudgetTerm() {
-		// TODO get current budget term
-		return new BudgetTerm();
+		QueryFactory factory = new QueryFactory(BudgetTerm.class);
+		return factory.getEntityById(currentBudgetTermId);
 	}
+	
 	public ArrayList<BudgetTerm> getPreviousBudgetTerms() {
-		// TODO get previous budget terms
-		return new ArrayList<BudgetTerm>();
+		ArrayList<BudgetTerm> previousTerms = new ArrayList<BudgetTerm>();
+		QueryFactory factory = new QueryFactory(BudgetTerm.class);
+		for (Long id : previousBudgetTermIds) {
+			BudgetTerm term = factory.getEntityById(id);
+			previousTerms.add(term);
+		}
+		return previousTerms;
 	}
 	
 }
