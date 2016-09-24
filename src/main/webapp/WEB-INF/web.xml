@@ -8,11 +8,42 @@
       <servlet-name>Home</servlet-name>
       <servlet-class>servlets.HomeServlet</servlet-class>
     </servlet>
-
+    <servlet>
+      <servlet-name>BudgetGroup</servlet-name>
+      <servlet-class>servlets.BudgetGroupServlet</servlet-class>
+    </servlet>
+    <servlet>
+      <servlet-name>Expense</servlet-name>
+      <servlet-class>servlets.ExpenseServlet</servlet-class>
+    </servlet>
+    <servlet>
+      <servlet-name>Receipt</servlet-name>
+      <servlet-class>servlets.ReceiptServlet</servlet-class>
+    </servlet>
+    <servlet>
+      <servlet-name>History</servlet-name>
+      <servlet-class>servlets.HistoryServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
       <servlet-name>Home</servlet-name>
       <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+      <servlet-name>BudgetGroup</servlet-name>
+      <url-pattern>/group</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+      <servlet-name>Expense</servlet-name>
+      <url-pattern>/expense</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+      <servlet-name>Receipt</servlet-name>
+      <url-pattern>/receipt</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+      <servlet-name>History</servlet-name>
+      <url-pattern>/history</url-pattern>
     </servlet-mapping>
 <!-- [END standard_mappings] -->
 
