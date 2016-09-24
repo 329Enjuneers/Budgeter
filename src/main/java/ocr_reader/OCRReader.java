@@ -16,3 +16,4 @@ public class OCRReader {
 		return result;
 	}
 }
+
