@@ -48,4 +48,9 @@ public class BudgetTerm extends BasicEntity {
 		// TODO compute amount spent
 		return (float) 0.0;
 	}
+
+	@Override
+	public Long getId() {
+		return id;
+	}
 }

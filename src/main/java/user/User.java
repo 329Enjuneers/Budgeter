@@ -1,15 +1,12 @@
 package user;
 
-import static com.googlecode.objectify.ObjectifyService.ofy;
-
-import java.util.ArrayList;
-
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 import budgeter.BudgetTerm;
 import datastore.BasicEntity;
+import datastore.IdList;
 import datastore.QueryFactory;
 
 @Entity
@@ -18,7 +15,7 @@ public class User extends BasicEntity {
 	@Index public String email;
 	public String nickname;
 	private Long currentBudgetTermId;
-	private ArrayList<Long> previousBudgetTermIds;
+	public IdList previousBudgetTermIds;
 
 	public User() {
 		this.email = null;
@@ -59,7 +56,9 @@ public class User extends BasicEntity {
 	}
 
 	public static User get(String email) {
-		return ofy().load().type(User.class).filter("email", email).first().now();
+		QueryFactory factory = new QueryFactory(User.class);
+		factory.addFilter("email", email);
+		return factory.get();
 	}
 	
 	public void endTerm() {
@@ -76,14 +75,9 @@ public class User extends BasicEntity {
 		return factory.getEntityById(currentBudgetTermId);
 	}
 	
-	public ArrayList<BudgetTerm> getPreviousBudgetTerms() {
-		ArrayList<BudgetTerm> previousTerms = new ArrayList<BudgetTerm>();
-		QueryFactory factory = new QueryFactory(BudgetTerm.class);
-		for (Long id : previousBudgetTermIds) {
-			BudgetTerm term = factory.getEntityById(id);
-			previousTerms.add(term);
-		}
-		return previousTerms;
+	@Override
+	public Long getId() {
+		return id;
 	}
 	
 }

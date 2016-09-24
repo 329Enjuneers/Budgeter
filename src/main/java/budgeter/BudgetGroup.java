@@ -1,54 +1,51 @@
 package budgeter;
 
-import java.util.ArrayList;
-
 import com.googlecode.objectify.annotation.Id;
 
 import datastore.BasicEntity;
+import datastore.IdList;
+import datastore.QueryFactory;
+import receipt_parser.Receipt;
 
 public class BudgetGroup extends BasicEntity {
 	@Id private Long id;
 	public String name;
 	private float amountAllocated;
-	private ArrayList<Long> expenseIds;
-	private ArrayList<String> receiptUrls;
+	public IdList<Expense> expenseIds;
+	public IdList<Receipt> receiptIds;
 	
 	public BudgetGroup() {} // required for objectify
 	
 	public BudgetGroup(String name, float amountAllocated) {
-		// TODO
+		this.name = name;
+		this.amountAllocated = amountAllocated;
+		this.expenseIds = new IdList<Expense>();
+		this.receiptIds = new IdList<Receipt>();
 	}
 	
 	public static BudgetGroup getGroup(Long id) {
-		// TODO query for budget group by id
-		return new BudgetGroup();
-	}
-	
-	public ArrayList<Expense> getExpenses() {
-		// TODO get expenses associated with this group
-		return new ArrayList<Expense>();
-	}
-	
-	public void addExpense(Long groupId) {
-		// TODO add expense to group
-	}
-	
-	public void removeExpense(Long expenseId) {
-		// TODO remove expense from group
+		QueryFactory factory = new QueryFactory(BudgetGroup.class);
+		return factory.getEntityById(id);
 	}
 	
 	public float getPercentageOfIncome(float income) {
-		// TODO 
-		return (float) 0.0;
+		return amountAllocated / income;
 	}
 	
 	public float getAmountRemaining() {
-		// TODO
-		return (float) 0.0;
+		return amountAllocated - getAmountRemaining();
 	}
 	
 	public float getAmountSpent() {
-		// TODO
-		return (float) 0.0;
+		float sum = 0;
+		for (Expense expense : expenseIds.fetch(Expense.class)) {
+			sum += expense.amount;
+		}
+		return sum;
+	}
+	
+	@Override
+	public Long getId() {
+		return id;
 	}
 }
