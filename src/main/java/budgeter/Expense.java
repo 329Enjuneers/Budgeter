@@ -9,7 +9,7 @@ import datastore.BasicEntity;
 
 @Entity
 public class Expense extends BasicEntity{
-	@Id private Long id;
+	@Id Long id;
 	public String store;
 	public float amount;
 	public String name;
@@ -29,6 +29,7 @@ public class Expense extends BasicEntity{
 		// TODO query for expense by id
 		return null;
 	}
+	
 	public Long getId() {
 		return id;
 	}

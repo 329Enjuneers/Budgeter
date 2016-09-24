@@ -1,13 +1,13 @@
 package receipt_parser;
 
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Id;
 
 import datastore.BasicEntity;
 
 @Entity
 public class Receipt extends BasicEntity {
-	@Index private Long id;
+	@Id Long id;
 
 	@Override
 	public Long getId() {

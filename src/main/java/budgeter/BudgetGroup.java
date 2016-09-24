@@ -8,7 +8,7 @@ import datastore.QueryFactory;
 import receipt_parser.Receipt;
 
 public class BudgetGroup extends BasicEntity {
-	@Id private Long id;
+	@Id Long id;
 	public String name;
 	private float amountAllocated;
 	public IdList<Expense> expenseIds;

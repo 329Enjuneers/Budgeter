@@ -11,7 +11,7 @@ import datastore.QueryFactory;
 
 @Entity
 public class User extends BasicEntity {
-	@Id private Long id;
+	@Id Long id;
 	@Index public String email;
 	public String nickname;
 	private Long currentBudgetTermId;

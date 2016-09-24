@@ -8,7 +8,7 @@ import com.googlecode.objectify.annotation.Id;
 import datastore.BasicEntity;
 
 public class BudgetTerm extends BasicEntity {
-	@Id private Long id;
+	@Id Long id;
 	private  ArrayList<Long> groupIds;
 	private Date startDate;
 	private Date endDate;
