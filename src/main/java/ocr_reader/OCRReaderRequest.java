@@ -12,6 +12,7 @@ public class OCRReaderRequest {
 	
 	public void sendReadRequest() {
 		// TODO return json result
+		
 	}
 
 }
