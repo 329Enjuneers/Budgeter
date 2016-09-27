@@ -12,6 +12,7 @@ import org.json.JSONObject;
 public class OCRReader {
 	public String imageUrl;
 	
+	private static final int LOCATION_THRESHOLD = 10;
 	private Map<Integer, PurchasedItem> locationToWordMap;
 	private ArrayList<Word> floatList;
 	private Map<Integer, ArrayList<String>> locationToFloatMap;
@@ -92,8 +93,8 @@ public class OCRReader {
 	
 	private void gatherFloats() {
 		for (Word word : floatList) {
-			int floor = word.location - 20;
-			int ceiling = word.location + 20;
+			int floor = word.location - LOCATION_THRESHOLD;
+			int ceiling = word.location + LOCATION_THRESHOLD;
 			boolean brokeEarly = false;
 			for (int i = floor; i <= ceiling; i++) {
 				if (locationToFloatMap.containsKey(i)) {
@@ -124,7 +125,6 @@ public class OCRReader {
 	}
 	
 	private void combineWordsAndFloats() {
-		int originalThreshold = 10;
 		for (LocalFloat myFloat : filteredFloatList) {
 			boolean doBreak = false;
 			for (int i = 0; i < 5; i++) {
@@ -132,8 +132,8 @@ public class OCRReader {
 				System.out.println("========================================");
 				System.out.println(myFloat.location);
 				System.out.println(myFloat.value);
-				int upperBound = myFloat.location + originalThreshold + extraThreshold;
-				int lowerBound = myFloat.location - originalThreshold - extraThreshold;
+				int upperBound = myFloat.location + LOCATION_THRESHOLD + extraThreshold;
+				int lowerBound = myFloat.location - LOCATION_THRESHOLD - extraThreshold;
 				for (int j = lowerBound; j <= upperBound; j++) {
 					if (locationToWordMap.containsKey(j)) {
 						locationToWordMap.get(j).cost = myFloat.value;
