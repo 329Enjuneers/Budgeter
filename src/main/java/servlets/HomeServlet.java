@@ -22,7 +22,6 @@ public class HomeServlet extends HttpServlet {
 //		try {
 //			reader.read();
 //		} catch (Exception e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 		out.write(new HomePage(req.getRequestURI()).make());

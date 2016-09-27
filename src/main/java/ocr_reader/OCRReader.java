@@ -44,6 +44,9 @@ public class OCRReader {
 		gatherFloats();
 		filterFloats();
 		combineWordsAndFloats();
+		for (Entry<Integer, PurchasedItem> entry : locationToWordMap.entrySet()) {
+			System.out.println(entry.getKey() + " :: " + entry.getValue().name + " :: " + entry.getValue().cost);
+		}
 		System.out.println(locationToWordMap.toString());
 		return new OCRResult();
 	}
@@ -56,19 +59,17 @@ public class OCRReader {
 				JSONObject lineDict = lines.getJSONObject(i);
 				JSONArray jsonWords = lineDict.getJSONArray("Words");
 				String itemName = ""; 
-				ArrayList<String> wordList = new ArrayList<String>();
 				for (int j = 0; j < jsonWords.length(); j++) {
 					JSONObject jsonText = jsonWords.getJSONObject(j);
 					int top = jsonText.getInt("Top");
 					String text = jsonText.getString("WordText");
-					Word word = new Word(text, top); 
+					Word word = new Word(text, top);
+					itemName += word.text + " ";
 					if (word.isPotentialFloat()) {
 						floatList.add(word);
 						continue;
 					}
-					wordList.add(word.text);
 					sum += top;
-					itemName += word.text + " ";
 				}
 				PurchasedItem item = new PurchasedItem(itemName.trim());
 				if (!item.isValid()) {
@@ -123,11 +124,14 @@ public class OCRReader {
 	}
 	
 	private void combineWordsAndFloats() {
-		int originalThreshold = 20;
+		int originalThreshold = 10;
 		for (LocalFloat myFloat : filteredFloatList) {
 			boolean doBreak = false;
 			for (int i = 0; i < 5; i++) {
 				int extraThreshold = i * 10;
+				System.out.println("========================================");
+				System.out.println(myFloat.location);
+				System.out.println(myFloat.value);
 				int upperBound = myFloat.location + originalThreshold + extraThreshold;
 				int lowerBound = myFloat.location - originalThreshold - extraThreshold;
 				for (int j = lowerBound; j <= upperBound; j++) {
