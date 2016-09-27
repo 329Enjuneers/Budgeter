@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pages.BudgetGroupPage;
+
 public class BudgetGroupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -14,15 +16,13 @@ public class BudgetGroupServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
-		
-		out.write("BudgetGroupServlet GET: Unimplemented");
+		out.write(new BudgetGroupPage(req.getRequestURI()).make());
 	}
 	
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
-		
-		out.write("BudgetGroupServlet POST: Unimplemented");
+		out.write(new BudgetGroupPage(req.getRequestURI()).make());
 	}
 }

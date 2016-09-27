@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pages.HistoryPage;
+
 public class HistoryServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -15,16 +17,14 @@ public class HistoryServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
-		
-		out.write("HistoryServlet GET: Unimplemented");
+		out.write(new HistoryPage(req.getRequestURI()).make());
 	}
 	
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
-		
-		out.write("HistoryServlet POST: Unimplemented");
+		out.write(new HistoryPage(req.getRequestURI()).make());
 	}
 
 }
