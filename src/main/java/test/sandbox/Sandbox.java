@@ -18,7 +18,7 @@ public class Sandbox {
 		final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 		helper.setUp();
 		ObjectifyService.register(Expense.class);
-		
+
 		ObjectifyService.run(new VoidWork() {
 		    public void vrun() {
 		    	// ENTER YOUR TESTING CODE HERE
@@ -34,7 +34,7 @@ public class Sandbox {
 				}
 		    }
 		});
-		
+
 		helper.tearDown();
 	}
 
