@@ -35,7 +35,7 @@ public class OCRReader {
 			// TODO specify it
 			throw new Exception();
 		}
-		// TODO pass request results into ocr result
+		// TODO this should return a list of WordCluster (to be created).
 		OCRResult result = makeResult();
 		return result;
 	}
