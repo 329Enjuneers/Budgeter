@@ -11,23 +11,27 @@ import datastore.BasicEntity;
 public class Expense extends BasicEntity{
 	@Id Long id;
 	public String store;
-	public float amount;
+	public double amount;
 	public String name;
 	public Date date;
 	
 	public Expense() {}
 	
-	public Expense(String store, String name, float amount) { 
+	public Expense(String store, String name, double amount) { 
 		// TODO
 	}
 	
-	public Expense(String store, String name, float amount, Date date) { 
+	public Expense(String store, String name, double amount, Date date) { 
 		// TODO
 	}
 	
 	public static Expense getExpense(Long id) {
 		// TODO query for expense by id
 		return null;
+	}
+	
+	public double getAmount(){
+		return this.amount;
 	}
 	
 	public Long getId() {
