@@ -23,6 +23,7 @@ public class ReceiptServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
+		out.write("I RECEIVED YOUR RECEIPT!");
 		out.write(new ReceiptPage(req.getRequestURI()).make());
 	}
 }
