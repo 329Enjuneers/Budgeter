@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import exceptions.NotAFloatException;
 import receipt_parser.MyFloat;
-import receipt_parser.float_list_factory.Phrase;
+import receipt_parser.Phrase;
 
 public class FloatFactory {
 	private int location;

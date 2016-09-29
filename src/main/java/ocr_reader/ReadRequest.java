@@ -28,31 +28,11 @@ public class ReadRequest {
 		initRequest();
 	}
 	
-	public JSONObject sendReadRequest() {
-		setPayload();
-		HTTPResponse response = sendRequest();
-		return getJson(response);
-	}
-	
-	public ReadResponse sendNewReadRequest() throws JSONException {
+	public ReadResponse sendReadRequest() throws JSONException {
 		setPayload();
 		HTTPResponse response = sendRequest();
 		JSONObject json = convertToJson(response);
 		return new ReadResponse(json);
-	}
-	
-	private JSONObject getJson(HTTPResponse response) {
-//		System.out.println(new String(response.getContent()));
-//		JSONObject json = convertToJson(response);
-//		try {
-//			if (json.getInt("OCRExitCode") != 1) {
-//				return null;
-//			}
-//		} catch (JSONException e) {
-//			return null;
-//		}
-//		return json;
-		return null;
 	}
 	
 	private JSONObject convertToJson(HTTPResponse resp) throws JSONException {

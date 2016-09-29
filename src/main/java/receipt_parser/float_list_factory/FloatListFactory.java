@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import receipt_parser.MyFloat;
+import receipt_parser.Phrase;
 import receipt_parser.float_list_factory.float_factory.FloatMap;
 
 public class FloatListFactory {

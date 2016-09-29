@@ -1,6 +1,6 @@
 package receipt_parser.float_list_factory.float_factory;
 
-import receipt_parser.float_list_factory.Phrase;
+import receipt_parser.Phrase;
 
 public class FloatJoiner {
 	

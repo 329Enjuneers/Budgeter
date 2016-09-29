@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import receipt.PurchasedItem;
-import receipt_parser.float_list_factory.Phrase;
 
 public class PurchasedItemFactory {
 	
@@ -32,7 +31,7 @@ public class PurchasedItemFactory {
 	
 	private int getFinalLocation(MyFloat myFloat) {
 		for (int i = 0; i < MAX_ATTEMPTS; i++) {
-			Location location = new Location(myFloat.location, i);
+			MyLocation location = new MyLocation(myFloat.location, i);
 			int numericLocation = getLocationWithMatchingWords(location, myFloat);
 			if (numericLocation >= 0) {
 				return numericLocation;
@@ -56,13 +55,11 @@ public class PurchasedItemFactory {
 	}
 }
 
-class Location {
-	private int value;
+class MyLocation extends Location {
 	private int looseness;
-	private static final int LOCATION_THRESHOLD = 10;
 	
-	public Location(int value, int looseness) {
-		this.value = value;
+	public MyLocation(int value, int looseness) {
+		super(value);
 		this.looseness = looseness;
 	}
 	

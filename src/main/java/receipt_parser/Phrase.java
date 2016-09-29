@@ -1,4 +1,4 @@
-package receipt_parser.float_list_factory;
+package receipt_parser;
 
 import java.util.ArrayList;
 

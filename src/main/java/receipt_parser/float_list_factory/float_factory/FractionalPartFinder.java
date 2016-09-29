@@ -2,7 +2,7 @@ package receipt_parser.float_list_factory.float_factory;
 
 import java.util.ArrayList;
 
-import receipt_parser.float_list_factory.Phrase;
+import receipt_parser.Phrase;
 
 public class FractionalPartFinder {
 	public Phrase phraseToIgnore;

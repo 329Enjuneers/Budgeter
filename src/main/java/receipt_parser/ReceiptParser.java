@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import ocr_reader.Cluster;
-import ocr_reader.MyReader;
+import ocr_reader.Reader;
 import receipt.PurchasedItem;
 import receipt.Receipt;
 import receipt_parser.float_list_factory.FloatListFactory;
-import receipt_parser.float_list_factory.Phrase;
 
 public class ReceiptParser {
 
@@ -29,7 +28,7 @@ public class ReceiptParser {
 	}
 
 	private ArrayList<Cluster> readImage() {
-		MyReader reader = new MyReader(imageUrl);
+		Reader reader = new Reader(imageUrl);
 		return reader.read();
 	}
 

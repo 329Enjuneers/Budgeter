@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import exceptions.NotAFloatException;
+import receipt_parser.Location;
 import receipt_parser.MyFloat;
-import receipt_parser.float_list_factory.Phrase;
+import receipt_parser.Phrase;
 
 public class FloatMap {
 	private HashMap<Integer, ArrayList<Phrase>> map;
@@ -17,7 +18,7 @@ public class FloatMap {
 	}
 
 	public void add(int givenLocation, Phrase phrase) {
-		Location location = new Location(givenLocation);
+		MyLocation location = new MyLocation(givenLocation);
 		boolean brokeEarly = false;
 		for(int i = location.lowerBound(); i <= location.upperBound(); i++) {
 			if (map.containsKey(i)) {
@@ -49,13 +50,10 @@ public class FloatMap {
 	}
 }
 
-class Location {
-	public int value;
+class MyLocation extends Location {
 
-	private static final int LOCATION_THRESHOLD = 10;
-
-	public Location(int location) {
-		value = location;
+	public MyLocation(int location) {
+		super(location);
 	}
 
 	public int upperBound() {
