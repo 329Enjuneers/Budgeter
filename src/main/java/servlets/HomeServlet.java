@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ocr_reader.OCRReader;
 import pages.HomePage;
+import receipt_parser.ReceiptParser;
 
 public class HomeServlet extends HttpServlet {
 
@@ -18,9 +18,9 @@ public class HomeServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
-//		OCRReader reader = new OCRReader("http://lh3.googleusercontent.com/zxe--JDdKH8qw3KDXt7AvLGSfLD2qHHutvwpiS2U-xfE8rgNCw4CaY4bOAPL8Oz0iolZOYOMIhtYGlwveeljDd9kdg8AuonfF7xuA5M5PoQ");
+//		ReceiptParser parser = new ReceiptParser("http://lh3.googleusercontent.com/zxe--JDdKH8qw3KDXt7AvLGSfLD2qHHutvwpiS2U-xfE8rgNCw4CaY4bOAPL8Oz0iolZOYOMIhtYGlwveeljDd9kdg8AuonfF7xuA5M5PoQ");
 //		try {
-//			reader.read();
+//			parser.parse();
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}

@@ -15,7 +15,7 @@ import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 
-public class OCRReaderRequest {
+public class ReadRequest {
 	
 	private static final String API_KEY = "fa03bcc77488957";
 	private static final String BASE_URL = "https://api.ocr.space/parse/image";
@@ -23,36 +23,20 @@ public class OCRReaderRequest {
 	private HTTPRequest request;
 	public String imageUrl;
 	
-	public OCRReaderRequest(String imageUrl) {
+	public ReadRequest(String imageUrl) {
 		this.imageUrl = imageUrl;
 		initRequest();
 	}
 	
-	public JSONObject sendReadRequest() {
+	public ReadResponse sendReadRequest() throws JSONException {
 		setPayload();
-		HTTPResponse response = sendRequest();		
-		return getJson(response);
-	}
-	
-	private JSONObject getJson(HTTPResponse response) {
-		System.out.println(new String(response.getContent()));
+		HTTPResponse response = sendRequest();
 		JSONObject json = convertToJson(response);
-		try {
-			if (json.getInt("OCRExitCode") != 1) {
-				return null;
-			}
-		} catch (JSONException e) {
-			return null;
-		}
-		return json;
+		return new ReadResponse(json);
 	}
 	
-	private JSONObject convertToJson(HTTPResponse resp) {
-		try {
-			return new JSONObject(new String(resp.getContent()));
-		} catch (JSONException e) {
-			return null;
-		}
+	private JSONObject convertToJson(HTTPResponse resp) throws JSONException {
+		return new JSONObject(new String(resp.getContent()));
 	}
 	
 	private HTTPResponse sendRequest() {
