@@ -43,34 +43,44 @@ public class HomePage extends Page {
 		termSummary += "</tr></thead>";
 		termSummary += "<tbody><tr>";
 		termSummary += "<td>Total Expenses</td><td><strong>$ &nbsp;"+Double.toString(term.getAmountSpent())+"</strong></td>";
-		termSummary += "<td rowspan=\"2\"><button><strong>END TERM</strong></button></td>";
 		termSummary += "</tr><tr>";
 		termSummary += "<td>Total Remaining</td><td><strong>$ &nbsp;"+Double.toString(term.getAmountRemaining())+"</strong></td>";
 		termSummary += "</tr>";
 		termSummary += "</tbody>";
 		termSummary += "</table>";
-		termSummary += "</div><br/><hr/><br/>";
+		termSummary += "</div><br/>";
+		termSummary += "<button><strong>END TERM</strong></button>";
+		termSummary += "<hr/><br/>";
 		htmlBuilder.addToBody(termSummary);
 	}
 	
 	private void addNewTermOption(){
+		Form newGroupForm = new Form();
+		newGroupForm.addProperty("action", "/group");
+		newGroupForm.addProperty("method", "POST");
+		newGroupForm.addProperty("style", "margin-bottom:2em");
 		String newTerm = "<div id='new-term'>";
-		newTerm += "<table>";
-		newTerm += "<thead><tr>";
-		newTerm += "<th colspan=\"3\">Term Start Date</th>";
-		newTerm += "<th colspan=\"3\">Term End Date</th>";
-		newTerm += "<th></th>";
-		newTerm += "<tr>";
-		newTerm += "</tr></thead>";
-		newTerm += "<tbody><tr>";
-		newTerm += addDateOption();
-		newTerm += addDateOption();
-		newTerm += "<td><button><strong>CREATE TERM</strong></button></td>";
-		newTerm += "</tr>";
-		newTerm += "</tbody>";
-		newTerm += "</table>";
-		newTerm += "</div><br/><hr/><br/>";
-		htmlBuilder.addToBody(newTerm);
+		newTerm += "<label><strong>Income: &nbsp;&nbsp;</strong></label>";
+		newTerm += "<input id=\"income\" name=\"income\" type=\"text\" placeholder=\"Income\" required/><br/>";
+		// newTerm += "<br/><label><strong>Dates: &nbsp;&nbsp;</strong></label>";
+		// newTerm += "<table>";
+		// newTerm += "<thead><tr>";
+		// newTerm += "<th colspan=\"3\">Term Start Date</th>";
+		// newTerm += "<th colspan=\"3\">Term End Date</th>";
+		// newTerm += "<th></th>";
+		// newTerm += "<tr>";
+		// newTerm += "</tr></thead>";
+		// newTerm += "<tbody><tr>";
+		// newTerm += addDateOption();
+		// newTerm += addDateOption();
+		// newTerm += "</tr>";
+		// newTerm += "</tbody>";
+		// newTerm += "</table>";
+		newTerm += "</div><br/>";
+		newTerm += "<td><button type='submit'><strong>CREATE TERM</strong></button></td>";
+		newTerm += "<hr/><br/>";
+		newGroupForm.addElement(newTerm);
+		htmlBuilder.addToBody(newGroupForm.toString());
 	}
 	
 	private String addDateOption(){
@@ -93,16 +103,4 @@ public class HomePage extends Page {
 		dateOption += "</select></td>";
 		return dateOption;
 	}
-
-	private void addNewGroupForm() {
-		Form newGroupForm = new Form();
-	    newGroupForm.addProperty("action", "/");
-	    newGroupForm.addProperty("method", "POST");
-	    newGroupForm.addProperty("style", "margin-bottom:2em");
-	    newGroupForm.addElement("<div style='margin-bottom: 1em'><label><b>New Group</b></label></div>");
-	    newGroupForm.addElement("<input name='group-name' placeholder='Group Name' required>");
-	    newGroupForm.addElement("<button type='submit'>Add Group</button>");
-	    htmlBuilder.addToBody(newGroupForm.toString());
-	}
-
 }
