@@ -5,14 +5,17 @@ import java.net.URLEncoder;
 
 import pages.html_builder.Form;
 
-public class ExpensePage extends Page {
 
-	public ExpensePage(String baseUrl) {
+public class ExpensePage extends Page 
+{
+	public ExpensePage(String baseUrl) 
+	{
 		super(baseUrl);
 		htmlBuilder.includeAppHeader = true;
 	}
 
-	public String make() {
+	public String make() 
+	{
 	    setTitle();
 	    if (user == null) {
 	    	addLogout();
@@ -23,13 +26,15 @@ public class ExpensePage extends Page {
 	    return htmlBuilder.build();
 	}
 
-	private void setTitle() {
+	private void setTitle() 
+	{
 		try {
-			htmlBuilder.setTitle("Home");
+			htmlBuilder.setTitle("Expenses");
 		} catch (Exception e) {}
 	}
 
-	private void addNewGroupForm() {
+	private void addNewGroupForm() 
+	{
 		Form newGroupForm = new Form();
 	    newGroupForm.addProperty("action", "/");
 	    newGroupForm.addProperty("method", "POST");
@@ -38,6 +43,11 @@ public class ExpensePage extends Page {
 	    newGroupForm.addElement("<input name='group-name' placeholder='Group Name' required>");
 	    newGroupForm.addElement("<button type='submit'>Add Group</button>");
 	    htmlBuilder.addToBody(newGroupForm.toString());
+	}
+	
+	private void showExpenseInfo()
+	{
+		
 	}
 
 }

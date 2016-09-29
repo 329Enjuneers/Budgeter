@@ -25,7 +25,7 @@ public class ReceiptPage extends Page {
 
 	private void setTitle() {
 		try {
-			htmlBuilder.setTitle("Home");
+			htmlBuilder.setTitle("Reciept");
 		} catch (Exception e) {}
 	}
 

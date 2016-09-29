@@ -34,7 +34,7 @@ public class HomePage extends Page {
 	}
 	
 	private void addCurrentBalance(){
-		String termSummary =  "<div id='term-summary'>";
+		String termSummary = "<div id='term-summary'>";
 		termSummary += "<table>";
 		termSummary += "<thead><tr>";
 		termSummary += "<th colspan=\"2\">Term Summary</th>";
