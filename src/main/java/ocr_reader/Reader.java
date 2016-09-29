@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class OCRReader {
+public class Reader {
 	public String imageUrl;
 	
 	private static final int LOCATION_THRESHOLD = 10;
@@ -19,7 +19,7 @@ public class OCRReader {
 	private ArrayList<LocalFloat> filteredFloatList;
 	private JSONObject json;
 	
-	public OCRReader(String imageUrl) {
+	public Reader(String imageUrl) {
 		this.imageUrl = imageUrl;
 		locationToWordMap = new HashMap<Integer, PurchasedItem>();
 		locationToFloatMap = new HashMap<Integer, ArrayList<String>>();
@@ -28,19 +28,17 @@ public class OCRReader {
 		json = null;
 	}
 	
-	public OCRResult read() throws Exception {
-		OCRReaderRequest request = new OCRReaderRequest(imageUrl);
+	public void read() throws Exception {
+		ReadRequest request = new ReadRequest(imageUrl);
 		json = request.sendReadRequest();
 		if (json == null) {
 			// TODO specify it
 			throw new Exception();
 		}
 		// TODO this should return a list of WordCluster (to be created).
-		OCRResult result = makeResult();
-		return result;
 	}
 	
-	private OCRResult makeResult() {
+	private void makeResult() {
 		gatherWords();
 		gatherFloats();
 		filterFloats();
@@ -49,7 +47,6 @@ public class OCRReader {
 			System.out.println(entry.getKey() + " :: " + entry.getValue().name + " :: " + entry.getValue().cost);
 		}
 		System.out.println(locationToWordMap.toString());
-		return new OCRResult();
 	}
 	
 	private void gatherWords() {
@@ -92,21 +89,21 @@ public class OCRReader {
 	}
 	
 	private void gatherFloats() {
-		for (Word word : floatList) {
-			int floor = word.location - LOCATION_THRESHOLD;
-			int ceiling = word.location + LOCATION_THRESHOLD;
+		for (Word myWord : floatList) {
+			int floor = myWord.location - LOCATION_THRESHOLD;
+			int ceiling = myWord.location + LOCATION_THRESHOLD;
 			boolean brokeEarly = false;
 			for (int i = floor; i <= ceiling; i++) {
 				if (locationToFloatMap.containsKey(i)) {
-					locationToFloatMap.get(i).add(word.text);
+					locationToFloatMap.get(i).add(myWord.text);
 					brokeEarly = true;
 					break;
 				}
 			}
 			if (!brokeEarly) {
 				ArrayList<String> floatList = new ArrayList<String>();
-				floatList.add(word.text);
-				locationToFloatMap.put(word.location, floatList);
+				floatList.add(myWord.text);
+				locationToFloatMap.put(myWord.location, floatList);
 			}
 		}
 	}

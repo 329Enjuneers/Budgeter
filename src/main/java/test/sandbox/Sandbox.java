@@ -1,6 +1,6 @@
 package test.sandbox;
 
-import ocr_reader.OCRReaderRequest;
+import ocr_reader.ReadRequest;
 
 /*
  * File for local testing/development

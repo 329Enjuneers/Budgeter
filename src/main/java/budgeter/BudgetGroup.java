@@ -5,7 +5,7 @@ import com.googlecode.objectify.annotation.Id;
 import datastore.BasicEntity;
 import datastore.IdList;
 import datastore.QueryFactory;
-import receipt_parser.Receipt;
+import receipt.Receipt;
 
 public class BudgetGroup extends BasicEntity {
 	@Id Long id;
