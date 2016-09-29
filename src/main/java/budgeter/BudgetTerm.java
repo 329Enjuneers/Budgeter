@@ -6,19 +6,23 @@ import java.util.Date;
 import com.googlecode.objectify.annotation.Id;
 
 import datastore.BasicEntity;
+import budgeter.Expense;
 
 public class BudgetTerm extends BasicEntity {
 	@Id Long id;
 	private  ArrayList<Long> groupIds;
 	private Date startDate;
 	private Date endDate;
-	private float income;
+	private double income;
+	private double totalExpenses;
+	private ArrayList<Expense> expenses;
 	private ArrayList<String> receiptUrls;
 	
 	public BudgetTerm() {} // required for objectify library
 	
-	public BudgetTerm(float income) {
-		// TODO
+	public BudgetTerm(double income) {
+		this.income = income;
+		this.totalExpenses = 0.0;
 	}
 	
 	public ArrayList<BudgetGroup> getGroups() {
@@ -39,14 +43,19 @@ public class BudgetTerm extends BasicEntity {
 		return new ArrayList<String>();
 	}
 	
-	public float getAmountRemaining() {
-		// TODO compute amount remaining
-		return (float) 0.0;
+	public double getAmountRemaining() {
+		// TODO return amount remaining
+		return (double) (income - totalExpenses);
 	}
 	
-	public float getAmountSpent() {
-		// TODO compute amount spent
-		return (float) 0.0;
+	public double getAmountSpent() {
+		// TODO return amount spent
+		return (double) totalExpenses;
+	}
+
+	public void addExpense(Expense newExpenseAmount) {
+		// TODO update amount remaining and amount spent
+		totalExpenses += (double) newExpenseAmount.getAmount();
 	}
 
 	@Override
