@@ -8,7 +8,8 @@ import budgeter.BudgetTerm;
 
 public class HomePage extends Page {
 	private BudgetTerm term;
-	public HomePage(String baseUrl) {
+	public HomePage(String baseUrl)//,BudgetTerm term) 
+	{
 		super(baseUrl);
 		htmlBuilder.includeAppHeader = true;
 		term = new BudgetTerm(5000.00);
@@ -34,7 +35,7 @@ public class HomePage extends Page {
 	}
 	
 	private void addCurrentBalance(){
-		String termSummary =  "<div id='term-summary'>";
+		String termSummary = "<div id='term-summary'>";
 		termSummary += "<table>";
 		termSummary += "<thead><tr>";
 		termSummary += "<th colspan=\"2\">Term Summary</th>";
@@ -104,3 +105,4 @@ public class HomePage extends Page {
 		return dateOption;
 	}
 }
+
