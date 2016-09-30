@@ -1,7 +1,7 @@
 package pages;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 
 import pages.html_builder.Form;
 
@@ -18,26 +18,33 @@ public class ReceiptPage extends Page {
 	    	addLogout();
 	    	return htmlBuilder.build();
 	    }
-	    addNewGroupForm();
+	    addHeader();
+	    addReceiptForm();
 	    addHorizontalRule();
 	    return htmlBuilder.build();
 	}
 
 	private void setTitle() {
 		try {
-			htmlBuilder.setTitle("Reciept");
+			htmlBuilder.setTitle("Receipt");
 		} catch (Exception e) {}
 	}
+	
+	private void addHeader() {
+		htmlBuilder.addToBody("<h2 style='margin-bottom:2em'>Upload Receipt</h2>");
+	}
 
-	private void addNewGroupForm() {
-		Form newGroupForm = new Form();
-	    newGroupForm.addProperty("action", "/");
-	    newGroupForm.addProperty("method", "POST");
-	    newGroupForm.addProperty("style", "margin-bottom:2em");
-	    newGroupForm.addElement("<div style='margin-bottom: 1em'><label><b>New Group</b></label></div>");
-	    newGroupForm.addElement("<input name='group-name' placeholder='Group Name' required>");
-	    newGroupForm.addElement("<button type='submit'>Add Group</button>");
-	    htmlBuilder.addToBody(newGroupForm.toString());
+	private void addReceiptForm() {
+		BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+		Form receiptUploadForm = new Form();
+	    receiptUploadForm.addProperty("action", blobstoreService.createUploadUrl("/receipt"));
+	    receiptUploadForm.addProperty("method", "POST");
+	    receiptUploadForm.addProperty("enctype", "multipart/form-data");
+	    receiptUploadForm.addProperty("style", "margin-bottom:2em");
+	    receiptUploadForm.addElement("<div style='margin-bottom: 1em'><label><b>Upload image</b></label></div>");
+	    receiptUploadForm.addElement("<input type='file' name='receipt-image' accept='image/png, image/jpeg, image/gif' style='display:block; padding-bottom:1.5em;' required>");
+	    receiptUploadForm.addElement("<button type='submit'>Upload</button>");
+	    htmlBuilder.addToBody(receiptUploadForm.toString());
 	}
 
 }

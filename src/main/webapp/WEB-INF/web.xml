@@ -21,6 +21,10 @@
       <servlet-class>servlets.ReceiptServlet</servlet-class>
     </servlet>
     <servlet>
+      <servlet-name>ExistingReceipt</servlet-name>
+      <servlet-class>servlets.ExistingReceiptServlet</servlet-class>
+    </servlet>
+    <servlet>
       <servlet-name>History</servlet-name>
       <servlet-class>servlets.HistoryServlet</servlet-class>
     </servlet>
@@ -40,6 +44,10 @@
     <servlet-mapping>
       <servlet-name>Receipt</servlet-name>
       <url-pattern>/receipt</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+      <servlet-name>ExistingReceipt</servlet-name>
+      <url-pattern>/receipt/existing</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
       <servlet-name>History</servlet-name>

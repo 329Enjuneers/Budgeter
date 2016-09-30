@@ -11,10 +11,14 @@ import datastore.BasicEntity;
 public class Receipt extends BasicEntity {
 	@Id Long id;
 	
-	private ArrayList<PurchasedItem> purchasedItems;
+	public boolean isVerified;
+	public ArrayList<PurchasedItem> purchasedItems;
+	
+	public Receipt() {}
 	
 	public Receipt(ArrayList<PurchasedItem> purchasedItems) {
 		this.purchasedItems = purchasedItems;
+		this.isVerified = false;
 	}
 	
 	public void print() {
