@@ -16,9 +16,8 @@ public class ExpensePage extends Page
 		super(baseUrl);
 		htmlBuilder.includeAppHeader = true;
 		//TODO where does id come from?
-		expense = new Expense("walmart","food" ,50.0);
-		
-		
+		//expense = getExpense(id);
+		expense = new Expense("walmart","food" ,50.00); //testing
 	}
 
 	public String make() 
@@ -28,7 +27,6 @@ public class ExpensePage extends Page
 	    	addLogout();
 	    	return htmlBuilder.build();
 	    }
-	    //addNewGroupForm();
 	    addExpenseInfo();
 	    addHorizontalRule();
 	    return htmlBuilder.build();
@@ -40,18 +38,6 @@ public class ExpensePage extends Page
 			htmlBuilder.setTitle("Expenses");
 		} catch (Exception e) {}
 	}
-
-//	private void addNewGroupForm() 
-//	{
-//		Form newGroupForm = new Form();
-//	    newGroupForm.addProperty("action", "/");
-//	    newGroupForm.addProperty("method", "POST");
-//	    newGroupForm.addProperty("style", "margin-bottom:2em");
-//	    newGroupForm.addElement("<div style='margin-bottom: 1em'><label><b>New Group</b></label></div>");
-//	    newGroupForm.addElement("<input name='group-name' placeholder='Group Name' required>");
-//	    newGroupForm.addElement("<button type='submit'>Add Group</button>");
-//	    htmlBuilder.addToBody(newGroupForm.toString());
-//	}
 	/**
 	 * store (editable)
 	 * amount (editable)
@@ -68,6 +54,8 @@ public class ExpensePage extends Page
 		expenseSummary += "</tr></thead>";
 		expenseSummary += "<tbody><tr>";
 		expenseSummary += "<td><strong>Store</strong></td><td>&nbsp;"+expense.store+"</td>";
+		expenseSummary += "</tr><tr>";
+		expenseSummary += "<td><strong>Name</strong></td><td>&nbsp;"+expense.name+"</td>";
 		expenseSummary += "</tr><tr>";
 		expenseSummary += "<td><strong>Amount</strong></td><td>&nbsp;"+expense.amount+"</td>";
 		expenseSummary += "</tr><tr>";

@@ -8,7 +8,8 @@ import budgeter.BudgetTerm;
 
 public class HomePage extends Page {
 	private BudgetTerm term;
-	public HomePage(String baseUrl) {
+	public HomePage(String baseUrl)//,BudgetTerm term) 
+	{
 		super(baseUrl);
 		htmlBuilder.includeAppHeader = true;
 		term = new BudgetTerm(5000.00);
