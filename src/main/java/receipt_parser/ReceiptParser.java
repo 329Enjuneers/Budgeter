@@ -23,7 +23,6 @@ public class ReceiptParser {
 		ArrayList<MyFloat> floats = getFloats(clusters);
 		ArrayList<PurchasedItem> purchasedItems = makePurchasedItems(clusters, floats);
 		Receipt r = new Receipt(purchasedItems);
-		r.print();
 		return r;
 	}
 

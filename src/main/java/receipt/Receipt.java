@@ -13,12 +13,14 @@ public class Receipt extends BasicEntity {
 	
 	public boolean isVerified;
 	public ArrayList<PurchasedItem> purchasedItems;
+	public Long authorId;
 	
 	public Receipt() {}
 	
 	public Receipt(ArrayList<PurchasedItem> purchasedItems) {
 		this.purchasedItems = purchasedItems;
 		this.isVerified = false;
+		authorId = null;
 	}
 	
 	public void print() {
@@ -30,6 +32,13 @@ public class Receipt extends BasicEntity {
 	@Override
 	public Long getId() {
 		return id;
+	}
+	
+	public void save() {
+		if (authorId == null) {
+			throw new IllegalStateException("author must be set");
+		}
+		super.save();
 	}
 
 }

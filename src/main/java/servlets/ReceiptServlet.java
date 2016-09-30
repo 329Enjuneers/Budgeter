@@ -18,10 +18,12 @@ import image.Image;
 import pages.ReceiptPage;
 import receipt.Receipt;
 import receipt_parser.ReceiptParser;
+import user.User;
 
 public class ReceiptServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+	private static final User user = User.getCurrentUser();
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -50,6 +52,7 @@ public class ReceiptServlet extends HttpServlet {
         imageUrl = "http://lh3.googleusercontent.com/zxe--JDdKH8qw3KDXt7AvLGSfLD2qHHutvwpiS2U-xfE8rgNCw4CaY4bOAPL8Oz0iolZOYOMIhtYGlwveeljDd9kdg8AuonfF7xuA5M5PoQ";
         ReceiptParser parser = new ReceiptParser(imageUrl);
         Receipt receipt = parser.parse();
+        receipt.authorId = user.getId();
         receipt.save();
         resp.sendRedirect("/receipt/existing?receiptId=" + URLEncoder.encode(Long.toString(receipt.getId()), "UTF-8"));
 		

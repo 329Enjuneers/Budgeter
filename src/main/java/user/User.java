@@ -15,7 +15,7 @@ public class User extends BasicEntity {
 	@Index public String email;
 	public String nickname;
 	private Long currentBudgetTermId;
-	public IdList previousBudgetTermIds;
+	public IdList<BudgetTerm> previousBudgetTermIds;
 
 	public User() {
 		this.email = null;
@@ -24,7 +24,7 @@ public class User extends BasicEntity {
 
 	public User(String email) {
 		this.email = email;
-		this.nickname = null;
+		this.nickname = null; 
 	}
 	public User(String email, String nickname) {
 		this.email = email;
