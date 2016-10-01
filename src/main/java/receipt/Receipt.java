@@ -24,12 +24,6 @@ public class Receipt extends BasicEntity {
 		this.storeName = null;
 		this.authorId = null;
 	}
-	
-	public void print() {
-		for (PurchasedItem item : purchasedItems) {
-			System.out.println(item.name + " :: " + item.cost);
-		}
-	}
 
 	@Override
 	public Long getId() {

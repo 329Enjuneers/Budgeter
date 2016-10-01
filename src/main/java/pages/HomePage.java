@@ -1,10 +1,7 @@
 package pages;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
-import pages.html_builder.Form;
 import budgeter.BudgetTerm;
+import pages.html_builder.Form;
 
 public class HomePage extends Page {
 	private BudgetTerm term;
@@ -89,26 +86,6 @@ public class HomePage extends Page {
 		newGroupForm.addElement(newTerm);
 		htmlBuilder.addToBody(newGroupForm.toString());
 	}
-	
-	private String addDateOption(){
-		String dateOption = "";
-		dateOption += "<td>";
-		dateOption += "<select>";
-		for(int i=1; i<=12; i++){
-			dateOption += "<option value="+i+">"+i+"</option>";
-		}
-		dateOption += "</select></td>";
-		dateOption += "<td><select>";
-		for(int i=1; i<=31; i++){
-			dateOption += "<option value="+i+">"+i+"</option>";
-		}
-		dateOption += "</select></td>";
-		dateOption += "<td><select>";
-		for(int i=2016; i<=2020; i++){
-			dateOption += "<option value="+i+">"+i+"</option>";
-		}
-		dateOption += "</select></td>";
-		return dateOption;
-	}
+
 }
 
