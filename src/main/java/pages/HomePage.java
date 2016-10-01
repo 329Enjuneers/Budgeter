@@ -13,6 +13,7 @@ public class HomePage extends Page {
 		super(baseUrl);
 		htmlBuilder.includeAppHeader = true;
 		term = new BudgetTerm(5000.00);
+		// term = user.getCurrentBudgetTerm();
 	}
 
 	public String make() {
@@ -23,8 +24,13 @@ public class HomePage extends Page {
 	    }
 			htmlBuilder.addToBody("<h2>Budgeter</h2>");
 			htmlBuilder.addToBody("<style>th, td { border-bottom: 1px solid #ddd; padding: 10px; } table { text-align: left; vertical-align: bottom;}</style>");
-			addCurrentBalance();
-			addNewTermOption();
+			// if(term == null){
+			// 	addNewTermHTML();
+			// }else{
+			// 	addCurrentBalanceHTML();
+			// }
+			addNewTermHTML();
+			addCurrentBalanceHTML();
 	    return htmlBuilder.build();
 	}
 
@@ -34,7 +40,7 @@ public class HomePage extends Page {
 		} catch (Exception e) {}
 	}
 	
-	private void addCurrentBalance(){
+	private void addCurrentBalanceHTML(){
 		String termSummary = "<div id='term-summary'>";
 		termSummary += "<table>";
 		termSummary += "<thead><tr>";
@@ -55,7 +61,7 @@ public class HomePage extends Page {
 		htmlBuilder.addToBody(termSummary);
 	}
 	
-	private void addNewTermOption(){
+	private void addNewTermHTML(){
 		Form newGroupForm = new Form();
 		newGroupForm.addProperty("action", "/group");
 		newGroupForm.addProperty("method", "POST");
