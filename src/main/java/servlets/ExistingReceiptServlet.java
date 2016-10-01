@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import datastore.QueryFactory;
 import pages.ExistingReceiptPage;
 import receipt.PurchasedItem;
 import receipt.Receipt;
@@ -91,8 +90,8 @@ public class ExistingReceiptServlet extends HttpServlet {
 			return null;
 		}
 		
-		QueryFactory factory = new QueryFactory(Receipt.class);
-		Receipt receipt = factory.getEntityById(receiptId);
+		Receipt instance = new Receipt();
+		Receipt receipt = instance.getById(receiptId);
 		if (receipt == null || !receipt.authorId.equals(user.getId())) {
 			return null;
 		}

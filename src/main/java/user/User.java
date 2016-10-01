@@ -1,5 +1,7 @@
 package user;
 
+import java.util.HashMap;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -7,7 +9,6 @@ import com.googlecode.objectify.annotation.Index;
 import budgeter.BudgetTerm;
 import datastore.BasicEntity;
 import datastore.IdList;
-import datastore.QueryFactory;
 
 @Entity
 public class User extends BasicEntity {
@@ -56,9 +57,10 @@ public class User extends BasicEntity {
 	}
 
 	public static User get(String email) {
-		QueryFactory factory = new QueryFactory(User.class);
-		factory.addFilter("email", email);
-		return factory.get();
+		User instance = new User();
+		HashMap<String, String> filterMap = new HashMap<String, String>();
+		filterMap.put("email", email);
+		return instance.getSingleBy(filterMap);
 	}
 	
 	public void endTerm() {
@@ -71,8 +73,8 @@ public class User extends BasicEntity {
 	}
 	
 	public BudgetTerm getCurrentBudgetTerm() {
-		QueryFactory factory = new QueryFactory(BudgetTerm.class);
-		return factory.getEntityById(currentBudgetTermId);
+		BudgetTerm instance = new BudgetTerm();
+		return instance.getById(currentBudgetTermId);
 	}
 	
 	@Override

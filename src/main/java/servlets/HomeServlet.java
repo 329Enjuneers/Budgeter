@@ -7,10 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import budgeter.BudgetTerm;
-import pages.ExpensePage;
 import pages.HomePage;
-import receipt_parser.ReceiptParser;
 import user.User;
 
 

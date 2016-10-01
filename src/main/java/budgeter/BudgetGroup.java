@@ -4,7 +4,6 @@ import com.googlecode.objectify.annotation.Id;
 
 import datastore.BasicEntity;
 import datastore.IdList;
-import datastore.QueryFactory;
 import receipt.Receipt;
 
 public class BudgetGroup extends BasicEntity {
@@ -24,8 +23,7 @@ public class BudgetGroup extends BasicEntity {
 	}
 	
 	public static BudgetGroup getGroup(Long id) {
-		QueryFactory factory = new QueryFactory(BudgetGroup.class);
-		return factory.getEntityById(id);
+		return new BudgetGroup().getById(id);
 	}
 	
 	public float getPercentageOfIncome(float income) {
@@ -38,7 +36,8 @@ public class BudgetGroup extends BasicEntity {
 	
 	public float getAmountSpent() {
 		float sum = 0;
-		for (Expense expense : expenseIds.fetch(Expense.class)) {
+		Expense instance = new Expense();
+		for (Expense expense : expenseIds.fetch(instance)) {
 			sum += expense.amount;
 		}
 		return sum;

@@ -1,11 +1,14 @@
 //package test.sandbox;
 //
+//import java.util.HashMap;
+//
 //import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 //import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 //import com.googlecode.objectify.ObjectifyService;
 //import com.googlecode.objectify.VoidWork;
 //
 //import budgeter.Expense;
+//import datastore.IdList;
 //
 ///*
 // * File for local testing/development
@@ -20,18 +23,15 @@
 //		ObjectifyService.run(new VoidWork() {
 //		    public void vrun() {
 //		    	// ENTER YOUR TESTING CODE HERE
-//		    	Object name = "quacker";
-//		    	Long myName = (Long) name;
-////		    	Expense exp = new Expense("Wal-mart", "Dollar", (float) 5.3);
-////				exp.save();
-////				System.out.println("Saved:" + exp);
-////				QueryFactory qryFactory = new QueryFactory(Expense.class);
-////				System.out.println("Fetched: " + qryFactory.getEntityById(exp.getId()));
-////				IdList<Expense> list = new IdList<Expense>();
-////				list.add(exp.getId());
-////				for (Expense expense : list.fetch(Expense.class)) {
-////					System.out.println("Fetched from list: " + expense);
-////				}
+//		    	Expense exp = new Expense("Wal-mart", "Dollar", (float) 5.3);
+//				exp.save();	
+//				System.out.println(exp.getById(exp.getId()));
+//				HashMap<String, String> map = new HashMap<String, String>();
+//				map.put("store", "Wal-mart");
+//				System.out.println(new Expense().getSingleBy(map));
+//				IdList<Expense> expenseIds = new IdList<Expense>();
+//				expenseIds.add(exp.getId());
+//				System.out.println(expenseIds.fetch(exp));
 //		    }
 //		});
 //

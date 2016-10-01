@@ -3,7 +3,7 @@ package datastore;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-public class IdList<EntityType> {
+public class IdList<EntityType extends BasicEntity> {
 	private ArrayList<Long> ids;
 	
 	public IdList() {
@@ -23,12 +23,10 @@ public class IdList<EntityType> {
 		ids.remove(id);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public ArrayList<EntityType> fetch(Class<? extends BasicEntity> clazz) {
+	public ArrayList<EntityType> fetch(BasicEntity instance) {
 		ArrayList<EntityType> myList = new ArrayList<EntityType>();
-		QueryFactory factory = new QueryFactory(clazz);
 		for (Long id : ids) {
-			EntityType entity = (EntityType) factory.getEntityById(id);
+			EntityType entity = instance.getById(id);
 			myList.add(entity);
 		}
 		return myList;
