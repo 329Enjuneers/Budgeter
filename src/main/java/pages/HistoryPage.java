@@ -41,7 +41,7 @@ public class HistoryPage extends Page {
 		history += "<thead><tr>";
 		history += "<th>Location</th>";
 		history += "<th>Date</th>";
-		history += "<th>Group</th>";
+		history += "<th>Category</th>";
 		history += "<th>Amount</th>";
 		history += "</tr></thead>";
 		history += "<tbody><tr>";
