@@ -90,7 +90,7 @@ public class HTMLBuilder {
   }
 
   private String buildScripts() {
-	  scripts.add("<script type='application/javascript' src='/scripts/test_script.js'></script>");
+	  scripts.add("<script type='application/javascript' src='/scripts/template.js'></script>");
 	  StringBuilder str = new StringBuilder();
 	  for (String line : scripts) {
 		  str.append(line + "\n");
