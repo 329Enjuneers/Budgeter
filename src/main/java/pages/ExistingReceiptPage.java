@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import pages.html_builder.Div;
+import pages.html_builder.Feedback;
 import pages.html_builder.Form;
 import receipt.PurchasedItem;
 import receipt.Receipt;
@@ -11,11 +12,13 @@ import receipt.Receipt;
 public class ExistingReceiptPage extends Page{
 	
 	private Receipt receipt;
+	public boolean wasUpdated;
 	
 	public ExistingReceiptPage(String baseUrl, Receipt receipt) {
 		super(baseUrl);
 		this.receipt = receipt;
 		htmlBuilder.includeAppHeader = true;
+		wasUpdated = false;
 	}
 
 	public String make() {
@@ -23,6 +26,9 @@ public class ExistingReceiptPage extends Page{
 	    if (user == null) {
 	    	addLogout();
 	    	return htmlBuilder.build();
+	    }
+	    if (wasUpdated) {
+	    	addSuccessfullyUpdated();
 	    }
 	    addHeader();
 	    addReceiptForm();
@@ -36,6 +42,11 @@ public class ExistingReceiptPage extends Page{
 		try {
 			htmlBuilder.setTitle("Existing Receipt");
 		} catch (Exception e) {}
+	}
+	
+	private void addSuccessfullyUpdated() {
+		Feedback feedback = new Feedback("Receipt successfully updated");
+		htmlBuilder.addToBody(feedback.toString());
 	}
 	
 	private void addHeader() {
@@ -56,6 +67,7 @@ public class ExistingReceiptPage extends Page{
 	    receiptForm.addProperty("style", "margin-bottom:2em");
 	    receiptForm.addElement("<h3>Edit Receipt Contents</h3>");
 	    receiptForm.addElement("<hr>");
+	    receiptForm.addElement(makeStoreNameDiv());
 	    receiptForm.addElement(makeLabelDiv());
 	    Div itemsDiv = new Div();
 	    itemsDiv.addProperty("id", "items");
@@ -71,12 +83,22 @@ public class ExistingReceiptPage extends Page{
 	    htmlBuilder.addToBody(receiptForm.toString());
 	}
 	
+	private String makeStoreNameDiv() {
+		Div div = new Div();
+    	div.addProperty("style", "margin-bottom:1.5em; margin-top:3.5em;");
+    	div.addElement("<label><b><u>Store Name:</u></b></label>");
+    	String storeName = receipt.storeName != null ? receipt.storeName : "";
+    	div.addElement("<input style='margin-left:14%' name='storeName' placeholder='Wal-Mart' value='" + storeName +"' required>");
+    	div.addElement("<hr style='width:29.4%; margin-right:70%; margin-top: 1.5em;'>");
+    	return div.toString();
+	}
+	
 	private String makePurchasedItemDiv(String name, String cost) {
 		Div div = new Div();
 		div.addProperty("class", "item");
     	div.addProperty("style", "margin-bottom:1.5em");
-    	div.addElement("<input name='" + "name"+ "' value='" + name + "' required>");
-    	div.addElement("<input style='margin-left:11%' name='" + "cost" + "' value='" + cost + "' required>");
+    	div.addElement("<input name='name' value='" + name + "' required>");
+    	div.addElement("<input style='margin-left:11%' name='cost' value='" + cost + "' required>");
     	div.addElement("<button class='delete-button' style='margin-left:1em' type='button'>X</button>");
     	return div.toString();
 	}

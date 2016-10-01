@@ -28,7 +28,12 @@ public class ExistingReceiptServlet extends HttpServlet {
 			out.write("Receipt not found");
 			return;
 		}
-		out.write(new ExistingReceiptPage(req.getRequestURI(), receipt).make());
+		String wasUpdated = req.getParameter("wasUpdated");
+		ExistingReceiptPage page = new ExistingReceiptPage(req.getRequestURI(), receipt);
+		if (wasUpdated != null) {
+			page.wasUpdated = true;
+		}
+		out.write(page.make());
 	}
 	
 	@Override
@@ -36,14 +41,23 @@ public class ExistingReceiptServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 		Receipt receipt = getReceipt(req.getParameter("receiptId"));
+		if (receipt == null) {
+			out.write("Receipt not found");
+			return;
+		}
 		if (!receipt.isVerified) {
 			receipt.isVerified = true;
 		}
 		String[] names = req.getParameterValues("name");
 		String[] costs = req.getParameterValues("cost");
+		String storeName = req.getParameter("storeName");
 		ArrayList<PurchasedItem> purchasedItems = new ArrayList<PurchasedItem>();
 		if (names.length != costs.length) {
-			out.write("Names and costs must be the same!");
+			out.write("The number of names must equal the number of costs.!");
+			return;
+		}
+		if (storeName == null) {
+			out.write("Store name must be included");
 			return;
 		}
 		
@@ -59,8 +73,9 @@ public class ExistingReceiptServlet extends HttpServlet {
 			purchasedItems.add(new PurchasedItem(names[i], f));
 		}
 		receipt.purchasedItems = purchasedItems;
+		receipt.storeName = storeName;
 		receipt.save();
-		resp.sendRedirect("/receipt/existing?receiptId=" + URLEncoder.encode(Long.toString(receipt.getId()), "UTF-8"));
+		resp.sendRedirect("/receipt/existing?wasUpdated=1&receiptId=" + URLEncoder.encode(Long.toString(receipt.getId()), "UTF-8"));
 	}
 	
 	private Receipt getReceipt(String rawReceiptId) {
