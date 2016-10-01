@@ -37,7 +37,6 @@ public abstract class BasicEntity {
 			String filterName = entry.getKey();
 			Object filterValue = entry.getValue();
 			if (query == null) {
-				System.out.println("Adding filter: " + filterName + " - " + filterValue);
 				query = loader.filter(filterName, filterValue);
 			}
 			else {
@@ -64,7 +63,6 @@ public abstract class BasicEntity {
 			String filterName = entry.getKey();
 			Object filterValue = entry.getValue();
 			if (query == null) {
-				System.out.println("Adding filter: " + filterName + " - " + filterValue);
 				query = loader.filter(filterName, filterValue);
 			}
 			else {

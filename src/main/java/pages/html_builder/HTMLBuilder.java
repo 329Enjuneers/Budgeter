@@ -66,6 +66,8 @@ public class HTMLBuilder {
 
   private String buildHead() {
 	  StringBuilder str = new StringBuilder();
+	  head.add("<link type='text/css' rel='stylesheet' href='/stylesheets/main.css'></link>");
+	  head.add("<script src='/lib/jquery-3.1.1.min.js'></script>");
 	  str.append("<head>");
 	  for (String line : head) {
 		  str.append(line + "\n");
@@ -88,6 +90,7 @@ public class HTMLBuilder {
   }
 
   private String buildScripts() {
+	  scripts.add("<script type='application/javascript' src='/scripts/test_script.js'></script>");
 	  StringBuilder str = new StringBuilder();
 	  for (String line : scripts) {
 		  str.append(line + "\n");
@@ -105,11 +108,16 @@ public class HTMLBuilder {
 	  div.addElement("<h4 style='display: inline'>Welcome, " + user.nickname + "</h4>");
       div.addElement("<span style='float: right'><a href='" + userService.createLogoutURL(baseUrl) + "'> <button>Logout</button></a></span>");
 
-      Div tabs = new Div();
-      tabs.addElement("<a href='/'>Home</a>");
       String divString = div.toString();
-      String tabsString = tabs.toString();
+      String tabsString = getNavTabs();
       String hr = "<hr>";
       return divString + tabsString + hr;
+  }
+  
+  private String getNavTabs() {
+	  Tabs tabs = new Tabs();
+	  tabs.addTab("/", "Home");
+	  tabs.addTab("/receipt", "Upload Receipt");
+      return tabs.toString();
   }
 }

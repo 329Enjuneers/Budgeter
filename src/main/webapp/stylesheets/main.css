@@ -1,0 +1,45 @@
+.tabs { 
+	list-style: none;
+	margin-bottom: 1em;
+	margin-left: 2em;
+}
+.tabs ul {
+	display: inline;
+}
+.tabs li {
+	margin-right: .5em;
+	display: block;
+}
+.tabs li a {
+	color: white; 
+	background-color: #337ab7;
+	border-radius: 3px;
+	font-family: sans-serif;
+	font-weight: lighter;
+	float: left;
+	display: block;
+	padding: 4px 10px;
+	margin-left: -1px;
+	position: relative;
+	left: 1px;
+	text-decoration: none;
+	margin-right: .5em;
+}
+.tabs li a.active {
+	background: #57a5e5;
+}
+.tabs li a:hover {
+	background: #2e6da4;
+}
+.feedback {
+	background-color: #00C851;
+	padding-top: .5em;
+	padding-bottom: .5em;
+	box-shadow: 0 0 1px 1px #A7ADBA;
+}
+.feedback p {
+	text-align: center;
+	color: white;
+	font-family: sans-serif;
+	font-weight: lighter;
+}
