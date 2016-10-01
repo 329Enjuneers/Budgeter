@@ -106,18 +106,19 @@ public class HTMLBuilder {
 	  UserService userService = UserServiceFactory.getUserService();
 	  Div div = new Div();
 	  div.addElement("<h4 style='display: inline'>Welcome, " + user.nickname + "</h4>");
-      div.addElement("<span style='float: right'><a href='" + userService.createLogoutURL(baseUrl) + "'> <button>Logout</button></a></span>");
+    div.addElement("<span style='float: right'><a href='" + userService.createLogoutURL(baseUrl) + "'> <button>Logout</button></a></span>");
 
-      String divString = div.toString();
-      String tabsString = getNavTabs();
-      String hr = "<hr>";
-      return divString + tabsString + hr;
+    String divString = div.toString();
+    String tabsString = getNavTabs();
+    String hr = "<br/><hr>";
+    return divString + tabsString + hr;
   }
   
   private String getNavTabs() {
 	  Tabs tabs = new Tabs();
 	  tabs.addTab("/", "Home");
 	  tabs.addTab("/receipt", "Upload Receipt");
-      return tabs.toString();
+    tabs.addTab("/history", "Term Activity");
+    return tabs.toString();
   }
 }

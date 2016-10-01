@@ -4,12 +4,17 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import pages.html_builder.Form;
+import budgeter.BudgetGroup;
+import budgeter.BudgetTerm;
 
 public class HistoryPage extends Page {
+	
+	private BudgetTerm currentTerm;
 
 	public HistoryPage(String baseUrl) {
 		super(baseUrl);
 		htmlBuilder.includeAppHeader = true;
+		currentTerm = user.getCurrentBudgetTerm();
 	}
 
 	public String make() {
@@ -18,26 +23,38 @@ public class HistoryPage extends Page {
 	    	addLogout();
 	    	return htmlBuilder.build();
 	    }
-	    addNewGroupForm();
-	    addHorizontalRule();
+			addHistoryHTML();
 	    return htmlBuilder.build();
 	}
 
 	private void setTitle() {
 		try {
-			htmlBuilder.setTitle("Home");
+			htmlBuilder.setTitle("Term Activity");
+			htmlBuilder.addToBody("<style>th, td { border-bottom: 1px solid #ddd; padding: 10px; } table { text-align: center; vertical-align: bottom; width: 100%}</style>");
 		} catch (Exception e) {}
 	}
 
-	private void addNewGroupForm() {
-		Form newGroupForm = new Form();
-	    newGroupForm.addProperty("action", "/");
-	    newGroupForm.addProperty("method", "POST");
-	    newGroupForm.addProperty("style", "margin-bottom:2em");
-	    newGroupForm.addElement("<div style='margin-bottom: 1em'><label><b>New Group</b></label></div>");
-	    newGroupForm.addElement("<input name='group-name' placeholder='Group Name' required>");
-	    newGroupForm.addElement("<button type='submit'>Add Group</button>");
-	    htmlBuilder.addToBody(newGroupForm.toString());
+	private void addHistoryHTML() {
+		String history = "<div id='history'>";
+		history += "<h2>Term Activity</h2>";
+		history += "<table>";
+		history += "<thead><tr>";
+		history += "<th>Location</th>";
+		history += "<th>Date</th>";
+		history += "<th>Group</th>";
+		history += "<th>Amount</th>";
+		history += "</tr></thead>";
+		history += "<tbody><tr>";
+// TODO: Update this <td> tags with actual expenses form BudgetTerm expenses.
+		// for()
+		history += "<td>Walmart</td><td>08/23/2016</td><td>Groceries</td><td><strong>$ &nbsp;45.30</strong></td>";
+		history += "</tr><tr>";
+		history += "<td>Amazon</td><td>10/01/2016</td><td>Electronics</td><td><strong>$ &nbsp;78.00</strong></td>";
+		history += "</tr>";
+		history += "</tbody>";
+		history += "</table>";
+		history += "</div><br/>";
+		history += "<hr/><br/>";
+		htmlBuilder.addToBody(history);
 	}
-
 }
