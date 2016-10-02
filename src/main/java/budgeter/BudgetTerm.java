@@ -2,7 +2,6 @@ package budgeter;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -22,6 +21,7 @@ public class BudgetTerm extends BasicEntity {
 	private double totalExpenses;
 	private ArrayList<Expense> expenses;
 	private ArrayList<String> receiptUrls;
+	private ArrayList<BudgetGroup> budgetGroups;
 	private boolean termEnded = false;
 	
 	public BudgetTerm() {} // required for objectify library
@@ -31,6 +31,8 @@ public class BudgetTerm extends BasicEntity {
 		this.totalExpenses = 0.0;
 		this.expenses = new ArrayList<Expense>();
 		this.receiptUrls = new ArrayList<String>();
+		this.budgetGroups = new ArrayList<BudgetGroup>();
+		// this.budgetGroups.add(new BudgetGroup("Test",400));
 		save();
 	}
 	
@@ -41,7 +43,8 @@ public class BudgetTerm extends BasicEntity {
 		this.endDate = endDate;
 		this.expenses = new ArrayList<Expense>();
 		this.receiptUrls = new ArrayList<String>();
-		ofy().save().entity(this).now();
+		this.budgetGroups = new ArrayList<BudgetGroup>();
+		save();
 	}
 	
 	public ArrayList<Expense> getExpenses() {
@@ -50,16 +53,22 @@ public class BudgetTerm extends BasicEntity {
 	}
 	
 	public ArrayList<BudgetGroup> getGroups() {
-		// TODO iterate over every key and fetch the group associated with it
-		return new ArrayList<BudgetGroup>();
+		return budgetGroups;
 	}
 	
-	public void addGroup(Long groupId) {
-		// TODO add this id the list of keys
+	public void addGroup(BudgetGroup newGroup) {
+		budgetGroups.add(newGroup);
+		save();
 	}
-	
+
 	public void deleteGroup(Long groupId) {
-		// TODO remove the id from this group
+		for(BudgetGroup bg: budgetGroups){
+			if(bg.getId() == groupId){
+				budgetGroups.remove(budgetGroups.indexOf(bg));
+				break;
+			}
+		}
+		save();
 	}
 	
 	public ArrayList<String> getReceiptUrls() {
@@ -67,18 +76,18 @@ public class BudgetTerm extends BasicEntity {
 		return new ArrayList<String>();
 	}
 	
+	// returns amount remaining
 	public double getAmountRemaining() {
-		// TODO return amount remaining
 		return (double) (income - totalExpenses);
 	}
 	
+	// returns amount spent
 	public double getAmountSpent() {
-		// TODO return amount spent
 		return (double) totalExpenses;
 	}
 
+	// updates amount remaining and amount spent
 	public void addExpense(Expense newExpenseAmount) {
-		// TODO update amount remaining and amount spent
 		totalExpenses += (double) newExpenseAmount.getAmount();
 	}
 

@@ -9,13 +9,13 @@ import receipt.Receipt;
 public class BudgetGroup extends BasicEntity {
 	@Id Long id;
 	public String name;
-	private float amountAllocated;
+	private double amountAllocated;
 	public IdList<Expense> expenseIds;
 	public IdList<Receipt> receiptIds;
 	
 	public BudgetGroup() {} // required for objectify
 	
-	public BudgetGroup(String name, float amountAllocated) {
+	public BudgetGroup(String name, double amountAllocated) {
 		this.name = name;
 		this.amountAllocated = amountAllocated;
 		this.expenseIds = new IdList<Expense>();
@@ -26,16 +26,16 @@ public class BudgetGroup extends BasicEntity {
 		return new BudgetGroup().getById(id);
 	}
 	
-	public float getPercentageOfIncome(float income) {
+	public double getPercentageOfIncome(double income) {
 		return amountAllocated / income;
 	}
 	
-	public float getAmountRemaining() {
-		return amountAllocated - getAmountRemaining();
+	public double getAmountRemaining() {
+		return amountAllocated - getAmountSpent();
 	}
 	
-	public float getAmountSpent() {
-		float sum = 0;
+	public double getAmountSpent() {
+		double sum = 0;
 		Expense instance = new Expense();
 		for (Expense expense : expenseIds.fetch(instance)) {
 			sum += expense.amount;

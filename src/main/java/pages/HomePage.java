@@ -57,7 +57,6 @@ public class HomePage extends Page {
 		termSummary += "</tbody>";
 		termSummary += "</table>";
 		termSummary += "</div><br/>";
-		// termSummary += "<a href=\"\"><button><strong>END TERM</strong></button></a>";
 		termSummary += addEndTermHTML();
 		htmlBuilder.addToBody(termSummary);
 	}
