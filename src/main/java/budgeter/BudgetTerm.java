@@ -7,6 +7,7 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
 import datastore.BasicEntity;
+import datastore.IdList;
 
 @Entity
 public class BudgetTerm extends BasicEntity {
@@ -14,39 +15,35 @@ public class BudgetTerm extends BasicEntity {
 	private  ArrayList<Long> groupIds;
 	private Date startDate;
 	private Date endDate;
-	private double income;
-	private double totalExpenses;
-	private ArrayList<Expense> expenses;
+	private float income;
+	private IdList<Expense> expenseIds;
 	private ArrayList<String> receiptUrls;
 	private ArrayList<BudgetGroup> budgetGroups;
 	private boolean termEnded = false;
 	
 	public BudgetTerm() {} // required for objectify library
 	
-	public BudgetTerm(double income) {
+	public BudgetTerm(float income) {
 		this.income = income;
-		this.totalExpenses = 0.0;
-		this.expenses = new ArrayList<Expense>();
+		this.expenseIds = new IdList<Expense>();
 		this.receiptUrls = new ArrayList<String>();
 		this.budgetGroups = new ArrayList<BudgetGroup>();
 		// this.budgetGroups.add(new BudgetGroup("Test",400));
 		save();
 	}
 	
-	public BudgetTerm(double income, Date startDate, Date endDate) {
+	public BudgetTerm(float income, Date startDate, Date endDate) {
 		this.income = income;
-		this.totalExpenses = 0.0;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.expenses = new ArrayList<Expense>();
+		this.expenseIds = new IdList<Expense>();
 		this.receiptUrls = new ArrayList<String>();
 		this.budgetGroups = new ArrayList<BudgetGroup>();
 		save();
 	}
 	
 	public ArrayList<Expense> getExpenses() {
-		// Return all expenses in during this term.
-		return expenses;
+		return expenseIds.fetch(new Expense());
 	}
 	
 	public ArrayList<BudgetGroup> getGroups() {
@@ -68,32 +65,35 @@ public class BudgetTerm extends BasicEntity {
 		save();
 	}
 	
+	public void addReceiptUrl(String servingUrl) {
+		receiptUrls.add(servingUrl);
+	}
+	
 	public ArrayList<String> getReceiptUrls() {
-		// TODO combine all receipt urls on this and groups
-		return new ArrayList<String>();
+		return receiptUrls;
 	}
 	
-	// returns amount remaining
-	public double getAmountRemaining() {
-		return (double) (income - totalExpenses);
+	public float getAmountRemaining() {
+		return (income - getAmountSpent());
 	}
 	
-	// returns amount spent
-	public double getAmountSpent() {
-		return (double) totalExpenses;
+	public float getAmountSpent() {
+		float sum = 0;
+		for (Expense expense : expenseIds.fetch(new Expense())) {
+			sum += expense.getTotal();
+		}
+		return sum;
 	}
 
-	// updates amount remaining and amount spent
-	public void addExpense(Expense newExpenseAmount) {
-		totalExpenses += (double) newExpenseAmount.getAmount();
+	public void addExpense(Expense expense) {
+		expenseIds.add(expense.getId());
+		save();
 	}
 
-	// Checks if this term has ended.
 	public boolean isEnded() {
 		return termEnded;
 	}
 
-	// Ends running term.
 	public void endTerm() {
 		termEnded = true;
 		save();

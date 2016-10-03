@@ -5,9 +5,9 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 
 import pages.html_builder.Form;
 
-public class ReceiptPage extends Page {
+public class UploadReceiptPage extends Page {
 
-	public ReceiptPage(String baseUrl) {
+	public UploadReceiptPage(String baseUrl) {
 		super(baseUrl);
 		htmlBuilder.includeAppHeader = true;
 	}

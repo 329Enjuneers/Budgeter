@@ -1,8 +1,8 @@
-package receipt;
+package budgeter;
 
 import auto_correct.AutoCorrector;
 
-public class PurchasedItem {
+public class PurchasedItem{
 	
 	public String name;
 	public float cost;

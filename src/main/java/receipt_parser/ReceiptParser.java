@@ -3,10 +3,11 @@ package receipt_parser;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import budgeter.Expense;
+import budgeter.PurchasedItem;
+import datastore.IdList;
 import ocr_reader.Cluster;
 import ocr_reader.Reader;
-import receipt.PurchasedItem;
-import receipt.Receipt;
 import receipt_parser.float_list_factory.FloatListFactory;
 
 public class ReceiptParser {
@@ -17,12 +18,12 @@ public class ReceiptParser {
 		this.imageUrl = imageUrl;
 	}
 
-	public Receipt parse() {
+	public Expense parse() {
 		ArrayList<Cluster> clusters = readImage();
 
 		ArrayList<MyFloat> floats = getFloats(clusters);
 		ArrayList<PurchasedItem> purchasedItems = makePurchasedItems(clusters, floats);
-		Receipt r = new Receipt(purchasedItems);
+		Expense r = new Expense(purchasedItems);
 		return r;
 	}
 

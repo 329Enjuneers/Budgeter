@@ -14,9 +14,10 @@ import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 
+import budgeter.BudgetTerm;
+import budgeter.Expense;
 import image.BlobImage;
-import pages.ReceiptPage;
-import receipt.Receipt;
+import pages.UploadReceiptPage;
 import receipt_parser.ReceiptParser;
 import user.User;
 
@@ -29,7 +30,7 @@ public class ReceiptServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
-		out.write(new ReceiptPage(req.getRequestURI()).make());
+		out.write(new UploadReceiptPage(req.getRequestURI()).make());
 	}
 	
 	@Override
@@ -45,15 +46,18 @@ public class ReceiptServlet extends HttpServlet {
             return;
         }
         
+        BudgetTerm term = user.getCurrentBudgetTerm();
         BlobImage blobImage = new BlobImage(blobKeys.get(0));
         String imageUrl = blobImage.getUrl();
         System.out.println("Created image url: " + imageUrl);
         System.out.println("Instead using: http://lh3.googleusercontent.com/zxe--JDdKH8qw3KDXt7AvLGSfLD2qHHutvwpiS2U-xfE8rgNCw4CaY4bOAPL8Oz0iolZOYOMIhtYGlwveeljDd9kdg8AuonfF7xuA5M5PoQ");
         imageUrl = "http://lh3.googleusercontent.com/zxe--JDdKH8qw3KDXt7AvLGSfLD2qHHutvwpiS2U-xfE8rgNCw4CaY4bOAPL8Oz0iolZOYOMIhtYGlwveeljDd9kdg8AuonfF7xuA5M5PoQ";
         ReceiptParser parser = new ReceiptParser(imageUrl);
-        Receipt receipt = parser.parse();
-        receipt.authorId = user.getId();
-        receipt.save();
-        resp.sendRedirect("/receipt/existing?receiptId=" + URLEncoder.encode(Long.toString(receipt.getId()), "UTF-8"));
+        Expense expense = parser.parse();
+        expense.authorId = user.getId();
+        expense.save();
+        term.addExpense(expense);
+        term.addReceiptUrl(imageUrl);
+        resp.sendRedirect("/receipt/existing?receiptId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
 	}
 }

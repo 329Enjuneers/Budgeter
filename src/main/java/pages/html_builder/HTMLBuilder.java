@@ -117,9 +117,10 @@ public class HTMLBuilder {
   private String getNavTabs() {
 	  Tabs tabs = new Tabs();
 	  tabs.addTab("/", "Home");
-    tabs.addTab("/group", "Categories");
+	  tabs.addTab("/group", "Categories");
+	  tabs.addTab("/expense", "Add Expenses");
 	  tabs.addTab("/receipt", "Upload Receipt");
-    tabs.addTab("/history", "Term Activity");
+	  tabs.addTab("/history", "Term Activity");
     return tabs.toString();
   }
 }

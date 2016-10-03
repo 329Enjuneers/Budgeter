@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pages.ExistingReceiptPage;
-import receipt.PurchasedItem;
-import receipt.Receipt;
+import budgeter.Expense;
+import budgeter.PurchasedItem;
+import pages.ExpensePage;
 import user.User;
 
-public class ExistingReceiptServlet extends HttpServlet {
+public class ExistingExpenseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final User user = User.getCurrentUser();
 	
@@ -22,13 +22,13 @@ public class ExistingReceiptServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
-		Receipt receipt = getReceipt(req.getParameter("receiptId"));
-		if (receipt == null) {
+		Expense expense = getExpense(req.getParameter("receiptId"));
+		if (expense == null) {
 			out.write("Receipt not found");
 			return;
 		}
 		String wasUpdated = req.getParameter("wasUpdated");
-		ExistingReceiptPage page = new ExistingReceiptPage(req.getRequestURI(), receipt);
+		ExpensePage page = new ExpensePage(req.getRequestURI(), expense);
 		if (wasUpdated != null) {
 			page.wasUpdated = true;
 		}
@@ -39,13 +39,13 @@ public class ExistingReceiptServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
-		Receipt receipt = getReceipt(req.getParameter("receiptId"));
-		if (receipt == null) {
+		Expense expense = getExpense(req.getParameter("receiptId"));
+		if (expense == null) {
 			out.write("Receipt not found");
 			return;
 		}
-		if (!receipt.isVerified) {
-			receipt.isVerified = true;
+		if (!expense.isVerified) {
+			expense.isVerified = true;
 		}
 		String[] names = req.getParameterValues("name");
 		String[] costs = req.getParameterValues("cost");
@@ -71,30 +71,30 @@ public class ExistingReceiptServlet extends HttpServlet {
 			}
 			purchasedItems.add(new PurchasedItem(names[i], f));
 		}
-		receipt.purchasedItems = purchasedItems;
-		receipt.storeName = storeName;
-		receipt.save();
-		resp.sendRedirect("/receipt/existing?wasUpdated=1&receiptId=" + URLEncoder.encode(Long.toString(receipt.getId()), "UTF-8"));
+		expense.purchasedItems = purchasedItems;
+		expense.storeName = storeName;
+		expense.save();
+		resp.sendRedirect("/receipt/existing?wasUpdated=1&receiptId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
 	}
 	
-	private Receipt getReceipt(String rawReceiptId) {
-		if (rawReceiptId == null) {
+	private Expense getExpense(String rawExpenseId) {
+		if (rawExpenseId == null) {
 			return null;
 		}
 		
-		Long receiptId;
+		Long expenseId;
 		try {
-			receiptId = Long.parseLong(rawReceiptId);
+			expenseId = Long.parseLong(rawExpenseId);
 		}
 		catch(ClassCastException e) {
 			return null;
 		}
 		
-		Receipt instance = new Receipt();
-		Receipt receipt = instance.getById(receiptId);
-		if (receipt == null || !receipt.authorId.equals(user.getId())) {
+		Expense instance = new Expense();
+		Expense expense = instance.getById(expenseId);
+		if (expense == null || !expense.authorId.equals(user.getId())) {
 			return null;
 		}
-		return receipt;
+		return expense;
 	}
 }
