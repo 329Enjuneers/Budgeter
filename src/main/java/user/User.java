@@ -73,6 +73,9 @@ public class User extends BasicEntity {
 	}
 	
 	public BudgetTerm getCurrentBudgetTerm() {
+		if (currentBudgetTermId == null) {
+			return null;
+		}
 		BudgetTerm instance = new BudgetTerm();
 		return instance.getById(currentBudgetTermId);
 	}

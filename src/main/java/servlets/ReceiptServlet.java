@@ -14,7 +14,7 @@ import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 
-import image.Image;
+import image.BlobImage;
 import pages.ReceiptPage;
 import receipt.Receipt;
 import receipt_parser.ReceiptParser;
@@ -45,8 +45,8 @@ public class ReceiptServlet extends HttpServlet {
             return;
         }
         
-        Image image = new Image(blobKeys.get(0));
-        String imageUrl = image.getUrl();
+        BlobImage blobImage = new BlobImage(blobKeys.get(0));
+        String imageUrl = blobImage.getUrl();
         System.out.println("Created image url: " + imageUrl);
         System.out.println("Instead using: http://lh3.googleusercontent.com/zxe--JDdKH8qw3KDXt7AvLGSfLD2qHHutvwpiS2U-xfE8rgNCw4CaY4bOAPL8Oz0iolZOYOMIhtYGlwveeljDd9kdg8AuonfF7xuA5M5PoQ");
         imageUrl = "http://lh3.googleusercontent.com/zxe--JDdKH8qw3KDXt7AvLGSfLD2qHHutvwpiS2U-xfE8rgNCw4CaY4bOAPL8Oz0iolZOYOMIhtYGlwveeljDd9kdg8AuonfF7xuA5M5PoQ";
@@ -55,7 +55,5 @@ public class ReceiptServlet extends HttpServlet {
         receipt.authorId = user.getId();
         receipt.save();
         resp.sendRedirect("/receipt/existing?receiptId=" + URLEncoder.encode(Long.toString(receipt.getId()), "UTF-8"));
-		
-        out.write(new ReceiptPage(req.getRequestURI()).make());
 	}
 }

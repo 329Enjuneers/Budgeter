@@ -5,11 +5,8 @@ import java.util.Date;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Index;
-import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import datastore.BasicEntity;
-import budgeter.Expense;
 
 @Entity
 public class BudgetTerm extends BasicEntity {

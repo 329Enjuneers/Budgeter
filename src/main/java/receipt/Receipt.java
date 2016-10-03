@@ -1,6 +1,7 @@
 package receipt;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -15,6 +16,7 @@ public class Receipt extends BasicEntity {
 	public ArrayList<PurchasedItem> purchasedItems;
 	public Long authorId;
 	public String storeName;
+	public Date timeCreated;
 	
 	public Receipt() {}
 	
@@ -23,6 +25,7 @@ public class Receipt extends BasicEntity {
 		this.isVerified = false;
 		this.storeName = null;
 		this.authorId = null;
+		this.timeCreated = new Date();
 	}
 
 	@Override

@@ -53,29 +53,31 @@ public class HomeServlet extends HttpServlet {
 		User user = User.getCurrentUser();
 		if(user == null){
 			out.write(new HomePage(req.getRequestURI()).make());
-		}else{
-			BudgetTerm term = user.getCurrentBudgetTerm();
-			if(term == null){
-				//create new budget term 
-				if(req.getParameterMap().containsKey("income")){
-					double budget = Double.parseDouble(req.getParameter("income"));
-					BudgetTerm newTerm = new BudgetTerm(budget);
-					user.startNewTerm(newTerm);
-					out.write(new HomePage(req.getRequestURI(),user.getCurrentBudgetTerm()).make());
-				}else{
-					out.write(new HomePage(req.getRequestURI()).make());
+			return;
+		}
+		BudgetTerm term = user.getCurrentBudgetTerm();
+		if(term == null){
+			//create new budget term 
+			if(req.getParameterMap().containsKey("income")){
+				double budget = Double.parseDouble(req.getParameter("income"));
+				BudgetTerm newTerm = new BudgetTerm(budget);
+				user.startNewTerm(newTerm);
+				out.write(new HomePage(req.getRequestURI(),user.getCurrentBudgetTerm()).make());
+			}
+			else{
+				out.write(new HomePage(req.getRequestURI()).make());
+			}
+		}
+		else{
+			//check for action "end"
+			if(req.getParameterMap().containsKey("action")){
+				String action = req.getParameter("action").toLowerCase();
+				if(action != null && action.equals("end")){
+					user.endTerm();
 				}
+				out.write(new HomePage(req.getRequestURI()).make());			
 			}else{
-				//check for action "end"
-				if(req.getParameterMap().containsKey("action")){
-					String action = req.getParameter("action").toLowerCase();
-					if(action != null && action.equals("end")){
-						user.endTerm();
-					}
-					out.write(new HomePage(req.getRequestURI()).make());			
-				}else{
-					out.write(new HomePage(req.getRequestURI(),term).make());			
-				}
+				out.write(new HomePage(req.getRequestURI(),term).make());			
 			}
 		}
 	}

@@ -2,6 +2,8 @@ package pages;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 
 import pages.html_builder.Div;
 import pages.html_builder.Feedback;
@@ -68,6 +70,7 @@ public class ExistingReceiptPage extends Page{
 	    receiptForm.addElement("<h3>Edit Receipt Contents</h3>");
 	    receiptForm.addElement("<hr>");
 	    receiptForm.addElement(makeStoreNameDiv());
+	    receiptForm.addElement(makeTimeCreatedDiv());
 	    receiptForm.addElement(makeLabelDiv());
 	    Div itemsDiv = new Div();
 	    itemsDiv.addProperty("id", "items");
@@ -89,6 +92,17 @@ public class ExistingReceiptPage extends Page{
     	div.addElement("<label><b><u>Store Name:</u></b></label>");
     	String storeName = receipt.storeName != null ? receipt.storeName : "";
     	div.addElement("<input style='margin-left:14%' name='storeName' placeholder='Wal-Mart' value='" + storeName +"' required>");
+    	div.addElement("<hr style='width:29.4%; margin-right:70%; margin-top: 1.5em;'>");
+    	return div.toString();
+	}
+	
+	private String makeTimeCreatedDiv() {
+		Div div = new Div();
+    	div.addProperty("style", "margin-bottom:1.5em; margin-top:3.5em;");
+    	div.addElement("<label><b><u>Time Created:</u></b></label>");
+    	Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	String time = formatter.format(receipt.timeCreated);
+    	div.addElement("<input style='margin-left:13%' name='timeCreated' placeholder='2016-05-21 12:12:12' value='" + time +"' required>");
     	div.addElement("<hr style='width:29.4%; margin-right:70%; margin-top: 1.5em;'>");
     	return div.toString();
 	}

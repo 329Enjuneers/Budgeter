@@ -5,13 +5,13 @@ import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
 
-public class Image {
+public class BlobImage {
 	
 	private BlobKey blobKey;
 	private String servingUrl;
 	private static final ImagesService imagesService = ImagesServiceFactory.getImagesService();
 	
-	public Image(BlobKey blobKey) {
+	public BlobImage(BlobKey blobKey) {
 		this.blobKey = blobKey;
 		servingUrl = null;
 	}
@@ -20,7 +20,9 @@ public class Image {
 		if (servingUrl != null) {
 			return servingUrl;
 		}
-		servingUrl = imagesService.getServingUrl(ServingUrlOptions.Builder.withBlobKey(blobKey));
+		ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
+		options.imageSize(1600);
+		servingUrl = imagesService.getServingUrl(options);
 		return servingUrl;
 	}
 }
