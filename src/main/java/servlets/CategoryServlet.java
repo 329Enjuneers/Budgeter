@@ -14,11 +14,11 @@ import user.User;
 
 public class CategoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private User user = User.getCurrentUser();
-	private BudgetTerm term = user.getCurrentBudgetTerm();
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		User user = User.getCurrentUser();
+		BudgetTerm term = user.getCurrentBudgetTerm();
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 		if(term != null){
@@ -30,6 +30,8 @@ public class CategoryServlet extends HttpServlet {
 	
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		User user = User.getCurrentUser();
+		BudgetTerm term = user.getCurrentBudgetTerm();
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 		if(term != null){

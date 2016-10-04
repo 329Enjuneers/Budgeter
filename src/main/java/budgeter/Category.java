@@ -1,9 +1,10 @@
 package budgeter;
 
 import java.util.ArrayList;
-
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import datastore.BasicEntity;
 import datastore.IdList;
