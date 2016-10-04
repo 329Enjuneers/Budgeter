@@ -2,8 +2,9 @@ package receipt_parser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
-import receipt.PurchasedItem;
+import budgeter.PurchasedItem;
 
 public class PurchasedItemFactory {
 	
@@ -19,11 +20,20 @@ public class PurchasedItemFactory {
 	
 	public ArrayList<PurchasedItem> makePuchasedItems() {
 		ArrayList<PurchasedItem> items = new ArrayList<PurchasedItem>();
+		items.addAll(makeItemsWithCosts());
+		items.addAll(makeItemsWithoutCosts());
+		return items;
+	}
+	
+	private ArrayList<PurchasedItem> makeItemsWithCosts() {
+		ArrayList<PurchasedItem> items = new ArrayList<PurchasedItem>();
 		for (MyFloat myFloat : floats) {
 			int location = getFinalLocation(myFloat);
 			if (location >= 0) {
 				PurchasedItem p = makeItem(location, myFloat);
+				p.autoCorrect();
 				items.add(p);
+				map.remove(location);
 			}
 		}
 		return items;
@@ -52,6 +62,17 @@ public class PurchasedItemFactory {
 	private PurchasedItem makeItem(int finalLocation, MyFloat myFloat) {
 		Phrase p = map.get(finalLocation);
 		return new PurchasedItem(p.make(), myFloat.value);
+	}
+	
+	private ArrayList<PurchasedItem> makeItemsWithoutCosts() {
+		ArrayList<PurchasedItem> items = new ArrayList<PurchasedItem>();
+		for (Entry<Integer, Phrase> entry : map.entrySet()) {
+			String text = entry.getValue().make();
+			PurchasedItem p = new PurchasedItem(text, (float) 0.0);
+			p.autoCorrect();
+			items.add(p);
+		}
+		return items;
 	}
 }
 

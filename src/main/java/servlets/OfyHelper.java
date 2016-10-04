@@ -21,10 +21,10 @@ import javax.servlet.ServletContextListener;
 
 import com.googlecode.objectify.ObjectifyService;
 
-import receipt.Receipt;
 import user.User;
 import budgeter.BudgetTerm;
 import budgeter.BudgetGroup;
+import budgeter.Expense;
 
 /**
  * OfyHelper, a ServletContextListener, is setup in web.xml to run before a JSP is run.  This is
@@ -35,7 +35,7 @@ public class OfyHelper implements ServletContextListener {
     // This will be invoked as part of a warmup request, or the first user request if no warmup
     // request.
     ObjectifyService.register(User.class);
-    ObjectifyService.register(Receipt.class);
+    ObjectifyService.register(Expense.class);
     ObjectifyService.register(BudgetTerm.class);
     ObjectifyService.register(BudgetGroup.class);
   }

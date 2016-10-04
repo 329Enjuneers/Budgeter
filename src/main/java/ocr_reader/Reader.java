@@ -3,7 +3,7 @@ package ocr_reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Reader {
 	public String imageUrl;
@@ -14,14 +14,8 @@ public class Reader {
 	
 	public ArrayList<Cluster> read() {
 		ReadRequest request = new ReadRequest(imageUrl);
-		ReadResponse response;
-		
-		try {
-			response = request.sendReadRequest();
-		} catch (JSONException e) {
-			return new ArrayList<Cluster>();
-		}
-		
+		JSONObject json = request.send();
+		ReadResponse response = new ReadResponse(json);
 		ArrayList<Cluster> clusters = makeClusters(response);
 		return clusters;
 	}

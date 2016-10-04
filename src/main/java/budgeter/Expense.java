@@ -1,5 +1,6 @@
 package budgeter;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.googlecode.objectify.annotation.Entity;
@@ -10,38 +11,53 @@ import datastore.BasicEntity;
 @Entity
 public class Expense extends BasicEntity {
 	@Id Long id;
-	public String store;
-	public double amount;
-	public String name;
-	public Date date;
 	
-	public Expense() {}
+	public boolean isVerified;
+	public ArrayList<PurchasedItem> purchasedItems;
+	public Long authorId;
+	public String storeName;
+	public Date timeCreated;
 	
-	public Expense(String store, String name, double amount) {
-		this.store = store;
-		this.name = name;
-		this.amount = amount;
-		// TODO
+	public Expense() {
+		purchasedItems = new ArrayList<PurchasedItem>();
+		this.isVerified = false;
+		this.storeName = null;
+		this.authorId = null;
 	}
 	
-	public Expense(String store, String name, double amount, Date date) { 
-		// TODO
-		this.store = store;
-		this.name = name;
-		this.amount = amount;
-		this.date = date;
+	public Expense(ArrayList<PurchasedItem> purchasedItems) {
+		this.purchasedItems = purchasedItems;
+		this.isVerified = false;
+		this.storeName = null;
+		this.authorId = null;
+		this.timeCreated = new Date();
 	}
 	
-	public static Expense getExpense(Long id) {
-		// TODO query for expense by id
-		return null;
+	public boolean willBeManuallyPopulated() {
+		return purchasedItems.size() == 0;
 	}
 	
-	public double getAmount(){
-		return this.amount;
+	public float getTotal() {
+		float sum = 0;
+		for (PurchasedItem purchase : purchasedItems) {
+			sum += purchase.cost;
+		}
+		return sum;
 	}
-	
+
+	@Override
 	public Long getId() {
 		return id;
 	}
+	
+	public void save() {
+		if (authorId == null) {
+			throw new IllegalStateException("author must be set");
+		}
+		if (isVerified && storeName == null) {
+			throw new IllegalStateException("store name must be set");
+		}
+		super.save();
+	}
+
 }

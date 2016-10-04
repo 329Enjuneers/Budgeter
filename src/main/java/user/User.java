@@ -64,15 +64,27 @@ public class User extends BasicEntity {
 	}
 	
 	public void endTerm() {
-		// TODO end current term
+		Long oldBudgetTermId = currentBudgetTermId;
+		currentBudgetTermId = null;
+		previousBudgetTermIds.add(oldBudgetTermId);	
+		save();
 	}
 	
 	public void startNewTerm(BudgetTerm term) {
-		// TODO start new term. If a term currently exists,
-		// put it into the history and remove from current.
+		System.out.println("Starting with term: " + term);
+		System.out.println("Term id: " + term.getId());
+		if (currentBudgetTermId != null) {
+			endTerm();
+		}
+		currentBudgetTermId = term.getId();
+		save();
 	}
 	
 	public BudgetTerm getCurrentBudgetTerm() {
+		System.out.println("get: " + currentBudgetTermId);
+		if (currentBudgetTermId == null) {
+			return null;
+		}
 		BudgetTerm instance = new BudgetTerm();
 		return instance.getById(currentBudgetTermId);
 	}

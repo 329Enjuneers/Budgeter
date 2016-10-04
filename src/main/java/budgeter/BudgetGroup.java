@@ -7,15 +7,14 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import datastore.BasicEntity;
 import datastore.IdList;
-import receipt.Receipt;
 
 @Entity
 public class BudgetGroup extends BasicEntity {
 	@Id Long id;
 	public String name;
 	private double amountAllocated;
-	public IdList<Expense> expenseIds;
-	public IdList<Receipt> receiptIds;
+	public IdList<DeprecatedExpense> expenseIds;
+	public IdList<Expense> receiptIds;
 	
 	public BudgetGroup() {} // required for objectify
 	
@@ -41,9 +40,9 @@ public class BudgetGroup extends BasicEntity {
 	
 	public double getAmountSpent() {
 		double sum = 0;
-		Expense instance = new Expense();
-		for (Expense expense : expenseIds.fetch(instance)) {
-			sum += expense.amount;
+		DeprecatedExpense instance = new DeprecatedExpense();
+		for (DeprecatedExpense deprecatedExpense : expenseIds.fetch(instance)) {
+			sum += deprecatedExpense.amount;
 		}
 		return sum;
 	}
