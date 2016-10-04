@@ -5,7 +5,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import budgeter.BudgetGroup;
+import budgeter.Category;
 import budgeter.BudgetTerm;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
@@ -90,15 +90,15 @@ public class ExpensePage extends Page{
 	private String makeGroupChoiceDiv() {
 		User user = User.getCurrentUser();
 		BudgetTerm term = user.getCurrentBudgetTerm();
-		ArrayList<BudgetGroup> groups = new ArrayList<BudgetGroup>();
+		ArrayList<Category> groups = new ArrayList<Category>();
 		if (term != null) {
-			groups = term.getGroups();
+			groups = term.getCategories();
 		}
 		Div div = new Div();
     	div.addProperty("style", "margin-bottom:1.5em; margin-top:3.5em;");
     	div.addElement("<label><b><u>Category:</u></b></label>");
     	div.addElement("<select style='margin-left: 15.1%' form='expense-form' name='budgetGroup'>");
-    	for (BudgetGroup group : groups) {
+    	for (Category group : groups) {
     		String selected = "";
     		if (group.hasExpense(expense)) {
     			selected = "selected";

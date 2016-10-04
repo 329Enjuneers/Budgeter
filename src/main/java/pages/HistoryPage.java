@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import pages.html_builder.Form;
-import budgeter.BudgetGroup;
+import budgeter.Category;
 import budgeter.BudgetTerm;
 
 public class HistoryPage extends Page {

@@ -7,12 +7,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import budgeter.BudgetGroup;
+import budgeter.Category;
 import budgeter.BudgetTerm;
-import pages.BudgetGroupPage;
+import pages.CategoryPage;
 import user.User;
 
-public class BudgetGroupServlet extends HttpServlet {
+public class CategoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private User user = User.getCurrentUser();
 	private BudgetTerm term = user.getCurrentBudgetTerm();
@@ -22,9 +22,9 @@ public class BudgetGroupServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 		if(term != null){
-			out.write(new BudgetGroupPage(req.getRequestURI(),term).make());
+			out.write(new CategoryPage(req.getRequestURI(),term).make());
 		}else{
-			out.write(new BudgetGroupPage(req.getRequestURI()).make());
+			out.write(new CategoryPage(req.getRequestURI()).make());
 		}
 	}
 	
@@ -33,13 +33,13 @@ public class BudgetGroupServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 		if(term != null){
-			if(req.getParameterMap().containsKey("newgroup") && req.getParameterMap().containsKey("amount")){
-				BudgetGroup newGroup = new BudgetGroup(req.getParameter("newgroup"),Float.parseFloat(req.getParameter("amount")));
-				term.addGroup(newGroup);
+			if(req.getParameterMap().containsKey("newcategory") && req.getParameterMap().containsKey("amount")){
+				Category newCategory = new Category(req.getParameter("newcategory"),Float.parseFloat(req.getParameter("amount")));
+				term.addGroup(newCategory);
 			}
-			out.write(new BudgetGroupPage(req.getRequestURI(),term).make());
+			out.write(new CategoryPage(req.getRequestURI(),term).make());
 		}else{
-			out.write(new BudgetGroupPage(req.getRequestURI()).make());
+			out.write(new CategoryPage(req.getRequestURI()).make());
 		}
 	}
 }

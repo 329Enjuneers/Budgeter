@@ -9,8 +9,8 @@
       <servlet-class>servlets.HomeServlet</servlet-class>
     </servlet>
     <servlet>
-      <servlet-name>BudgetGroup</servlet-name>
-      <servlet-class>servlets.BudgetGroupServlet</servlet-class>
+      <servlet-name>Category</servlet-name>
+      <servlet-class>servlets.CategoryServlet</servlet-class>
     </servlet>
     <servlet>
       <servlet-name>Expense</servlet-name>
@@ -38,8 +38,8 @@
       <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-      <servlet-name>BudgetGroup</servlet-name>
-      <url-pattern>/group</url-pattern>
+      <servlet-name>Category</servlet-name>
+      <url-pattern>/category</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
       <servlet-name>Expense</servlet-name>

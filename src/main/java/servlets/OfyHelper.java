@@ -21,7 +21,7 @@ import javax.servlet.ServletContextListener;
 
 import com.googlecode.objectify.ObjectifyService;
 
-import budgeter.BudgetGroup;
+import budgeter.Category;
 import budgeter.BudgetTerm;
 import budgeter.Expense;
 import user.User;
@@ -37,7 +37,7 @@ public class OfyHelper implements ServletContextListener {
 	    ObjectifyService.register(User.class);
 	    ObjectifyService.register(Expense.class);
 	    ObjectifyService.register(BudgetTerm.class);
-	    ObjectifyService.register(BudgetGroup.class);
+	    ObjectifyService.register(Category.class);
   }
 
   public void contextDestroyed(ServletContextEvent event) {

@@ -17,7 +17,7 @@ public class BudgetTerm extends BasicEntity {
 	private Date endDate;
 	private float income;
 	private ArrayList<String> receiptUrls;
-	private IdList<BudgetGroup> budgetGroupIds;
+	private IdList<Category> categoryIds;
 	private boolean termEnded = false;
 	
 	public BudgetTerm() {} // required for objectify library
@@ -25,7 +25,7 @@ public class BudgetTerm extends BasicEntity {
 	public BudgetTerm(float income) {
 		this.income = income;
 		this.receiptUrls = new ArrayList<String>();
-		this.budgetGroupIds = new IdList<BudgetGroup>();
+		this.categoryIds = new IdList<Category>();
 		startDate = new Date();
 		createMiscellaneousCategory();
 		save();
@@ -36,7 +36,7 @@ public class BudgetTerm extends BasicEntity {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.receiptUrls = new ArrayList<String>();
-		this.budgetGroupIds = new IdList<BudgetGroup>();
+		this.categoryIds = new IdList<Category>();
 		startDate = new Date();
 		createMiscellaneousCategory();
 		save();
@@ -44,19 +44,19 @@ public class BudgetTerm extends BasicEntity {
 	
 	public HashMap<String, ArrayList<Expense>> getExpenses() {
 		HashMap<String, ArrayList<Expense>> map = new HashMap<String, ArrayList<Expense>>();
-		ArrayList<BudgetGroup> groups = budgetGroupIds.fetch(new BudgetGroup());
-		for (BudgetGroup group : groups) {
-			map.put(group.name, group.getExpenses());
+		ArrayList<Category> categories = categoryIds.fetch(new Category());
+		for (Category category : categories) {
+			map.put(category.name, category.getExpenses());
 		}
 		return map;
 	}
 	
-	public ArrayList<BudgetGroup> getGroups() {
-		return budgetGroupIds.fetch(new BudgetGroup());
+	public ArrayList<Category> getCategories() {
+		return categoryIds.fetch(new Category());
 	}
 	
-	public BudgetGroup getGroup(String name) {
-		for (BudgetGroup group : getGroups()) {
+	public Category getGroup(String name) {
+		for (Category group : getCategories()) {
 			if (group.name.equals(name)) {
 				return group;
 			}
@@ -64,13 +64,13 @@ public class BudgetTerm extends BasicEntity {
 		return null;
 	}
 	
-	public void addGroup(BudgetGroup newGroup) {
-		budgetGroupIds.add(newGroup.getId());
+	public void addGroup(Category newGroup) {
+		categoryIds.add(newGroup.getId());
 		save();
 	}
 
 	public void deleteGroup(Long groupId) {
-		budgetGroupIds.remove(groupId);
+		categoryIds.remove(groupId);
 		save();
 	}
 	
@@ -88,8 +88,8 @@ public class BudgetTerm extends BasicEntity {
 	
 	public float getAmountSpent() {
 		float sum = 0;
-		for (BudgetGroup group : getGroups()) {
-			sum += group.getAmountSpent();
+		for (Category category : getCategories()) {
+			sum += category.getAmountSpent();
 		}
 		return sum;
 	}
@@ -105,9 +105,9 @@ public class BudgetTerm extends BasicEntity {
 	}
 	
 	public void removeExpense(Expense expense) {
-		for (BudgetGroup group : getGroups()) {
-			if (group.hasExpense(expense)) {
-				group.removeExpense(expense);
+		for (Category category : getCategories()) {
+			if (category.hasExpense(expense)) {
+				category.removeExpense(expense);
 			}
 		}
 	}
@@ -118,7 +118,7 @@ public class BudgetTerm extends BasicEntity {
 	}
 	
 	private void createMiscellaneousCategory() {
-		BudgetGroup group = new BudgetGroup("Miscellaneous", (float) 0.0);
-		addGroup(group);
+		Category category = new Category("Miscellaneous", (float) 0.0);
+		addGroup(category);
 	}
 }

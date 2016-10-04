@@ -9,15 +9,15 @@ import datastore.BasicEntity;
 import datastore.IdList;
 
 @Entity
-public class BudgetGroup extends BasicEntity {
+public class Category extends BasicEntity {
 	@Id Long id;
 	public String name;
 	private float amountAllocated;
 	public IdList<Expense> expenseIds;
 	
-	public BudgetGroup() {} // required for objectify
+	public Category() {} // required for objectify
 	
-	public BudgetGroup(String name, float amountAllocated) {
+	public Category(String name, float amountAllocated) {
 		this.name = name;
 		this.amountAllocated = amountAllocated;
 		this.expenseIds = new IdList<Expense>();

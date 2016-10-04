@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import budgeter.BudgetGroup;
+import budgeter.Category;
 import budgeter.BudgetTerm;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
@@ -38,7 +38,7 @@ public class ExpenseServlet extends HttpServlet {
 		}
 
 		String budgetGroupName = req.getParameter("budgetGroup");
-		BudgetGroup group = term.getGroup(budgetGroupName);
+		Category group = term.getGroup(budgetGroupName);
 		if (group == null) {
 			out.write("Invalid category name provided. Please visit the <a href='/group'>home page</a> to add a new one!");
 			return;
