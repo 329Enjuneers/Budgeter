@@ -1,11 +1,15 @@
 package budgeter;
 
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import datastore.BasicEntity;
 import datastore.IdList;
 import receipt.Receipt;
 
+@Entity
 public class BudgetGroup extends BasicEntity {
 	@Id Long id;
 	public String name;
@@ -20,6 +24,7 @@ public class BudgetGroup extends BasicEntity {
 		this.amountAllocated = amountAllocated;
 		this.expenseIds = new IdList<Expense>();
 		this.receiptIds = new IdList<Receipt>();
+		save();
 	}
 	
 	public static BudgetGroup getGroup(Long id) {
