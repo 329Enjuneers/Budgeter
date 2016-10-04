@@ -16,6 +16,9 @@ public class GoogleUser {
 	
 	public static GoogleUser getCurrentUser() {
 		UserService userService = UserServiceFactory.getUserService();
+		if(userService.getCurrentUser() == null){
+			return null;
+		}
 		return new GoogleUser(userService.getCurrentUser());
 	}
 	

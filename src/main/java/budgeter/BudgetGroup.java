@@ -22,7 +22,6 @@ public class BudgetGroup extends BasicEntity {
 		this.name = name;
 		this.amountAllocated = amountAllocated;
 		this.expenseIds = new IdList<Expense>();
-		this.receiptIds = new IdList<Receipt>();
 		save();
 	}
 	
