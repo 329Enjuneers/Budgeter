@@ -25,19 +25,19 @@ public class ReceiptServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 	private static final User user = User.getCurrentUser();
-	
+
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 		out.write(new UploadReceiptPage(req.getRequestURI()).make());
 	}
-	
+
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
-		
+
 		Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
         List<BlobKey> blobKeys = blobs.get("receipt-image");
 
@@ -45,7 +45,7 @@ public class ReceiptServlet extends HttpServlet {
             out.write("You must provide an image!");
             return;
         }
-        
+
         BudgetTerm term = user.getCurrentBudgetTerm();
         BlobImage blobImage = new BlobImage(blobKeys.get(0));
         String imageUrl = blobImage.getUrl();
@@ -56,8 +56,7 @@ public class ReceiptServlet extends HttpServlet {
         Expense expense = parser.parse();
         expense.authorId = user.getId();
         expense.save();
-        term.addExpense(expense);
         term.addReceiptUrl(imageUrl);
-        resp.sendRedirect("/receipt/existing?receiptId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
+        resp.sendRedirect("/expense/existing?expenseId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
 	}
 }

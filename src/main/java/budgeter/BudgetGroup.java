@@ -1,28 +1,49 @@
 package budgeter;
 
+import java.util.ArrayList;
+
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
 import datastore.BasicEntity;
 import datastore.IdList;
 
+@Entity
 public class BudgetGroup extends BasicEntity {
 	@Id Long id;
 	public String name;
-	private double amountAllocated;
-	public IdList<DeprecatedExpense> expenseIds;
-	public IdList<Expense> receiptIds;
+	private float amountAllocated;
+	public IdList<Expense> expenseIds;
 	
 	public BudgetGroup() {} // required for objectify
 	
-	public BudgetGroup(String name, double amountAllocated) {
+	public BudgetGroup(String name, float amountAllocated) {
 		this.name = name;
 		this.amountAllocated = amountAllocated;
-		this.expenseIds = new IdList<DeprecatedExpense>();
-		this.receiptIds = new IdList<Expense>();
+		this.expenseIds = new IdList<Expense>();
+		save();
 	}
 	
-	public static BudgetGroup getGroup(Long id) {
-		return new BudgetGroup().getById(id);
+	public void addExpense(Expense expense) {
+		Long id = expense.getId();
+		if (id == null) {
+			throw new IllegalStateException();
+		}
+		expenseIds.add(expense.getId());
+		save();
+	}
+	
+	public boolean hasExpense(Expense expense) {
+		return expenseIds.hasId(expense.getId());
+	}
+	
+	public void removeExpense(Expense expense) {
+		expenseIds.remove(expense.getId());
+		save();
+	}
+	
+	public ArrayList<Expense> getExpenses() {
+		return expenseIds.fetch(new Expense());
 	}
 	
 	public double getPercentageOfIncome(double income) {
@@ -35,9 +56,9 @@ public class BudgetGroup extends BasicEntity {
 	
 	public double getAmountSpent() {
 		double sum = 0;
-		DeprecatedExpense instance = new DeprecatedExpense();
-		for (DeprecatedExpense deprecatedExpense : expenseIds.fetch(instance)) {
-			sum += deprecatedExpense.amount;
+		Expense instance = new Expense();
+		for (Expense expense : expenseIds.fetch(instance)) {
+			sum += expense.getTotal();
 		}
 		return sum;
 	}

@@ -3,12 +3,16 @@ package pages;
 import java.net.URLEncoder;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
+import budgeter.BudgetGroup;
+import budgeter.BudgetTerm;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
 import pages.html_builder.Div;
 import pages.html_builder.Feedback;
 import pages.html_builder.Form;
+import user.User;
 
 public class ExpensePage extends Page{
 	
@@ -65,13 +69,15 @@ public class ExpensePage extends Page{
 	private void addReceiptForm() {
 		Form receiptForm = new Form();
 	    try {
-			receiptForm.addProperty("action", "/receipt/existing?receiptId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
+			receiptForm.addProperty("action", "/expense/existing?expenseId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
 		} catch (Exception e) {
 			receiptForm.addProperty("action", "/expense");
 		}
 	    receiptForm.addProperty("method", "POST");
 	    receiptForm.addProperty("style", "margin-bottom:2em");
+	    receiptForm.addProperty("id", "expense-form");
 	    receiptForm.addElement("<hr>");
+	    receiptForm.addElement(makeGroupChoiceDiv());
 	    receiptForm.addElement(makeStoreNameDiv());
 	    receiptForm.addElement(makeTimeCreatedDiv());
 	    receiptForm.addElement(makeLabelDiv());
@@ -79,6 +85,29 @@ public class ExpensePage extends Page{
 	    receiptForm.addElement(makeNewRowButton());
 	    receiptForm.addElement(makeSubmitButton());
 	    htmlBuilder.addToBody(receiptForm.toString());
+	}
+	
+	private String makeGroupChoiceDiv() {
+		User user = User.getCurrentUser();
+		BudgetTerm term = user.getCurrentBudgetTerm();
+		ArrayList<BudgetGroup> groups = new ArrayList<BudgetGroup>();
+		if (term != null) {
+			groups = term.getGroups();
+		}
+		Div div = new Div();
+    	div.addProperty("style", "margin-bottom:1.5em; margin-top:3.5em;");
+    	div.addElement("<label><b><u>Category:</u></b></label>");
+    	div.addElement("<select style='margin-left: 15.1%' form='expense-form' name='budgetGroup'>");
+    	for (BudgetGroup group : groups) {
+    		String selected = "";
+    		if (group.hasExpense(expense)) {
+    			selected = "selected";
+    		}
+    		div.addElement("<option value='" + group.name + "' " + selected +">" + group.name + "</option>");
+    	}
+    	div.addElement("</select>");
+    	div.addElement("<hr style='width:29.4%; margin-right:70%; margin-top: 1.5em;'>");
+    	return div.toString();
 	}
 	
 	private String makeStoreNameDiv() {

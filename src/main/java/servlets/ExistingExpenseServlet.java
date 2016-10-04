@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import budgeter.BudgetTerm;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
 import pages.ExpensePage;
@@ -17,12 +18,13 @@ import user.User;
 public class ExistingExpenseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final User user = User.getCurrentUser();
-	
+	private static final BudgetTerm term = user.getCurrentBudgetTerm();
+
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
-		Expense expense = getExpense(req.getParameter("receiptId"));
+		Expense expense = getExpense(req.getParameter("expenseId"));
 		if (expense == null) {
 			out.write("Receipt not found");
 			return;
@@ -34,16 +36,23 @@ public class ExistingExpenseServlet extends HttpServlet {
 		}
 		out.write(page.make());
 	}
-	
+
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
-		Expense expense = getExpense(req.getParameter("receiptId"));
+		Expense expense = getExpense(req.getParameter("expenseId"));
 		if (expense == null) {
 			out.write("Receipt not found");
 			return;
 		}
+		String action = req.getParameter("action");
+		if (action != null && action.equals("delete")) {
+			deleteExpense(expense);
+			resp.sendRedirect("/expense/current?feedback=Expense%20successfully%20deleted");
+			return;
+		}
+		
 		if (!expense.isVerified) {
 			expense.isVerified = true;
 		}
@@ -59,7 +68,7 @@ public class ExistingExpenseServlet extends HttpServlet {
 			out.write("Store name must be included");
 			return;
 		}
-		
+
 		for (int i = 0; i < names.length; i++) {
 			float f = 0;
 			try {
@@ -74,14 +83,14 @@ public class ExistingExpenseServlet extends HttpServlet {
 		expense.purchasedItems = purchasedItems;
 		expense.storeName = storeName;
 		expense.save();
-		resp.sendRedirect("/receipt/existing?wasUpdated=1&receiptId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
+		resp.sendRedirect("/expense/existing?wasUpdated=1&expenseId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
 	}
-	
+
 	private Expense getExpense(String rawExpenseId) {
 		if (rawExpenseId == null) {
 			return null;
 		}
-		
+
 		Long expenseId;
 		try {
 			expenseId = Long.parseLong(rawExpenseId);
@@ -89,12 +98,17 @@ public class ExistingExpenseServlet extends HttpServlet {
 		catch(ClassCastException e) {
 			return null;
 		}
-		
+
 		Expense instance = new Expense();
 		Expense expense = instance.getById(expenseId);
 		if (expense == null || !expense.authorId.equals(user.getId())) {
 			return null;
 		}
 		return expense;
+	}
+	
+	private void deleteExpense(Expense expense) {
+//		TODO
+		term.removeExpense(expense);
 	}
 }

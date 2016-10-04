@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import budgeter.BudgetTerm;
 import budgeter.BudgetGroup;
+import budgeter.BudgetTerm;
 import pages.BudgetGroupPage;
 import user.User;
 
@@ -34,7 +34,7 @@ public class BudgetGroupServlet extends HttpServlet {
 		resp.setContentType("text/html");
 		if(term != null){
 			if(req.getParameterMap().containsKey("newgroup") && req.getParameterMap().containsKey("amount")){
-				BudgetGroup newGroup = new BudgetGroup(req.getParameter("newgroup"),Double.parseDouble(req.getParameter("amount")));
+				BudgetGroup newGroup = new BudgetGroup(req.getParameter("newgroup"),Float.parseFloat(req.getParameter("amount")));
 				term.addGroup(newGroup);
 			}
 			out.write(new BudgetGroupPage(req.getRequestURI(),term).make());

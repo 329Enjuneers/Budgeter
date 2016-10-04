@@ -21,15 +21,18 @@ public class User extends BasicEntity {
 	public User() {
 		this.email = null;
 		this.nickname = null;
+		previousBudgetTermIds = new IdList<BudgetTerm>();
 	}
 
 	public User(String email) {
 		this.email = email;
 		this.nickname = null; 
+		previousBudgetTermIds = new IdList<BudgetTerm>();
 	}
 	public User(String email, String nickname) {
 		this.email = email;
 		this.nickname = nickname;
+		previousBudgetTermIds = new IdList<BudgetTerm>();
 	}
 
 	public static User getCurrentUser() {
@@ -71,8 +74,6 @@ public class User extends BasicEntity {
 	}
 	
 	public void startNewTerm(BudgetTerm term) {
-		System.out.println("Starting with term: " + term);
-		System.out.println("Term id: " + term.getId());
 		if (currentBudgetTermId != null) {
 			endTerm();
 		}
@@ -81,7 +82,6 @@ public class User extends BasicEntity {
 	}
 	
 	public BudgetTerm getCurrentBudgetTerm() {
-		System.out.println("get: " + currentBudgetTermId);
 		if (currentBudgetTermId == null) {
 			return null;
 		}
