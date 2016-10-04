@@ -2,8 +2,8 @@ package ocr_reader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.json.JSONObject;
+
 
 public class Reader {
 	public String imageUrl;

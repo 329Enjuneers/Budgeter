@@ -2,17 +2,17 @@ package pages;
 
 import java.util.ArrayList;
 
-import budgeter.BudgetGroup;
 import budgeter.BudgetTerm;
+import budgeter.Category;
 import pages.html_builder.Form;
 
-public class BudgetGroupPage extends Page {
+public class DeprecatedBudgetGroupPage extends Page {
 	private BudgetTerm term;
-	public BudgetGroupPage(String baseUrl) {
+	public DeprecatedBudgetGroupPage(String baseUrl) {
 		super(baseUrl);
 		htmlBuilder.includeAppHeader = true;
 	}
-	public BudgetGroupPage(String baseUrl, BudgetTerm term) {
+	public DeprecatedBudgetGroupPage(String baseUrl, BudgetTerm term) {
 		super(baseUrl);
 		htmlBuilder.includeAppHeader = true;
 		this.term = term;
@@ -40,7 +40,7 @@ public class BudgetGroupPage extends Page {
 	
 	private void printExistingGroup(){
 		if(term == null){return;}
-		ArrayList<BudgetGroup> groups = term.getGroups();
+		ArrayList<Category> groups = term.getCategories();
 		String groupSummary = "";
 		groupSummary += "<table class='summary'>";
 		groupSummary += "<thead><tr>";
@@ -50,7 +50,7 @@ public class BudgetGroupPage extends Page {
 		groupSummary += "</tr></thead>";
 		groupSummary += "<tbody>";
 		if(groups != null && groups.size() > 0){
-			for (BudgetGroup bg : groups) {
+			for (Category bg : groups) {
 				groupSummary += "<tr>";
 				groupSummary += "<td>"+bg.name+"</td><td>"+Double.toString(bg.getAmountSpent())+"</td><td>"+Double.toString(bg.getAmountRemaining())+"</td>";
 				groupSummary += "</tr>";
