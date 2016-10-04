@@ -21,10 +21,10 @@ import javax.servlet.ServletContextListener;
 
 import com.googlecode.objectify.ObjectifyService;
 
-import user.User;
 import budgeter.BudgetTerm;
 import budgeter.BudgetGroup;
 import budgeter.Expense;
+import user.User;
 
 /**
  * OfyHelper, a ServletContextListener, is setup in web.xml to run before a JSP is run.  This is

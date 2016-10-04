@@ -118,6 +118,7 @@ public class HTMLBuilder {
 	  Tabs tabs = new Tabs();
 	  tabs.addTab("/", "Home");
 	  tabs.addTab("/group", "Categories");
+	  tabs.addTab("/expense/current", "Expenses");
 	  tabs.addTab("/expense", "Add Expenses");
 	  tabs.addTab("/receipt", "Upload Receipt");
 	  tabs.addTab("/history", "Term Activity");

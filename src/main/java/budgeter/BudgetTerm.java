@@ -2,6 +2,7 @@ package budgeter;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -12,23 +13,21 @@ import datastore.IdList;
 @Entity
 public class BudgetTerm extends BasicEntity {
 	@Id Long id;
-	private  ArrayList<Long> groupIds;
 	private Date startDate;
 	private Date endDate;
 	private float income;
-	private IdList<Expense> expenseIds;
 	private ArrayList<String> receiptUrls;
-	private ArrayList<BudgetGroup> budgetGroups;
+	private IdList<BudgetGroup> budgetGroupIds;
 	private boolean termEnded = false;
 	
 	public BudgetTerm() {} // required for objectify library
 	
 	public BudgetTerm(float income) {
 		this.income = income;
-		this.expenseIds = new IdList<Expense>();
 		this.receiptUrls = new ArrayList<String>();
-		this.budgetGroups = new ArrayList<BudgetGroup>();
-		// this.budgetGroups.add(new BudgetGroup("Test",400));
+		this.budgetGroupIds = new IdList<BudgetGroup>();
+		startDate = new Date();
+		createMiscellaneousCategory();
 		save();
 	}
 	
@@ -36,32 +35,42 @@ public class BudgetTerm extends BasicEntity {
 		this.income = income;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.expenseIds = new IdList<Expense>();
 		this.receiptUrls = new ArrayList<String>();
-		this.budgetGroups = new ArrayList<BudgetGroup>();
+		this.budgetGroupIds = new IdList<BudgetGroup>();
+		startDate = new Date();
+		createMiscellaneousCategory();
 		save();
 	}
 	
-	public ArrayList<Expense> getExpenses() {
-		return expenseIds.fetch(new Expense());
+	public HashMap<String, ArrayList<Expense>> getExpenses() {
+		HashMap<String, ArrayList<Expense>> map = new HashMap<String, ArrayList<Expense>>();
+		ArrayList<BudgetGroup> groups = budgetGroupIds.fetch(new BudgetGroup());
+		for (BudgetGroup group : groups) {
+			map.put(group.name, group.getExpenses());
+		}
+		return map;
 	}
 	
 	public ArrayList<BudgetGroup> getGroups() {
-		return budgetGroups;
+		return budgetGroupIds.fetch(new BudgetGroup());
+	}
+	
+	public BudgetGroup getGroup(String name) {
+		for (BudgetGroup group : getGroups()) {
+			if (group.name.equals(name)) {
+				return group;
+			}
+		}
+		return null;
 	}
 	
 	public void addGroup(BudgetGroup newGroup) {
-		budgetGroups.add(newGroup);
+		budgetGroupIds.add(newGroup.getId());
 		save();
 	}
 
 	public void deleteGroup(Long groupId) {
-		for(BudgetGroup bg: budgetGroups){
-			if(bg.getId() == groupId){
-				budgetGroups.remove(budgetGroups.indexOf(bg));
-				break;
-			}
-		}
+		budgetGroupIds.remove(groupId);
 		save();
 	}
 	
@@ -79,15 +88,10 @@ public class BudgetTerm extends BasicEntity {
 	
 	public float getAmountSpent() {
 		float sum = 0;
-		for (Expense expense : expenseIds.fetch(new Expense())) {
-			sum += expense.getTotal();
+		for (BudgetGroup group : getGroups()) {
+			sum += group.getAmountSpent();
 		}
 		return sum;
-	}
-
-	public void addExpense(Expense expense) {
-		expenseIds.add(expense.getId());
-		save();
 	}
 
 	public boolean isEnded() {
@@ -96,11 +100,25 @@ public class BudgetTerm extends BasicEntity {
 
 	public void endTerm() {
 		termEnded = true;
+		endDate = new Date();
 		save();
+	}
+	
+	public void removeExpense(Expense expense) {
+		for (BudgetGroup group : getGroups()) {
+			if (group.hasExpense(expense)) {
+				group.removeExpense(expense);
+			}
+		}
 	}
 
 	@Override
 	public Long getId() {
 		return id;
+	}
+	
+	private void createMiscellaneousCategory() {
+		BudgetGroup group = new BudgetGroup("Miscellaneous", (float) 0.0);
+		addGroup(group);
 	}
 }

@@ -1,12 +1,10 @@
 package pages;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 import java.util.ArrayList;
-import pages.html_builder.Form;
-import budgeter.BudgetTerm;
+
 import budgeter.BudgetGroup;
+import budgeter.BudgetTerm;
+import pages.html_builder.Form;
 
 public class BudgetGroupPage extends Page {
 	private BudgetTerm term;

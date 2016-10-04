@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import budgeter.BudgetGroup;
 import budgeter.BudgetTerm;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
@@ -18,14 +19,14 @@ import user.User;
 public class ExpenseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final User user = User.getCurrentUser();
-	
+
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 		out.write(new ExpensePage(req.getRequestURI(), new Expense()).make());
 	}
-	
+
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
@@ -35,7 +36,13 @@ public class ExpenseServlet extends HttpServlet {
 			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
 			return;
 		}
-		
+
+		String budgetGroupName = req.getParameter("budgetGroup");
+		BudgetGroup group = term.getGroup(budgetGroupName);
+		if (group == null) {
+			out.write("Invalid category name provided. Please visit the <a href='/group'>home page</a> to add a new one!");
+			return;
+		}
 		String[] names = req.getParameterValues("name");
 		String[] costs = req.getParameterValues("cost");
 		String storeName = req.getParameter("storeName");
@@ -48,7 +55,7 @@ public class ExpenseServlet extends HttpServlet {
 			out.write("Store name must be included");
 			return;
 		}
-		
+
 		for (int i = 0; i < names.length; i++) {
 			float f = 0;
 			try {
@@ -60,19 +67,21 @@ public class ExpenseServlet extends HttpServlet {
 			}
 			purchasedItems.add(new PurchasedItem(names[i], f));
 		}
-		
+
 		Expense expense = new Expense(purchasedItems);
 		expense.isVerified = true;
 		expense.storeName = storeName;
 		expense.authorId = user.getId();
+		// TODO implement time created logic
 		String timeCreated = req.getParameter("timeCreated");
+		System.out.println(timeCreated);
 		if (timeCreated != null) {
 			expense.timeCreated = new Date();
 		}
 		expense.save();
-		
-		term.addExpense(expense);
-		
-		resp.sendRedirect("/receipt/existing?receiptId=" + expense.getId());
+
+		group.addExpense(expense);
+
+		resp.sendRedirect("/expense/existing?expenseId=" + expense.getId());
 	}
 }

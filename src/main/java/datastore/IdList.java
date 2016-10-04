@@ -11,13 +11,13 @@ public class IdList<EntityType extends BasicEntity> {
 	}
 	
 	public void add(Long id) {
-		if (!idAlreadyExists(id)) {
+		if (!hasId(id)) {
 			ids.add(id);
 		}
 	}
 	
 	public void remove(Long id) {
-		if (!idAlreadyExists(id)) {
+		if (!hasId(id)) {
 			throw new NoSuchElementException();
 		}
 		ids.remove(id);
@@ -32,9 +32,11 @@ public class IdList<EntityType extends BasicEntity> {
 		return myList;
 	}
 	
-	private boolean idAlreadyExists(Long id) {
+	public boolean hasId(Long id) {
 		for (Long existingId : ids) {
-			if (existingId == id) {
+			System.out.println("Existing: " + existingId);
+			System.out.println("Given: " + id);
+			if (existingId.equals(id)) {
 				return true;
 			}
 		}

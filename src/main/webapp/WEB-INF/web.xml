@@ -17,6 +17,10 @@
       <servlet-class>servlets.ExpenseServlet</servlet-class>
     </servlet>
     <servlet>
+      <servlet-name>CurrentExpenses</servlet-name>
+      <servlet-class>servlets.CurrentExpensesServlet</servlet-class>
+    </servlet>
+    <servlet>
       <servlet-name>Receipt</servlet-name>
       <servlet-class>servlets.ReceiptServlet</servlet-class>
     </servlet>
@@ -42,12 +46,16 @@
       <url-pattern>/expense</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+      <servlet-name>CurrentExpenses</servlet-name>
+      <url-pattern>/expense/current</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
       <servlet-name>Receipt</servlet-name>
       <url-pattern>/receipt</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
       <servlet-name>ExistingExpense</servlet-name>
-      <url-pattern>/receipt/existing</url-pattern>
+      <url-pattern>/expense/existing</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
       <servlet-name>History</servlet-name>
