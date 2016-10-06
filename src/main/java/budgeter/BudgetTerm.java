@@ -75,9 +75,9 @@ public class BudgetTerm extends BasicEntity {
 	}
 	
 	public Category getCategory(String name) {
-		for (Category group : getCategories()) {
-			if (group.name.equals(name)) {
-				return group;
+		for (Category category : getCategories()) {
+			if (category.name.equals(name)) {
+				return category;
 			}
 		}
 		return null;
@@ -87,8 +87,8 @@ public class BudgetTerm extends BasicEntity {
 		return getCategory(name) != null;
 	}
 	
-	public void addCategory(Category newCategory) {
-		categoryIds.add(newCategory.getId());
+	public void addCategory(Category newcategory) {
+		categoryIds.add(newcategory.getId());
 		save();
 	}
 

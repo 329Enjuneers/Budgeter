@@ -23,6 +23,7 @@ public class CurrentExpensesServlet extends HttpServlet {
 		user = User.getCurrentUser();
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
+		User user = User.getCurrentUser();
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
 			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");

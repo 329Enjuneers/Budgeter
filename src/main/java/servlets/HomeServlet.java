@@ -12,7 +12,7 @@ import user.User;
 import budgeter.BudgetTerm;
 
 /**
- * shows/adds----> /group
+ * shows/adds----> /category
  * 
  * adds ---> /receipt
  * 

@@ -24,7 +24,10 @@ public class CategoryServlet extends HttpServlet {
 		if(term != null){
 			out.write(new CategoryPage(req.getRequestURI(),term).make());
 		}else{
-			out.write(new CategoryPage(req.getRequestURI()).make());
+			
+			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
+			return;
+			//out.write(new CategoryPage(req.getRequestURI()).make());
 		}
 	}
 	

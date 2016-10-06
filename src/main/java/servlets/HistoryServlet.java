@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import budgeter.BudgetTerm;
 import pages.HistoryPage;
+import user.User;
 
 public class HistoryServlet extends HttpServlet {
 
@@ -18,6 +20,7 @@ public class HistoryServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 		out.write(new HistoryPage(req.getRequestURI()).make());
+		
 	}
 	
 	@Override

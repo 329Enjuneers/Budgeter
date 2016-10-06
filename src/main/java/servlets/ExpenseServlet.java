@@ -25,6 +25,11 @@ public class ExpenseServlet extends HttpServlet {
 		user = User.getCurrentUser();
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
+		BudgetTerm term = user.getCurrentBudgetTerm();
+		if (term == null) {
+			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
+			return;
+		}
 		out.write(new ExpensePage(req.getRequestURI(), new Expense()).make());
 	}
 
@@ -39,10 +44,10 @@ public class ExpenseServlet extends HttpServlet {
 			return;
 		}
 
-		String budgetGroupName = req.getParameter("budgetGroup");
-		Category group = term.getCategory(budgetGroupName);
-		if (group == null) {
-			out.write("Invalid category name provided. Please visit the <a href='/group'>home page</a> to add a new one!");
+		String categoryName = req.getParameter("category");
+		Category category = term.getCategory(categoryName);
+		if (category == null) {
+			out.write("Invalid category name provided. Please visit the <a href='/category'>home page</a> to add a new one!");
 			return;
 		}
 		String[] names = req.getParameterValues("name");
@@ -82,7 +87,7 @@ public class ExpenseServlet extends HttpServlet {
 		}
 		expense.save();
 
-		group.addExpense(expense);
+		category.addExpense(expense);
 
 		resp.sendRedirect("/expense/existing?expenseId=" + expense.getId());
 	}
