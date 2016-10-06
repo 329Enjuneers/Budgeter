@@ -24,10 +24,11 @@ import user.User;
 public class ReceiptServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-	private static final User user = User.getCurrentUser();
+	private User user;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		user = User.getCurrentUser();
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 		BudgetTerm term = user.getCurrentBudgetTerm();
@@ -41,6 +42,7 @@ public class ReceiptServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		user = User.getCurrentUser();
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 

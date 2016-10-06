@@ -17,11 +17,13 @@ import user.User;
 
 public class ExistingExpenseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final User user = User.getCurrentUser();
-	private static final BudgetTerm term = user.getCurrentBudgetTerm();
+	private User user;
+	private BudgetTerm term;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		user = User.getCurrentUser();
+		term = user.getCurrentBudgetTerm();
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 		BudgetTerm term = user.getCurrentBudgetTerm();
@@ -44,6 +46,8 @@ public class ExistingExpenseServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		user = User.getCurrentUser();
+		term = user.getCurrentBudgetTerm();
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 		Expense expense = getExpense(req.getParameter("expenseId"));
@@ -57,7 +61,7 @@ public class ExistingExpenseServlet extends HttpServlet {
 			resp.sendRedirect("/expense/current?feedback=Expense%20successfully%20deleted");
 			return;
 		}
-		
+
 		if (!expense.isVerified) {
 			expense.isVerified = true;
 		}
@@ -111,7 +115,7 @@ public class ExistingExpenseServlet extends HttpServlet {
 		}
 		return expense;
 	}
-	
+
 	private void deleteExpense(Expense expense) {
 //		TODO
 		term.removeExpense(expense);

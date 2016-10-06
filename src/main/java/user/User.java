@@ -82,7 +82,7 @@ public class User extends BasicEntity {
 	}
 	
 	public BudgetTerm getCurrentBudgetTerm() {
-		System.out.println("term id is " + currentBudgetTermId);
+		System.out.println("Budget id: " + currentBudgetTermId);
 		if (currentBudgetTermId == null) {
 			return null;
 		}

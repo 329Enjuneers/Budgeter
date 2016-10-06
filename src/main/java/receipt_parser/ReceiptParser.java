@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import budgeter.Expense;
 import budgeter.PurchasedItem;
-import datastore.IdList;
 import ocr_reader.Cluster;
 import ocr_reader.Reader;
 import receipt_parser.float_list_factory.FloatListFactory;
