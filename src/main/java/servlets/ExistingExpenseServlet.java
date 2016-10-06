@@ -15,6 +15,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import budgeter.BudgetTerm;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
+import feedback.Feedback;
 import pages.ExpensePage;
 import pages.Page;
 import user.User;
@@ -47,11 +48,7 @@ public class ExistingExpenseServlet extends HttpServlet {
 			out.write("Receipt not found");
 			return;
 		}
-		String wasUpdated = req.getParameter("wasUpdated");
 		ExpensePage page = new ExpensePage(req.getRequestURI(), expense);
-		if (wasUpdated != null) {
-			page.wasUpdated = true;
-		}
 		out.write(page.make());
 	}
 
@@ -69,7 +66,8 @@ public class ExistingExpenseServlet extends HttpServlet {
 		String action = req.getParameter("action");
 		if (action != null && action.equals("delete")) {
 			deleteExpense(expense);
-			resp.sendRedirect("/expense/current?feedback=Expense%20successfully%20deleted");
+			new Feedback("Expense successfully deleted", "green");
+			resp.sendRedirect("/expense/current");
 			return;
 		}
 
@@ -81,11 +79,11 @@ public class ExistingExpenseServlet extends HttpServlet {
 		String storeName = req.getParameter("storeName");
 		ArrayList<PurchasedItem> purchasedItems = new ArrayList<PurchasedItem>();
 		if (names.length != costs.length) {
-			out.write("The number of names must equal the number of costs.!");
+			out.write("The number of names must equal the number of costs!");
 			return;
 		}
 		if (storeName == null) {
-			out.write("Store name must be included");
+			out.write("Store name must be included!");
 			return;
 		}
 
@@ -95,7 +93,7 @@ public class ExistingExpenseServlet extends HttpServlet {
 				f = Float.parseFloat(costs[i]);
 			}
 			catch(Exception e) {
-				out.write("cost must be float!");
+				out.write("Cost must be float!");
 				return;
 			}
 			purchasedItems.add(new PurchasedItem(names[i], f));
@@ -103,7 +101,8 @@ public class ExistingExpenseServlet extends HttpServlet {
 		expense.purchasedItems = purchasedItems;
 		expense.storeName = storeName;
 		expense.save();
-		resp.sendRedirect("/expense/existing?wasUpdated=1&expenseId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
+		new Feedback("Expense successfully updated", "green");
+		resp.sendRedirect("/expense/existing?&expenseId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
 	}
 
 	private Expense getExpense(String rawExpenseId) {

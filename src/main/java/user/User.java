@@ -49,6 +49,14 @@ public class User extends BasicEntity {
 
 		return user;
 	}
+		
+	public static Long getCurrentUserId() {
+		User user = User.getCurrentUser();
+		if (user != null) {
+			return user.getId();
+		}
+		return null;
+	}
 
 	private static User getOrInsert(String email) {
 		User user = User.get(email);

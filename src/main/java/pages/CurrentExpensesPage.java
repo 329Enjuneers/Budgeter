@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 import budgeter.Expense;
 import pages.html_builder.Div;
-import pages.html_builder.Feedback;
+import pages.html_builder.FeedbackHtml;
 import pages.html_builder.Form;
 
 public class CurrentExpensesPage extends Page{
@@ -41,7 +41,7 @@ public class CurrentExpensesPage extends Page{
 	
 	private void addFeedbackHtml() {
 		if(feedback != null) {
-			Feedback fb = new Feedback(feedback);
+			FeedbackHtml fb = new FeedbackHtml(feedback);
 			htmlBuilder.addToBody(fb.toString());
 		}
 	}

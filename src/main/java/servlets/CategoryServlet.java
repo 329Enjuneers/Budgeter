@@ -12,6 +12,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import budgeter.BudgetTerm;
 import budgeter.Category;
+import feedback.Feedback;
 import pages.CategoryPage;
 import pages.Page;
 import user.User;
@@ -91,7 +92,8 @@ public class CategoryServlet extends HttpServlet {
 				resp.sendRedirect("/category");
 			}
 			else {
-				out.write("Invalid category id!");
+				new Feedback("Invalid category id", "red");
+				resp.sendRedirect("/");
 			}
 		}
 		

@@ -36,7 +36,6 @@ public class HomeServlet extends BasicServlet{
 		}
 		catch(IOException e) { return; }
 		showHome();
-		
 	}
 
 
