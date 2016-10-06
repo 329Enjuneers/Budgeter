@@ -3,7 +3,6 @@ package servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServlet;
@@ -12,16 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import budgeter.BudgetTerm;
 import budgeter.Expense;
-import budgeter.PurchasedItem;
 import pages.CurrentExpensesPage;
 import user.User;
 
 public class CurrentExpensesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final User user = User.getCurrentUser();
+	private User user;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		user = User.getCurrentUser();
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 		BudgetTerm term = user.getCurrentBudgetTerm();
