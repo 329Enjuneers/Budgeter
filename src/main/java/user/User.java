@@ -90,6 +90,10 @@ public class User extends BasicEntity {
 		return instance.getById(currentBudgetTermId);
 	}
 	
+	public BudgetTerm getMostRecentBudgetTerm() {
+		return previousBudgetTermIds.getLast(new BudgetTerm());
+	}
+	
 	@Override
 	public Long getId() {
 		return id;

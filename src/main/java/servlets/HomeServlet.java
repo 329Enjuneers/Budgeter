@@ -62,9 +62,18 @@ public class HomeServlet extends HttpServlet {
 			//create new budget term 
 			if(req.getParameterMap().containsKey("income")){
 				float budget = Float.parseFloat(req.getParameter("income"));
-				BudgetTerm newTerm = new BudgetTerm(budget);
+				BudgetTerm newTerm;
+				BudgetTerm lastTerm = user.getMostRecentBudgetTerm();
+				if (lastTerm == null) {
+					newTerm = new BudgetTerm(budget);
+				}
+				else {
+					System.out.println("last term: " + lastTerm);
+					System.out.println("budget: " + budget);
+					newTerm = BudgetTerm.makeWithPreviousCategories(lastTerm, budget);
+				}
 				user.startNewTerm(newTerm);
-				out.write(new HomePage(req.getRequestURI(),user.getCurrentBudgetTerm()).make());
+				resp.sendRedirect("/");
 			}
 			else{
 				out.write(new HomePage(req.getRequestURI()).make());

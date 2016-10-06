@@ -1,10 +1,9 @@
 package budgeter;
 
 import java.util.ArrayList;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Index;
-import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import datastore.BasicEntity;
 import datastore.IdList;
@@ -62,6 +61,16 @@ public class Category extends BasicEntity {
 			sum += expense.getTotal();
 		}
 		return sum;
+	}
+	
+	public Category makeCopy(float previousIncome, float newIncome) {
+		System.out.println("making copy!");
+		double previousPercentage = this.getPercentageOfIncome(previousIncome);
+		float amountToAllocate = (float) (int) (newIncome * previousPercentage);
+		System.out.println("income: " + amountToAllocate);
+		System.out.println("name: " + this.name);
+		Category copy = new Category(this.name, amountToAllocate);
+		return copy;
 	}
 	
 	@Override

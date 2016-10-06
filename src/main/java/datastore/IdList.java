@@ -32,10 +32,20 @@ public class IdList<EntityType extends BasicEntity> {
 		return myList;
 	}
 	
+	public EntityType getLast(BasicEntity instance) {
+		int size = ids.size();
+		if (size == 0) {
+			return null;
+		}
+		int lastIndex = size - 1;
+		Long id = ids.get(lastIndex);
+		EntityType entity = instance.getById(id);
+		return entity;
+	}
+	
 	public boolean hasId(Long id) {
 		for (Long existingId : ids) {
-			System.out.println("Existing: " + existingId);
-			System.out.println("Given: " + id);
+
 			if (existingId.equals(id)) {
 				return true;
 			}

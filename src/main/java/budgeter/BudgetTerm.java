@@ -42,6 +42,25 @@ public class BudgetTerm extends BasicEntity {
 		save();
 	}
 	
+	public static BudgetTerm makeWithPreviousCategories(BudgetTerm previousTerm, float newIncome) {
+		System.out.println("Here");
+		BudgetTerm term = new BudgetTerm(previousTerm.income);
+		System.out.println("Here1");
+		for(Category category : previousTerm.getCategories()) {
+			System.out.println("Here2");
+			if (!term.hasCategory(category.name)) {
+				System.out.println("Here3");
+				Category copiedCategory = category.makeCopy(previousTerm.income, newIncome);
+				System.out.println("Here4: " + copiedCategory);
+				term.addCategory(copiedCategory);
+			}
+		}
+		System.out.println("Here5");
+		term.save();
+		System.out.println("Here6");
+		return term;
+	}
+	
 	public HashMap<String, ArrayList<Expense>> getExpenses() {
 		HashMap<String, ArrayList<Expense>> map = new HashMap<String, ArrayList<Expense>>();
 		ArrayList<Category> categories = categoryIds.fetch(new Category());
@@ -64,12 +83,16 @@ public class BudgetTerm extends BasicEntity {
 		return null;
 	}
 	
+	public boolean hasCategory(String name) {
+		return getCategory(name) != null;
+	}
+	
 	public void addCategory(Category newcategory) {
 		categoryIds.add(newcategory.getId());
 		save();
 	}
 
-	public void deletecategory(Long categoryId) {
+	public void deleteCategory(Long categoryId) {
 		categoryIds.remove(categoryId);
 		save();
 	}
