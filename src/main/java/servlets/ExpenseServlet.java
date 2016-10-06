@@ -40,7 +40,7 @@ public class ExpenseServlet extends HttpServlet {
 		}
 
 		String budgetGroupName = req.getParameter("budgetGroup");
-		Category group = term.getGroup(budgetGroupName);
+		Category group = term.getCategory(budgetGroupName);
 		if (group == null) {
 			out.write("Invalid category name provided. Please visit the <a href='/group'>home page</a> to add a new one!");
 			return;

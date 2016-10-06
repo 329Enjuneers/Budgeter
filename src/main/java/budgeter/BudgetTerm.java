@@ -42,6 +42,25 @@ public class BudgetTerm extends BasicEntity {
 		save();
 	}
 	
+	public static BudgetTerm makeWithPreviousCategories(BudgetTerm previousTerm, float newIncome) {
+		System.out.println("Here");
+		BudgetTerm term = new BudgetTerm(previousTerm.income);
+		System.out.println("Here1");
+		for(Category category : previousTerm.getCategories()) {
+			System.out.println("Here2");
+			if (!term.hasCategory(category.name)) {
+				System.out.println("Here3");
+				Category copiedCategory = category.makeCopy(previousTerm.income, newIncome);
+				System.out.println("Here4: " + copiedCategory);
+				term.addCategory(copiedCategory);
+			}
+		}
+		System.out.println("Here5");
+		term.save();
+		System.out.println("Here6");
+		return term;
+	}
+	
 	public HashMap<String, ArrayList<Expense>> getExpenses() {
 		HashMap<String, ArrayList<Expense>> map = new HashMap<String, ArrayList<Expense>>();
 		ArrayList<Category> categories = categoryIds.fetch(new Category());
@@ -55,7 +74,7 @@ public class BudgetTerm extends BasicEntity {
 		return categoryIds.fetch(new Category());
 	}
 	
-	public Category getGroup(String name) {
+	public Category getCategory(String name) {
 		for (Category group : getCategories()) {
 			if (group.name.equals(name)) {
 				return group;
@@ -64,13 +83,17 @@ public class BudgetTerm extends BasicEntity {
 		return null;
 	}
 	
-	public void addGroup(Category newGroup) {
-		categoryIds.add(newGroup.getId());
+	public boolean hasCategory(String name) {
+		return getCategory(name) != null;
+	}
+	
+	public void addCategory(Category newCategory) {
+		categoryIds.add(newCategory.getId());
 		save();
 	}
 
-	public void deleteGroup(Long groupId) {
-		categoryIds.remove(groupId);
+	public void deleteCategory(Long categoryId) {
+		categoryIds.remove(categoryId);
 		save();
 	}
 	
@@ -119,6 +142,6 @@ public class BudgetTerm extends BasicEntity {
 	
 	private void createMiscellaneousCategory() {
 		Category category = new Category("Miscellaneous", (float) 0.0);
-		addGroup(category);
+		addCategory(category);
 	}
 }

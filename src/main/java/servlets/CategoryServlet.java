@@ -37,7 +37,7 @@ public class CategoryServlet extends HttpServlet {
 		if(term != null){
 			if(req.getParameterMap().containsKey("newcategory") && req.getParameterMap().containsKey("amount")){
 				Category newCategory = new Category(req.getParameter("newcategory"),Float.parseFloat(req.getParameter("amount")));
-				term.addGroup(newCategory);
+				term.addCategory(newCategory);
 			}
 			out.write(new CategoryPage(req.getRequestURI(),term).make());
 		}else{
