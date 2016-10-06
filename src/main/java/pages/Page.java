@@ -24,6 +24,12 @@ public class Page {
 		user = User.getCurrentUser();
 		this.baseUrl = baseUrl;
 	}
+	
+	public String make()
+	{
+	   	    addLogout();
+	    	return htmlBuilder.build();
+	}
 
 	protected void addLogout() {
 		UserService userService = UserServiceFactory.getUserService();

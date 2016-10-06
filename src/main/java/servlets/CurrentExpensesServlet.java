@@ -9,9 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+
 import budgeter.BudgetTerm;
 import budgeter.Expense;
 import pages.CurrentExpensesPage;
+import pages.Page;
 import user.User;
 
 public class CurrentExpensesServlet extends HttpServlet {
@@ -22,6 +26,14 @@ public class CurrentExpensesServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		user = User.getCurrentUser();
 		PrintWriter out = resp.getWriter();
+
+		UserService userService = UserServiceFactory.getUserService();
+		if(user == null)
+		{
+			out.write(new Page(req.getRequestURI()).make());
+			//out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
+			return;
+		}
 		resp.setContentType("text/html");
 		User user = User.getCurrentUser();
 		BudgetTerm term = user.getCurrentBudgetTerm();

@@ -35,6 +35,7 @@ public class HomeServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		showHome(req,resp);
+		
 	}
 
 
@@ -50,6 +51,7 @@ public class HomeServlet extends HttpServlet {
 	private void showHome(HttpServletRequest req, HttpServletResponse resp)  throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
+		
 		User user = User.getCurrentUser();
 		if(user == null){
 			out.write(new HomePage(req.getRequestURI()).make());
