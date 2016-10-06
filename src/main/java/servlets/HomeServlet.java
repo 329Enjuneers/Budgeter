@@ -1,15 +1,12 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pages.HomePage;
-import user.User;
 import budgeter.BudgetTerm;
+import pages.HomePage;
 
 /**
  * shows/adds----> /category
@@ -20,7 +17,7 @@ import budgeter.BudgetTerm;
  *
  *
  */
-public class HomeServlet extends HttpServlet {
+public class HomeServlet extends BasicServlet{
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,7 +31,11 @@ public class HomeServlet extends HttpServlet {
 	 */
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		showHome(req,resp);
+		try{
+			super.doGet(req, resp);
+		}
+		catch(IOException e) { return; }
+		showHome();
 		
 	}
 
@@ -45,23 +46,23 @@ public class HomeServlet extends HttpServlet {
 	 */
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		showHome(req,resp);
+		try{
+			super.doPost(req, resp);
+		}
+		catch(IOException e) { return; }
+		showHome();
 	}
 
-	private void showHome(HttpServletRequest req, HttpServletResponse resp)  throws IOException {
-		PrintWriter out = resp.getWriter();
-		resp.setContentType("text/html");
-		
-		User user = User.getCurrentUser();
+	private void showHome()  throws IOException {
 		if(user == null){
-			out.write(new HomePage(req.getRequestURI()).make());
+			out.write(new HomePage(request.getRequestURI()).make());
 			return;
 		}
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if(term == null){
 			//create new budget term
-			if(req.getParameterMap().containsKey("income")){
-				float budget = Float.parseFloat(req.getParameter("income"));
+			if(request.getParameterMap().containsKey("income")){
+				float budget = Float.parseFloat(request.getParameter("income"));
 				BudgetTerm newTerm;
 				BudgetTerm lastTerm = user.getMostRecentBudgetTerm();
 				if (lastTerm == null) {
@@ -71,22 +72,22 @@ public class HomeServlet extends HttpServlet {
 					newTerm = BudgetTerm.makeWithPreviousCategories(lastTerm, budget);
 				}
 				user.startNewTerm(newTerm);
-				resp.sendRedirect("/");
+				response.sendRedirect("/");
 			}
 			else{
-				out.write(new HomePage(req.getRequestURI()).make());
+				out.write(new HomePage(request.getRequestURI()).make());
 			}
 		}
 		else{
 			//check for action "end"
-			if(req.getParameterMap().containsKey("action")){
-				String action = req.getParameter("action").toLowerCase();
+			if(request.getParameterMap().containsKey("action")){
+				String action = request.getParameter("action").toLowerCase();
 				if(action != null && action.equals("end")){
 					user.endTerm();
 				}
-				out.write(new HomePage(req.getRequestURI()).make());
+				out.write(new HomePage(request.getRequestURI()).make());
 			}else{
-				out.write(new HomePage(req.getRequestURI(), term).make());
+				out.write(new HomePage(request.getRequestURI(), term).make());
 			}
 		}
 	}

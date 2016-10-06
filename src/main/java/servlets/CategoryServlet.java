@@ -27,7 +27,7 @@ public class CategoryServlet extends HttpServlet {
 		if(user == null)
 		{
 			out.write(new Page(req.getRequestURI()).make());
-			//out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
+//			out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
 			return;
 		}
 		BudgetTerm term = user.getCurrentBudgetTerm();
