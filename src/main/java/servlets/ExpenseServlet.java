@@ -16,6 +16,7 @@ import budgeter.Category;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
 import pages.ExpensePage;
+import pages.Page;
 import user.User;
 
 public class ExpenseServlet extends HttpServlet {
@@ -27,6 +28,12 @@ public class ExpenseServlet extends HttpServlet {
 		user = User.getCurrentUser();
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
+		if(user == null)
+		{
+			out.write(new Page(req.getRequestURI()).make());
+			//out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
+			return;
+		}
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
 			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");

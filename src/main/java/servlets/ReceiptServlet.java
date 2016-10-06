@@ -13,10 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 import budgeter.BudgetTerm;
 import budgeter.Expense;
 import image.BlobImage;
+import pages.HomePage;
+import pages.Page;
 import pages.UploadReceiptPage;
 import receipt_parser.ReceiptParser;
 import user.User;
@@ -31,6 +35,14 @@ public class ReceiptServlet extends HttpServlet {
 		user = User.getCurrentUser();
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
+
+		UserService userService = UserServiceFactory.getUserService();
+		if(user == null)
+		{
+			out.write(new HomePage(req.getRequestURI()).make());
+			//out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
+			return;
+		}
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
 			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");

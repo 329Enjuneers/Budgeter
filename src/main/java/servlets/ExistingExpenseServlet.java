@@ -9,10 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+
 import budgeter.BudgetTerm;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
 import pages.ExpensePage;
+import pages.Page;
 import user.User;
 
 public class ExistingExpenseServlet extends HttpServlet {
@@ -25,6 +29,13 @@ public class ExistingExpenseServlet extends HttpServlet {
 		user = User.getCurrentUser();
 		term = user.getCurrentBudgetTerm();
 		PrintWriter out = resp.getWriter();
+		UserService userService = UserServiceFactory.getUserService();
+		if(user == null)
+		{
+			out.write(new Page(req.getRequestURI()).make());
+			//out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
+			return;
+		}
 		resp.setContentType("text/html");
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {

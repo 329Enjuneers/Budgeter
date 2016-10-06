@@ -1,10 +1,5 @@
 package pages;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
-import pages.html_builder.Form;
-import budgeter.Category;
 import budgeter.BudgetTerm;
 
 public class HistoryPage extends Page {
