@@ -77,7 +77,7 @@ public class ExpensePage extends Page{
 	    receiptForm.addProperty("style", "margin-bottom:2em");
 	    receiptForm.addProperty("id", "expense-form");
 	    receiptForm.addElement("<hr>");
-	    receiptForm.addElement(makeGroupChoiceDiv());
+	    receiptForm.addElement(makeCategoryChoiceDiv());
 	    receiptForm.addElement(makeStoreNameDiv());
 	    receiptForm.addElement(makeTimeCreatedDiv());
 	    receiptForm.addElement(makeLabelDiv());
@@ -87,23 +87,23 @@ public class ExpensePage extends Page{
 	    htmlBuilder.addToBody(receiptForm.toString());
 	}
 	
-	private String makeGroupChoiceDiv() {
+	private String makeCategoryChoiceDiv() {
 		User user = User.getCurrentUser();
 		BudgetTerm term = user.getCurrentBudgetTerm();
-		ArrayList<Category> groups = new ArrayList<Category>();
+		ArrayList<Category> categories = new ArrayList<Category>();
 		if (term != null) {
-			groups = term.getCategories();
+			categories = term.getCategories();
 		}
 		Div div = new Div();
     	div.addProperty("style", "margin-bottom:1.5em; margin-top:3.5em;");
     	div.addElement("<label><b><u>Category:</u></b></label>");
-    	div.addElement("<select style='margin-left: 15.1%' form='expense-form' name='budgetGroup'>");
-    	for (Category group : groups) {
+    	div.addElement("<select style='margin-left: 15.1%' form='expense-form' name='category'>");
+    	for (Category category : categories) {
     		String selected = "";
-    		if (group.hasExpense(expense)) {
+    		if (category.hasExpense(expense)) {
     			selected = "selected";
     		}
-    		div.addElement("<option value='" + group.name + "' " + selected +">" + group.name + "</option>");
+    		div.addElement("<option value='" + category.name + "' " + selected +">" + category.name + "</option>");
     	}
     	div.addElement("</select>");
     	div.addElement("<hr style='width:29.4%; margin-right:70%; margin-top: 1.5em;'>");

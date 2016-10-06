@@ -18,12 +18,13 @@ import user.User;
 
 public class CurrentExpensesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final User user = User.getCurrentUser();
+	//private static final User user = User.getCurrentUser();
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
+		User user = User.getCurrentUser();
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
 			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
