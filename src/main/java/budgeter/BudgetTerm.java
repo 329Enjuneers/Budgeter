@@ -85,13 +85,17 @@ public class BudgetTerm extends BasicEntity {
 		return getCategory(name) != null;
 	}
 	
-	public void addCategory(Category newcategory) {
-		categoryIds.add(newcategory.getId());
+	public void addCategory(Category category) throws IllegalStateException{
+		if(hasCategory(category.name)) {
+			throw new IllegalStateException();
+		}
+		categoryIds.add(category.getId());
 		save();
 	}
 
-	public void deleteCategory(Long categoryId) {
-		categoryIds.remove(categoryId);
+	public void deleteCategory(Category category) {
+		categoryIds.remove(category.getId());
+		category.delete();
 		save();
 	}
 	

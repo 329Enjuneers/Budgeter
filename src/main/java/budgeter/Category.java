@@ -39,6 +39,7 @@ public class Category extends BasicEntity {
 	
 	public void removeExpense(Expense expense) {
 		expenseIds.remove(expense.getId());
+		expense.delete();
 		save();
 	}
 	

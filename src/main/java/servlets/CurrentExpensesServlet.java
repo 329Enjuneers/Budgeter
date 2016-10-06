@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-
 import budgeter.BudgetTerm;
 import budgeter.Expense;
 import pages.CurrentExpensesPage;
@@ -25,7 +22,7 @@ public class CurrentExpensesServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 
-		UserService userService = UserServiceFactory.getUserService();
+		User user = User.getCurrentUser();
 		if(user == null)
 		{
 			out.write(new Page(req.getRequestURI()).make());
@@ -33,7 +30,6 @@ public class CurrentExpensesServlet extends HttpServlet {
 			return;
 		}
 		resp.setContentType("text/html");
-		User user = User.getCurrentUser();
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
 			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");

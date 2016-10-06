@@ -69,7 +69,7 @@ public class CategoryPage extends Page {
 			row.append("<td><input type='number' name='amountAllocated' value='" + category.amountAllocated + "'></td>");
 			row.append("<td>" + category.getAmountSpent() + "</td>");
 			row.append("<td>" + category.getAmountRemaining() + "</td>");
-			row.append("<td><input name='action' value='Update' type='submit'><input type='reset'></td>");
+			row.append("<td><input name='action' value='Update' type='submit'><input name='action' value='Delete' type='submit'><input type='reset'></td>");
 			row.append("</form>");
 		row.append("</tr>");
 		return row.toString();

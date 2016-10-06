@@ -67,13 +67,23 @@ public class CategoryServlet extends HttpServlet {
 					category.amountAllocated = amountAllocated;
 					category.save();
 				}
-				resp.sendRedirect("/category");
 			}
+			else if (action.equals("Delete")) {
+				term.deleteCategory(category);
+			}
+			resp.sendRedirect("/category");
 		}
 		else {
 			if (req.getParameterMap().containsKey("newcategory") && req.getParameterMap().containsKey("amount")) {
 				Category newCategory = new Category(req.getParameter("newcategory"),Float.parseFloat(req.getParameter("amount")));
-				term.addCategory(newCategory);
+				try {
+					term.addCategory(newCategory);
+				}
+				catch(IllegalStateException e) {
+					out.write("A category with that name already exists!");
+					return;
+				}
+				resp.sendRedirect("/category");
 			}
 			else {
 				out.write("Invalid category id!");
