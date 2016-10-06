@@ -3,7 +3,6 @@ package request;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -51,15 +50,15 @@ public abstract class PostRequest extends BaseRequest {
 	}
 	
 	protected byte[] makeFormEncodedPayload() {
-		ArrayList<String> payloadElements = new ArrayList<String>();
+		StringBuilder payload = new StringBuilder();
 		for(Entry<String, String> entry  : payloadMap.entrySet()) {
 			String key = entry.getKey();
 			String value = entry.getValue();
 			String payloadItem = key + "=" + value;
-			payloadElements.add(payloadItem);
+			payload.append(payloadItem);
+			payload.append("&");
 		}
-		String str = String.join("&", payloadElements);
-		return str.toString().getBytes();
+		return payload.toString().getBytes();
 	}
 	
 	protected HTTPResponse sendRequest() {
