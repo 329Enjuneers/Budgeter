@@ -12,7 +12,7 @@ import datastore.IdList;
 public class Category extends BasicEntity {
 	@Id Long id;
 	public String name;
-	private float amountAllocated;
+	public float amountAllocated;
 	public IdList<Expense> expenseIds;
 	
 	public Category() {} // required for objectify
@@ -64,11 +64,8 @@ public class Category extends BasicEntity {
 	}
 	
 	public Category makeCopy(float previousIncome, float newIncome) {
-		System.out.println("making copy!");
 		double previousPercentage = this.getPercentageOfIncome(previousIncome);
 		float amountToAllocate = (float) (int) (newIncome * previousPercentage);
-		System.out.println("income: " + amountToAllocate);
-		System.out.println("name: " + this.name);
 		Category copy = new Category(this.name, amountToAllocate);
 		return copy;
 	}

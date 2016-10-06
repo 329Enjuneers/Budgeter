@@ -16,11 +16,9 @@ import user.User;
 
 public class CurrentExpensesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private User user;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		user = User.getCurrentUser();
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 		User user = User.getCurrentUser();

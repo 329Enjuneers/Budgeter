@@ -7,9 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import budgeter.BudgetTerm;
 import pages.HistoryPage;
-import user.User;
 
 public class HistoryServlet extends HttpServlet {
 

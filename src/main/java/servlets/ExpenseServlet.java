@@ -2,6 +2,8 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -9,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import budgeter.Category;
 import budgeter.BudgetTerm;
+import budgeter.Category;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
 import pages.ExpensePage;
@@ -79,16 +81,22 @@ public class ExpenseServlet extends HttpServlet {
 		expense.isVerified = true;
 		expense.storeName = storeName;
 		expense.authorId = user.getId();
-		// TODO implement time created logic
-		String timeCreated = req.getParameter("timeCreated");
-		System.out.println(timeCreated);
-		if (timeCreated != null) {
-			expense.timeCreated = new Date();
-		}
+		expense.timeCreated = makeDate(req.getParameter("timeCreated"));
 		expense.save();
 
 		category.addExpense(expense);
 
 		resp.sendRedirect("/expense/existing?expenseId=" + expense.getId());
+	}
+	
+	private Date makeDate(String timeCreated) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		Date date;
+		try {
+			date = sdf.parse(timeCreated);
+		} catch (ParseException e) {
+			date = new Date();
+		}
+		return date;
 	}
 }

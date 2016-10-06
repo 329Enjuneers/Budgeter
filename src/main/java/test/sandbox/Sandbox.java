@@ -1,5 +1,9 @@
 //package test.sandbox;
 //
+//import java.text.ParseException;
+//import java.text.SimpleDateFormat;
+//import java.util.Date;
+//
 //import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 //import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 //import com.googlecode.objectify.ObjectifyService;
@@ -20,10 +24,6 @@
 //		ObjectifyService.run(new VoidWork() {
 //		    public void vrun() {
 //		    	// ENTER YOUR TESTING CODE HERE
-//		    	Expense exp = new Expense("Wal-mart", "Dollar", (float) 5.3);
-//		    	System.out.println(exp.getId());
-//		    	exp.save();
-//		    	System.out.println(exp.getId());
 //		    }
 //		});
 //

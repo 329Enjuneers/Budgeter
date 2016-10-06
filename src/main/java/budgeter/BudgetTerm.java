@@ -43,21 +43,14 @@ public class BudgetTerm extends BasicEntity {
 	}
 	
 	public static BudgetTerm makeWithPreviousCategories(BudgetTerm previousTerm, float newIncome) {
-		System.out.println("Here");
 		BudgetTerm term = new BudgetTerm(previousTerm.income);
-		System.out.println("Here1");
 		for(Category category : previousTerm.getCategories()) {
-			System.out.println("Here2");
 			if (!term.hasCategory(category.name)) {
-				System.out.println("Here3");
 				Category copiedCategory = category.makeCopy(previousTerm.income, newIncome);
-				System.out.println("Here4: " + copiedCategory);
 				term.addCategory(copiedCategory);
 			}
 		}
-		System.out.println("Here5");
 		term.save();
-		System.out.println("Here6");
 		return term;
 	}
 	
@@ -81,6 +74,11 @@ public class BudgetTerm extends BasicEntity {
 			}
 		}
 		return null;
+	}
+	
+	public Category getCategory(Long id) {
+		Category instance = new Category();
+		return categoryIds.get(instance, id);
 	}
 	
 	public boolean hasCategory(String name) {

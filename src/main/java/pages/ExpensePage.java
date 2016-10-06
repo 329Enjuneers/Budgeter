@@ -126,7 +126,7 @@ public class ExpensePage extends Page{
     	div.addElement("<label><b><u>Time Created:</u></b></label>");
     	Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	String time = expense.timeCreated != null ? formatter.format(expense.timeCreated) : "";
-    	div.addElement("<input style='margin-left:13%' name='timeCreated' placeholder='2016-05-21 12:12:12' value='" + time +"'>");
+    	div.addElement("<input style='margin-left:13%' name='timeCreated' placeholder='YYYY-MM-DD hh:mm:ss' value='" + time +"'>");
     	if (expense.timeCreated == null) {
     		div.addElement("<p style='margin-top: 0.5em; margin-left:20.3%; font-size:small; color: grey; font-family:serif;'>Defaults to now</p>");
     	}

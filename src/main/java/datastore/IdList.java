@@ -32,6 +32,11 @@ public class IdList<EntityType extends BasicEntity> {
 		return myList;
 	}
 	
+	public EntityType get(BasicEntity instance, Long id) {
+		EntityType entity = instance.getById(id);
+		return entity;
+	}
+	
 	public EntityType getLast(BasicEntity instance) {
 		int size = ids.size();
 		if (size == 0) {

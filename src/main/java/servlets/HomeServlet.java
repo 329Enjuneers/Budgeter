@@ -13,11 +13,11 @@ import budgeter.BudgetTerm;
 
 /**
  * shows/adds----> /category
- * 
+ *
  * adds ---> /receipt
- * 
+ *
  * links to ----> /history
- * 
+ *
  *
  */
 public class HomeServlet extends HttpServlet {
@@ -27,9 +27,9 @@ public class HomeServlet extends HttpServlet {
 	/**
 	 * show current budget term
 	 * button to end current budget term
-	 * 
+	 *
 	 * if one has not been created: start new budget term
-	 * 
+	 *
 	 * if this budget term is already complete, nothing is editable
 	 */
 	@Override
@@ -46,7 +46,7 @@ public class HomeServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		showHome(req,resp);
 	}
-	
+
 	private void showHome(HttpServletRequest req, HttpServletResponse resp)  throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
@@ -57,7 +57,7 @@ public class HomeServlet extends HttpServlet {
 		}
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if(term == null){
-			//create new budget term 
+			//create new budget term
 			if(req.getParameterMap().containsKey("income")){
 				float budget = Float.parseFloat(req.getParameter("income"));
 				BudgetTerm newTerm;
@@ -66,8 +66,6 @@ public class HomeServlet extends HttpServlet {
 					newTerm = new BudgetTerm(budget);
 				}
 				else {
-					System.out.println("last term: " + lastTerm);
-					System.out.println("budget: " + budget);
 					newTerm = BudgetTerm.makeWithPreviousCategories(lastTerm, budget);
 				}
 				user.startNewTerm(newTerm);
@@ -84,9 +82,9 @@ public class HomeServlet extends HttpServlet {
 				if(action != null && action.equals("end")){
 					user.endTerm();
 				}
-				out.write(new HomePage(req.getRequestURI()).make());			
+				out.write(new HomePage(req.getRequestURI()).make());
 			}else{
-				out.write(new HomePage(req.getRequestURI(), term).make());			
+				out.write(new HomePage(req.getRequestURI(), term).make());
 			}
 		}
 	}

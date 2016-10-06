@@ -26,7 +26,7 @@ public class User extends BasicEntity {
 
 	public User(String email) {
 		this.email = email;
-		this.nickname = null; 
+		this.nickname = null;
 		previousBudgetTermIds = new IdList<BudgetTerm>();
 	}
 	public User(String email, String nickname) {
@@ -65,14 +65,14 @@ public class User extends BasicEntity {
 		filterMap.put("email", email);
 		return instance.getSingleBy(filterMap);
 	}
-	
+
 	public void endTerm() {
 		Long oldBudgetTermId = currentBudgetTermId;
 		currentBudgetTermId = null;
-		previousBudgetTermIds.add(oldBudgetTermId);	
+		previousBudgetTermIds.add(oldBudgetTermId);
 		save();
 	}
-	
+
 	public void startNewTerm(BudgetTerm term) {
 		if (currentBudgetTermId != null) {
 			endTerm();
@@ -80,23 +80,22 @@ public class User extends BasicEntity {
 		currentBudgetTermId = term.getId();
 		save();
 	}
-	
+
 	public BudgetTerm getCurrentBudgetTerm() {
-		System.out.println("Budget id: " + currentBudgetTermId);
 		if (currentBudgetTermId == null) {
 			return null;
 		}
 		BudgetTerm instance = new BudgetTerm();
 		return instance.getById(currentBudgetTermId);
 	}
-	
+
 	public BudgetTerm getMostRecentBudgetTerm() {
 		return previousBudgetTermIds.getLast(new BudgetTerm());
 	}
-	
+
 	@Override
 	public Long getId() {
 		return id;
 	}
-	
+
 }
