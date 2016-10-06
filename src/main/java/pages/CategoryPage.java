@@ -65,7 +65,7 @@ public class CategoryPage extends Page {
 		StringBuilder row = new StringBuilder();
 		row.append("<tr>");
 			row.append("<form action='/category?categoryId=" + category.getId() + "' method='post'>");
-			row.append("<td>" + category.name + "</td>");
+			row.append("<td><input name='name' value='" + category.name + "'></td>");
 			row.append("<td><input type='number' name='amountAllocated' value='" + category.amountAllocated + "'></td>");
 			row.append("<td>" + category.getAmountSpent() + "</td>");
 			row.append("<td>" + category.getAmountRemaining() + "</td>");

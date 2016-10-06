@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-import budgeter.Category;
 import budgeter.BudgetTerm;
+import budgeter.Category;
 import pages.CategoryPage;
 import pages.Page;
 import user.User;
@@ -62,9 +62,14 @@ public class CategoryServlet extends HttpServlet {
 			String action = req.getParameter("action");
 			if (action.equals("Update")) {
 				String strAmount = req.getParameter("amountAllocated");
+				String newName = req.getParameter("name");
 				if (strAmount != null) {
 					float amountAllocated = Float.parseFloat(strAmount);
 					category.amountAllocated = amountAllocated;
+					category.save();
+				}
+				if (newName != null) {
+					category.name = newName;
 					category.save();
 				}
 			}
