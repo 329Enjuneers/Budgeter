@@ -1,10 +1,9 @@
 package budgeter;
 
 import java.util.ArrayList;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Index;
-import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import datastore.BasicEntity;
 import datastore.IdList;
@@ -13,7 +12,7 @@ import datastore.IdList;
 public class Category extends BasicEntity {
 	@Id Long id;
 	public String name;
-	private float amountAllocated;
+	public float amountAllocated;
 	public IdList<Expense> expenseIds;
 	
 	public Category() {} // required for objectify
@@ -40,6 +39,7 @@ public class Category extends BasicEntity {
 	
 	public void removeExpense(Expense expense) {
 		expenseIds.remove(expense.getId());
+		expense.delete();
 		save();
 	}
 	
@@ -62,6 +62,13 @@ public class Category extends BasicEntity {
 			sum += expense.getTotal();
 		}
 		return sum;
+	}
+	
+	public Category makeCopy(float previousIncome, float newIncome) {
+		double previousPercentage = this.getPercentageOfIncome(previousIncome);
+		float amountToAllocate = (float) (int) (newIncome * previousPercentage);
+		Category copy = new Category(this.name, amountToAllocate);
+		return copy;
 	}
 	
 	@Override

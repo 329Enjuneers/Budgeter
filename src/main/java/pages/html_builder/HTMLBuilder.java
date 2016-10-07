@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
+import feedback.Feedback;
 import user.User;
 
 public class HTMLBuilder {
@@ -82,11 +83,28 @@ public class HTMLBuilder {
 	  if (includeAppHeader) {
 		  str.append(getAppHeader());
 	  }
+	  String feedback = getFeedback();
+	  str.append(feedback);
 	  for (String line : body) {
 		  str.append(line + "\n");
 	  }
 	  str.append("</body>");
 	  return str.toString();
+  }
+  
+  private String getFeedback() {
+	  Feedback feedback = Feedback.getRelevant();
+	  if (feedback != null) {
+		  FeedbackHtml feedbackHtml;
+		  if (feedback.color == null) {
+			  feedbackHtml = new FeedbackHtml(feedback.text);
+		  }
+		  else {
+			  feedbackHtml = new FeedbackHtml(feedback.text, feedback.color);  
+		  }
+		  return feedbackHtml.toString();
+	  }
+	  return "";
   }
 
   private String buildScripts() {

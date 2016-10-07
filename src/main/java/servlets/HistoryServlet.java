@@ -7,9 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import budgeter.BudgetTerm;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+
 import pages.HistoryPage;
+import pages.HomePage;
 import user.User;
+
 
 public class HistoryServlet extends HttpServlet {
 
@@ -20,6 +24,14 @@ public class HistoryServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
+		User user = User.getCurrentUser();
+
+		if(user == null)
+		{
+			out.write(new HomePage(req.getRequestURI()).make());
+			//out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
+			return;
+		}
 		out.write(new HistoryPage(req.getRequestURI()).make());
 	}
 	

@@ -17,14 +17,14 @@
 package servlets;
 
 import javax.servlet.ServletContextEvent;
-
 import javax.servlet.ServletContextListener;
 
 import com.googlecode.objectify.ObjectifyService;
 
-import budgeter.Category;
 import budgeter.BudgetTerm;
+import budgeter.Category;
 import budgeter.Expense;
+import feedback.Feedback;
 import user.User;
 
 /**
@@ -39,6 +39,7 @@ public class OfyHelper implements ServletContextListener {
 	    ObjectifyService.register(Expense.class);
 	    ObjectifyService.register(BudgetTerm.class);
 	    ObjectifyService.register(Category.class);
+	    ObjectifyService.register(Feedback.class);
   }
 
   public void contextDestroyed(ServletContextEvent event) {

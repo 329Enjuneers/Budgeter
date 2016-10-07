@@ -5,25 +5,22 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import budgeter.Category;
 import budgeter.BudgetTerm;
+import budgeter.Category;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
 import pages.html_builder.Div;
-import pages.html_builder.Feedback;
 import pages.html_builder.Form;
 import user.User;
 
 public class ExpensePage extends Page{
 	
 	private Expense expense;
-	public boolean wasUpdated;
 	
 	public ExpensePage(String baseUrl, Expense expense) {
 		super(baseUrl);
 		this.expense = expense;
 		htmlBuilder.includeAppHeader = true;
-		wasUpdated = false;
 	}
 
 	public String make() {
@@ -31,9 +28,6 @@ public class ExpensePage extends Page{
 	    if (user == null) {
 	    	addLogout();
 	    	return htmlBuilder.build();
-	    }
-	    if (wasUpdated) {
-	    	addSuccessfullyUpdated();
 	    }
 	    addHeader();
 	    addReceiptForm();
@@ -47,11 +41,6 @@ public class ExpensePage extends Page{
 		try {
 			htmlBuilder.setTitle("Existing Receipt");
 		} catch (Exception e) {}
-	}
-	
-	private void addSuccessfullyUpdated() {
-		Feedback feedback = new Feedback("Receipt successfully updated");
-		htmlBuilder.addToBody(feedback.toString());
 	}
 	
 	private void addHeader() {
@@ -126,7 +115,7 @@ public class ExpensePage extends Page{
     	div.addElement("<label><b><u>Time Created:</u></b></label>");
     	Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	String time = expense.timeCreated != null ? formatter.format(expense.timeCreated) : "";
-    	div.addElement("<input style='margin-left:13%' name='timeCreated' placeholder='2016-05-21 12:12:12' value='" + time +"'>");
+    	div.addElement("<input style='margin-left:13%' name='timeCreated' placeholder='YYYY-MM-DD hh:mm:ss' value='" + time +"'>");
     	if (expense.timeCreated == null) {
     		div.addElement("<p style='margin-top: 0.5em; margin-left:20.3%; font-size:small; color: grey; font-family:serif;'>Defaults to now</p>");
     	}

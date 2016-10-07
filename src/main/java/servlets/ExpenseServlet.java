@@ -2,6 +2,8 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -9,11 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import budgeter.Category;
 import budgeter.BudgetTerm;
+import budgeter.Category;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
 import pages.ExpensePage;
+import pages.Page;
 import user.User;
 
 public class ExpenseServlet extends HttpServlet {
@@ -25,6 +28,12 @@ public class ExpenseServlet extends HttpServlet {
 		user = User.getCurrentUser();
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
+		if(user == null)
+		{
+			out.write(new Page(req.getRequestURI()).make());
+			//out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
+			return;
+		}
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
 			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
@@ -79,16 +88,22 @@ public class ExpenseServlet extends HttpServlet {
 		expense.isVerified = true;
 		expense.storeName = storeName;
 		expense.authorId = user.getId();
-		// TODO implement time created logic
-		String timeCreated = req.getParameter("timeCreated");
-		System.out.println(timeCreated);
-		if (timeCreated != null) {
-			expense.timeCreated = new Date();
-		}
+		expense.timeCreated = makeDate(req.getParameter("timeCreated"));
 		expense.save();
 
 		category.addExpense(expense);
 
 		resp.sendRedirect("/expense/existing?expenseId=" + expense.getId());
+	}
+	
+	private Date makeDate(String timeCreated) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		Date date;
+		try {
+			date = sdf.parse(timeCreated);
+		} catch (ParseException e) {
+			date = new Date();
+		}
+		return date;
 	}
 }

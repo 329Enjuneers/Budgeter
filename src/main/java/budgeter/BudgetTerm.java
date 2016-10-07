@@ -42,6 +42,18 @@ public class BudgetTerm extends BasicEntity {
 		save();
 	}
 	
+	public static BudgetTerm makeWithPreviousCategories(BudgetTerm previousTerm, float newIncome) {
+		BudgetTerm term = new BudgetTerm(previousTerm.income);
+		for(Category category : previousTerm.getCategories()) {
+			if (!term.hasCategory(category.name)) {
+				Category copiedCategory = category.makeCopy(previousTerm.income, newIncome);
+				term.addCategory(copiedCategory);
+			}
+		}
+		term.save();
+		return term;
+	}
+	
 	public HashMap<String, ArrayList<Expense>> getExpenses() {
 		HashMap<String, ArrayList<Expense>> map = new HashMap<String, ArrayList<Expense>>();
 		ArrayList<Category> categories = categoryIds.fetch(new Category());
@@ -64,13 +76,26 @@ public class BudgetTerm extends BasicEntity {
 		return null;
 	}
 	
-	public void addCategory(Category newcategory) {
-		categoryIds.add(newcategory.getId());
+	public Category getCategory(Long id) {
+		Category instance = new Category();
+		return categoryIds.get(instance, id);
+	}
+	
+	public boolean hasCategory(String name) {
+		return getCategory(name) != null;
+	}
+	
+	public void addCategory(Category category) throws IllegalStateException{
+		if(hasCategory(category.name)) {
+			throw new IllegalStateException();
+		}
+		categoryIds.add(category.getId());
 		save();
 	}
 
-	public void deletecategory(Long categoryId) {
-		categoryIds.remove(categoryId);
+	public void deleteCategory(Category category) {
+		categoryIds.remove(category.getId());
+		category.delete();
 		save();
 	}
 	

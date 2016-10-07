@@ -75,4 +75,8 @@ public abstract class BasicEntity {
 	public void save() {
 		ofy().save().entity(this).now();
 	}
+	
+	public void delete() {
+		ofy().delete().entity(this).now();
+	}
 }
