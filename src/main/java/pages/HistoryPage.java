@@ -2,6 +2,7 @@ package pages;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import datastore.IdList;
 
 import pages.html_builder.Form;
 import budgeter.Category;
@@ -17,13 +18,19 @@ public class HistoryPage extends Page {
 		currentTerm = user.getCurrentBudgetTerm();
 	}
 
+	public HistoryPage(String baseUrl, BudgetTerm term) {
+		super(baseUrl);
+		htmlBuilder.includeAppHeader = true;
+		currentTerm = user.getCurrentBudgetTerm();
+	}
+
 	public String make() {
 	    setTitle();
 	    if (user == null) {
 	    	addLogout();
 	    	return htmlBuilder.build();
 	    }
-			addHistoryHTML();
+			// addHistoryHTML();
 	    return htmlBuilder.build();
 	}
 
@@ -56,5 +63,30 @@ public class HistoryPage extends Page {
 		history += "</div><br/>";
 		history += "<hr/><br/>";
 		htmlBuilder.addToBody(history);
+	}
+	
+	private void printAllBudgetTerms(){
+		IdList<BudgetTerm> pastTerms = user.getPreviousTerms();
+		String history = "<div id='history-terms'>";
+		history += "<h2>Previous Terms</h2>";
+		history += "<table>";
+		history += "<thead><tr>";
+		history += "<th>Location</th>";
+		history += "<th>Date</th>";
+		history += "<th>Category</th>";
+		history += "<th>Amount</th>";
+		history += "</tr></thead>";
+		history += "<tbody><tr>";
+// TODO: Update this <td> tags with actual expenses form BudgetTerm expenses.
+		// for()
+		history += "<td>Walmart</td><td>08/23/2016</td><td>Groceries</td><td><strong>$ &nbsp;45.30</strong></td>";
+		history += "</tr><tr>";
+		history += "<td>Amazon</td><td>10/01/2016</td><td>Electronics</td><td><strong>$ &nbsp;78.00</strong></td>";
+		history += "</tr>";
+		history += "</tbody>";
+		history += "</table>";
+		history += "</div><br/>";
+		history += "<hr/><br/>";
+		htmlBuilder.addToBody(history);		
 	}
 }

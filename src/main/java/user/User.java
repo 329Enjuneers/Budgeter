@@ -95,4 +95,8 @@ public class User extends BasicEntity {
 		return id;
 	}
 	
+	public IdList<BudgetTerm> getPreviousTerms(){
+		return previousBudgetTermIds;
+	}
+	
 }
