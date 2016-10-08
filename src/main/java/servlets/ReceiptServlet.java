@@ -25,24 +25,17 @@ import pages.UploadReceiptPage;
 import receipt_parser.ReceiptParser;
 import user.User;
 
-public class ReceiptServlet extends HttpServlet {
+public class ReceiptServlet extends BasicServlet {
 	private static final long serialVersionUID = 1L;
 	private static final BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-	private User user;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		user = User.getCurrentUser();
-		PrintWriter out = resp.getWriter();
-		resp.setContentType("text/html");
-
-		UserService userService = UserServiceFactory.getUserService();
-		if(user == null)
-		{
-			out.write(new HomePage(req.getRequestURI()).make());
-			//out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
-			return;
+		try{
+			super.doGet(req, resp);
 		}
+		catch(IOException e) { return; }
+		UserService userService = UserServiceFactory.getUserService();
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
 			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
@@ -54,9 +47,10 @@ public class ReceiptServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		user = User.getCurrentUser();
-		PrintWriter out = resp.getWriter();
-		resp.setContentType("text/html");
+		try{
+			super.doPost(req, resp);
+		}
+		catch(IOException e) { return; }
 
 		Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
         List<BlobKey> blobKeys = blobs.get("receipt-image");

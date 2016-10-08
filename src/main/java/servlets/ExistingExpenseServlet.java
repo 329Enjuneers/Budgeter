@@ -20,24 +20,19 @@ import pages.ExpensePage;
 import pages.Page;
 import user.User;
 
-public class ExistingExpenseServlet extends HttpServlet {
+public class ExistingExpenseServlet extends BasicServlet {
 	private static final long serialVersionUID = 1L;
 	private User user;
 	private BudgetTerm term;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		user = User.getCurrentUser();
-		term = user.getCurrentBudgetTerm();
-		PrintWriter out = resp.getWriter();
-		UserService userService = UserServiceFactory.getUserService();
-		if(user == null)
-		{
-			out.write(new Page(req.getRequestURI()).make());
-			//out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
-			return;
+		try{
+			super.doGet(req, resp);
 		}
-		resp.setContentType("text/html");
+		catch(IOException e) { return; }
+
+		UserService userService = UserServiceFactory.getUserService();
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
 			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
@@ -54,10 +49,10 @@ public class ExistingExpenseServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		user = User.getCurrentUser();
-		term = user.getCurrentBudgetTerm();
-		PrintWriter out = resp.getWriter();
-		resp.setContentType("text/html");
+		try{
+			super.doPost(req, resp);
+		}
+		catch(IOException e) { return; }
 		Expense expense = getExpense(req.getParameter("expenseId"));
 		if (expense == null) {
 			out.write("Receipt not found");
