@@ -15,30 +15,28 @@ import pages.HomePage;
 import user.User;
 
 
-public class HistoryServlet extends HttpServlet {
+public class HistoryServlet extends BasicServlet {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		PrintWriter out = resp.getWriter();
-		resp.setContentType("text/html");
-		User user = User.getCurrentUser();
-
-		if(user == null)
-		{
-			out.write(new HomePage(req.getRequestURI()).make());
-			//out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
-			return;
+		try{
+			super.doGet(req, resp);
 		}
+		catch(IOException e) { return; }
 		out.write(new HistoryPage(req.getRequestURI()).make());
 		
 	}
 	
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		PrintWriter out = resp.getWriter();
-		resp.setContentType("text/html");
+		try{
+			super.doPost(req, resp);
+		}
+		catch(IOException e) { return; }
+//		PrintWriter out = resp.getWriter();
+//		resp.setContentType("text/html");
 		out.write(new HistoryPage(req.getRequestURI()).make());
 	}
 

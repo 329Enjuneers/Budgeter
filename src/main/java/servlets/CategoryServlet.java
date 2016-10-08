@@ -17,22 +17,16 @@ import pages.CategoryPage;
 import pages.Page;
 import user.User;
 
-public class CategoryServlet extends HttpServlet {
+public class CategoryServlet extends BasicServlet {
 	private static final long serialVersionUID = 1L;
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		User user = User.getCurrentUser();
-		PrintWriter out = resp.getWriter();
-		UserService userService = UserServiceFactory.getUserService();
-		if(user == null)
-		{
-			out.write(new Page(req.getRequestURI()).make());
-//			out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
-			return;
+		try{
+			super.doPost(req, resp);
 		}
+		catch(IOException e) { return; }
 		BudgetTerm term = user.getCurrentBudgetTerm();
-		resp.setContentType("text/html");
 		if(term == null){
 			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
 			return;
@@ -43,10 +37,11 @@ public class CategoryServlet extends HttpServlet {
 	
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		User user = User.getCurrentUser();
+		try{
+			super.doPost(req, resp);
+		}
+		catch(IOException e) { return; }
 		BudgetTerm term = user.getCurrentBudgetTerm();
-		PrintWriter out = resp.getWriter();
-		resp.setContentType("text/html");
 		if(term == null){
 			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
 			return;

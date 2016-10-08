@@ -15,21 +15,15 @@ import pages.CurrentExpensesPage;
 import pages.Page;
 import user.User;
 
-public class CurrentExpensesServlet extends HttpServlet {
+public class CurrentExpensesServlet extends BasicServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		PrintWriter out = resp.getWriter();
-
-		User user = User.getCurrentUser();
-		if(user == null)
-		{
-			out.write(new Page(req.getRequestURI()).make());
-			//out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
-			return;
+		try{
+			super.doGet(req, resp);
 		}
-		resp.setContentType("text/html");
+		catch(IOException e) { return; }
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
 			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
