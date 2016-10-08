@@ -64,20 +64,17 @@ public class HomeServlet extends BasicServlet{
 				float budget = Float.parseFloat(request.getParameter("income"));
 				BudgetTerm newTerm;
 				BudgetTerm lastTerm = user.getMostRecentBudgetTerm();
-				if (lastTerm == null) {
+				if(lastTerm == null){
 					newTerm = new BudgetTerm(budget);
-				}
-				else {
+				}else{
 					newTerm = BudgetTerm.makeWithPreviousCategories(lastTerm, budget);
 				}
 				user.startNewTerm(newTerm);
 				response.sendRedirect("/");
-			}
-			else{
+			}else{
 				out.write(new HomePage(request.getRequestURI()).make());
 			}
-		}
-		else{
+		}else{
 			//check for action "end"
 			if(request.getParameterMap().containsKey("action")){
 				String action = request.getParameter("action").toLowerCase();

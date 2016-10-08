@@ -47,10 +47,6 @@ public class Category extends BasicEntity {
 		return expenseIds.fetch(new Expense());
 	}
 	
-	public double getPercentageOfIncome(double income) {
-		return amountAllocated / income;
-	}
-	
 	public double getAmountRemaining() {
 		return amountAllocated - getAmountSpent();
 	}
@@ -65,7 +61,7 @@ public class Category extends BasicEntity {
 	}
 	
 	public Category makeCopy(float previousIncome, float newIncome) {
-		double previousPercentage = this.getPercentageOfIncome(previousIncome);
+		double previousPercentage = amountAllocated / previousIncome;
 		float amountToAllocate = (float) (int) (newIncome * previousPercentage);
 		Category copy = new Category(this.name, amountToAllocate);
 		return copy;
