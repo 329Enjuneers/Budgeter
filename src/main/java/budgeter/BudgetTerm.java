@@ -134,10 +134,6 @@ public class BudgetTerm extends BasicEntity implements Comparable<BudgetTerm> {
 		return startingBalance;
 	}
 	
-	public float getEndingBalance() {
-		return endingBalance;
-	}
-
 	public boolean isEnded() {
 		return termEnded;
 	}

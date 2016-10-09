@@ -17,6 +17,7 @@ import budgeter.Expense;
 import budgeter.PurchasedItem;
 import feedback.Feedback;
 import pages.ExpensePage;
+import pages.HomePage;
 import pages.Page;
 import user.User;
 
@@ -35,7 +36,7 @@ public class ExistingExpenseServlet extends BasicServlet {
 		UserService userService = UserServiceFactory.getUserService();
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
-			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
+			out.write(new HomePage(req.getRequestURI(),true).make());
 			return;
 		}
 		Expense expense = getExpense(req.getParameter("expenseId"));

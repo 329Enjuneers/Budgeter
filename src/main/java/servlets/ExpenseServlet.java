@@ -16,6 +16,7 @@ import budgeter.Category;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
 import pages.ExpensePage;
+import pages.HomePage;
 import pages.Page;
 import user.User;
 
@@ -30,7 +31,7 @@ public class ExpenseServlet extends BasicServlet {
 		catch(IOException e) { return; }
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
-			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
+			out.write(new HomePage(req.getRequestURI(),true).make());
 			return;
 		}
 		out.write(new ExpensePage(req.getRequestURI(), new Expense()).make());
@@ -44,7 +45,7 @@ public class ExpenseServlet extends BasicServlet {
 		catch(IOException e) { return; }
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
-			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
+			out.write(new HomePage(req.getRequestURI(),true).make());
 			return;
 		}
 

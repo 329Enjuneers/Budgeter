@@ -38,7 +38,7 @@ public class ReceiptServlet extends BasicServlet {
 		UserService userService = UserServiceFactory.getUserService();
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
-			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
+			out.write(new HomePage(req.getRequestURI(),true).make());
 			return;
 		}
 		out.write(new UploadReceiptPage(req.getRequestURI()).make());

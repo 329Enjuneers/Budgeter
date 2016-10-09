@@ -14,6 +14,7 @@ import budgeter.BudgetTerm;
 import budgeter.Category;
 import feedback.Feedback;
 import pages.CategoryPage;
+import pages.HomePage;
 import pages.Page;
 import user.User;
 
@@ -28,7 +29,7 @@ public class CategoryServlet extends BasicServlet {
 		catch(IOException e) { return; }
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if(term == null){
-			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
+			out.write(new HomePage(req.getRequestURI(),true).make());
 			return;
 		}
 		CategoryPage page = new CategoryPage(req.getRequestURI(),term);
@@ -43,7 +44,7 @@ public class CategoryServlet extends BasicServlet {
 		catch(IOException e) { return; }
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if(term == null){
-			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
+			out.write(new HomePage(req.getRequestURI(),true).make());
 			return;
 		}
 		String categoryId = req.getParameter("categoryId");

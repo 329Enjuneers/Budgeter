@@ -1,22 +1,36 @@
 package pages;
 
 import budgeter.BudgetTerm;
+import java.text.DecimalFormat;
 import pages.html_builder.Form;
 
 public class HomePage extends Page {
 	private BudgetTerm term;
+	private boolean error = false;
+	private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
 
 	public HomePage(String baseUrl)//,BudgetTerm term) 
 	{
 		super(baseUrl);
 		htmlBuilder.includeAppHeader = true;
+		decimalFormat.setGroupingUsed(true);
+		decimalFormat.setGroupingSize(3);
 	}
 
-	public HomePage(String baseUrl, BudgetTerm term)//,BudgetTerm term) 
+	public HomePage(String baseUrl, boolean error)
+	{
+		super(baseUrl);
+		this.error = error;
+		htmlBuilder.includeAppHeader = true;
+	}
+
+	public HomePage(String baseUrl, BudgetTerm term)
 	{
 		super(baseUrl);
 		htmlBuilder.includeAppHeader = true;
 		this.term = term;
+		decimalFormat.setGroupingUsed(true);
+		decimalFormat.setGroupingSize(3);
 	}
 
 	public String make() {
@@ -26,7 +40,10 @@ public class HomePage extends Page {
 	    	return htmlBuilder.build();
 	    }
 			htmlBuilder.addToBody("<h2>Budgeter</h2>");
-			htmlBuilder.addToBody("<style>th, td { border-bottom: 1px solid #ddd; padding: 10px; } table { text-align: left; vertical-align: bottom;}</style>");
+			htmlBuilder.addToBody("<style>th, td { border-bottom: 1px solid #ddd; padding: 10px; } table { text-align: left; vertical-align: bottom;} .error { color: #E6E6E6; background-color: #990000; padding: 7px;} </style>");
+			if(error) {
+				htmlBuilder.addToBody("<div class='error'><strong>Start a new term to begin.</strong></div><br/>");
+			}
 			if(term == null){
 				addNewTermHTML();
 			}else{
@@ -50,9 +67,13 @@ public class HomePage extends Page {
 		termSummary += "<tr>";
 		termSummary += "</tr></thead>";
 		termSummary += "<tbody><tr>";
-		termSummary += "<td>Total Expenses</td><td><strong>$ &nbsp;"+Double.toString(term.getAmountSpent())+"</strong></td>";
+		termSummary += "<td>Total Expenses</td><td><strong>$ &nbsp;" + decimalFormat.format(term.getAmountSpent()) + "</strong></td>";
 		termSummary += "</tr><tr>";
-		termSummary += "<td>Total Remaining</td><td><strong>$ &nbsp;"+Double.toString(term.getAmountRemaining())+"</strong></td>";
+		if(term.getAmountRemaining() < 0){
+			termSummary += "<td>Total Remaining</td><td style='color:red'><strong>$ &nbsp;" + decimalFormat.format(term.getAmountRemaining()) + "</strong></td>";
+		}else{
+			termSummary += "<td>Total Remaining</td><td style='color:green'><strong>$ &nbsp;" + decimalFormat.format(term.getAmountRemaining()) + "</strong></td>";
+		}
 		termSummary += "</tr>";
 		termSummary += "</tbody>";
 		termSummary += "</table>";

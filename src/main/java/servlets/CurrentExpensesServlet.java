@@ -13,6 +13,7 @@ import budgeter.BudgetTerm;
 import budgeter.Expense;
 import pages.CurrentExpensesPage;
 import pages.Page;
+import pages.HomePage;
 import user.User;
 
 public class CurrentExpensesServlet extends BasicServlet {
@@ -26,7 +27,7 @@ public class CurrentExpensesServlet extends BasicServlet {
 		catch(IOException e) { return; }
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
-			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
+			out.write(new HomePage(req.getRequestURI(),true).make());
 			return;
 		}
 		String feedback = req.getParameter("feedback");
