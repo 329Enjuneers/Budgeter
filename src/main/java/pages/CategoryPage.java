@@ -1,6 +1,7 @@
 package pages;
 
 import java.util.ArrayList;
+import java.text.DecimalFormat;
 
 import budgeter.BudgetTerm;
 import budgeter.Category;
@@ -8,13 +9,19 @@ import pages.html_builder.Form;
 
 public class CategoryPage extends Page {
 	private BudgetTerm term;
+	private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+	
 	public CategoryPage(String baseUrl) {
 		super(baseUrl);
 		htmlBuilder.includeAppHeader = true;
+		decimalFormat.setGroupingUsed(true);
+		decimalFormat.setGroupingSize(3);
 	}
 	public CategoryPage(String baseUrl, BudgetTerm term) {
 		super(baseUrl);
 		htmlBuilder.includeAppHeader = true;
+		decimalFormat.setGroupingUsed(true);
+		decimalFormat.setGroupingSize(3);
 		this.term = term;
 	}
 
@@ -66,9 +73,9 @@ public class CategoryPage extends Page {
 		row.append("<tr>");
 			row.append("<form action='/category?categoryId=" + category.getId() + "' method='post'>");
 			row.append("<td><input name='name' value='" + category.name + "'></td>");
-			row.append("<td><input type='number' name='amountAllocated' value='" + category.amountAllocated + "'></td>");
-			row.append("<td>" + category.getAmountSpent() + "</td>");
-			row.append("<td>" + category.getAmountRemaining() + "</td>");
+			row.append("<td><input type='number' name='amountAllocated' value='" + decimalFormat.format(category.amountAllocated) + "'></td>");
+			row.append("<td>" + decimalFormat.format(category.getAmountSpent()) + "</td>");
+			row.append("<td>" + decimalFormat.format(category.getAmountRemaining()) + "</td>");
 			row.append("<td><input name='action' value='Update' type='submit'><input name='action' value='Delete' type='submit'><input type='reset'></td>");
 			row.append("</form>");
 		row.append("</tr>");
@@ -85,7 +92,7 @@ public class CategoryPage extends Page {
 		categoryFormTable += "<tbody><tr>";
 		categoryFormTable += "<td>Name:</td><td>&nbsp;&nbsp;<input name='newcategory' placeholder='New Category' required/></td>";
 		categoryFormTable += "</tr><tr>";
-		categoryFormTable += "<td>Amount:</td><td>$ &nbsp;<input name='amount' placeholder='Amount to be allocated' required/></td>";
+		categoryFormTable += "<td>Amount:</td><td>$ &nbsp;<input name='amount' id='amount' type='number' step='any' min='0' placeholder='Amount to be allocated' required/></td>";
 		categoryFormTable += "</tr>";
 		categoryFormTable += "</tbody>";
 		categoryFormTable += "</table>";

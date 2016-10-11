@@ -23,7 +23,6 @@ import user.User;
 
 public class ExistingExpenseServlet extends BasicServlet {
 	private static final long serialVersionUID = 1L;
-	private User user;
 	private BudgetTerm term;
 
 	@Override
@@ -33,8 +32,7 @@ public class ExistingExpenseServlet extends BasicServlet {
 		}
 		catch(IOException e) { return; }
 
-		UserService userService = UserServiceFactory.getUserService();
-		BudgetTerm term = user.getCurrentBudgetTerm();
+		term = user.getCurrentBudgetTerm();
 		if (term == null) {
 			out.write(new HomePage(req.getRequestURI(),true).make());
 			return;
@@ -123,7 +121,6 @@ public class ExistingExpenseServlet extends BasicServlet {
 	}
 
 	private void deleteExpense(Expense expense) {
-//		TODO
 		term.removeExpense(expense);
 	}
 }
