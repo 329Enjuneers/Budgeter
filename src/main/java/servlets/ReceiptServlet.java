@@ -13,14 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 
 import budgeter.BudgetTerm;
 import budgeter.Expense;
 import image.BlobImage;
-import pages.HomePage;
-import pages.Page;
 import pages.UploadReceiptPage;
 import receipt_parser.ReceiptParser;
 import user.User;
@@ -36,11 +32,9 @@ public class ReceiptServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
 
-		UserService userService = UserServiceFactory.getUserService();
 		if(user == null)
 		{
-			out.write(new HomePage(req.getRequestURI()).make());
-			//out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
+			resp.sendRedirect("/");
 			return;
 		}
 		BudgetTerm term = user.getCurrentBudgetTerm();
@@ -69,9 +63,6 @@ public class ReceiptServlet extends HttpServlet {
         BudgetTerm term = user.getCurrentBudgetTerm();
         BlobImage blobImage = new BlobImage(blobKeys.get(0));
         String imageUrl = blobImage.getUrl();
-        System.out.println("Created image url: " + imageUrl);
-        System.out.println("Instead using: http://lh3.googleusercontent.com/zxe--JDdKH8qw3KDXt7AvLGSfLD2qHHutvwpiS2U-xfE8rgNCw4CaY4bOAPL8Oz0iolZOYOMIhtYGlwveeljDd9kdg8AuonfF7xuA5M5PoQ");
-        imageUrl = "http://lh3.googleusercontent.com/zxe--JDdKH8qw3KDXt7AvLGSfLD2qHHutvwpiS2U-xfE8rgNCw4CaY4bOAPL8Oz0iolZOYOMIhtYGlwveeljDd9kdg8AuonfF7xuA5M5PoQ";
         ReceiptParser parser = new ReceiptParser(imageUrl);
         Expense expense = parser.parse();
         expense.authorId = user.getId();
