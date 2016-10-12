@@ -1,12 +1,10 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,29 +15,23 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import budgeter.BudgetTerm;
 import budgeter.Expense;
 import image.BlobImage;
+import pages.HomePage;
 import pages.UploadReceiptPage;
 import receipt_parser.ReceiptParser;
-import user.User;
 
-public class ReceiptServlet extends HttpServlet {
+public class ReceiptServlet extends BasicServlet {
 	private static final long serialVersionUID = 1L;
 	private static final BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-	private User user;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		user = User.getCurrentUser();
-		PrintWriter out = resp.getWriter();
-		resp.setContentType("text/html");
-
-		if(user == null)
-		{
-			resp.sendRedirect("/");
-			return;
+		try{
+			super.doGet(req, resp);
 		}
+		catch(IOException e) { return; }
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
-			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
+			out.write(new HomePage(req.getRequestURI(),true).make());
 			return;
 		}
 		out.write(new UploadReceiptPage(req.getRequestURI()).make());
@@ -48,9 +40,10 @@ public class ReceiptServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		user = User.getCurrentUser();
-		PrintWriter out = resp.getWriter();
-		resp.setContentType("text/html");
+		try{
+			super.doPost(req, resp);
+		}
+		catch(IOException e) { return; }
 
 		Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
         List<BlobKey> blobKeys = blobs.get("receipt-image");

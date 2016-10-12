@@ -43,7 +43,6 @@ public abstract class BasicServlet extends HttpServlet {
 	
 	private void validateUser() throws IOException{
 		if (user == null) {
-			response.sendError(401);
 			redirectToLogin();
 			throw new IOException();
 		}

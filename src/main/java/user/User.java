@@ -1,6 +1,7 @@
 package user;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -75,6 +76,7 @@ public class User extends BasicEntity {
 	}
 
 	public void endTerm() {
+		getCurrentBudgetTerm().endTerm();
 		Long oldBudgetTermId = currentBudgetTermId;
 		currentBudgetTermId = null;
 		previousBudgetTermIds.add(oldBudgetTermId);
@@ -82,14 +84,12 @@ public class User extends BasicEntity {
 	}
 
 	public void startNewTerm(BudgetTerm term) {
-		if (currentBudgetTermId != null) {
-			endTerm();
-		}
 		currentBudgetTermId = term.getId();
 		save();
 	}
 
 	public BudgetTerm getCurrentBudgetTerm() {
+		System.out.println("curent budget term id is " + currentBudgetTermId);
 		if (currentBudgetTermId == null) {
 			return null;
 		}
@@ -105,5 +105,8 @@ public class User extends BasicEntity {
 	public Long getId() {
 		return id;
 	}
-
+	
+	public ArrayList<BudgetTerm> getPreviousTerms(){
+		return previousBudgetTermIds.fetch(new BudgetTerm());
+	}
 }

@@ -69,6 +69,7 @@ public class HTMLBuilder {
 	  StringBuilder str = new StringBuilder();
 	  head.add("<link type='text/css' rel='stylesheet' href='/stylesheets/main.css'></link>");
 	  head.add("<script src='/lib/jquery-3.1.1.min.js'></script>");
+	  head.add("<script src='/scripts/template.js'></script>");
 	  str.append("<head>");
 	  for (String line : head) {
 		  str.append(line + "\n");
@@ -108,7 +109,7 @@ public class HTMLBuilder {
   }
 
   private String buildScripts() {
-	  scripts.add("<script type='application/javascript' src='/scripts/template.js'></script>");
+	  // scripts.add("<script type='application/javascript' src='/scripts/template.js'></script>");
 	  StringBuilder str = new StringBuilder();
 	  for (String line : scripts) {
 		  str.append(line + "\n");

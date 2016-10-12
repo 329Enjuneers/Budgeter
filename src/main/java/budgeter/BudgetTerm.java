@@ -3,6 +3,8 @@ package budgeter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+// import java.util.Comparable;
+import java.util.Collections;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -11,19 +13,20 @@ import datastore.BasicEntity;
 import datastore.IdList;
 
 @Entity
-public class BudgetTerm extends BasicEntity {
+public class BudgetTerm extends BasicEntity implements Comparable<BudgetTerm> {
 	@Id Long id;
 	private Date startDate;
 	private Date endDate;
-	private float income;
+	private float startingBalance;
+	private float endingBalance;
 	private ArrayList<String> receiptUrls;
 	private IdList<Category> categoryIds;
 	private boolean termEnded = false;
 	
 	public BudgetTerm() {} // required for objectify library
 	
-	public BudgetTerm(float income) {
-		this.income = income;
+	public BudgetTerm(float startingBalance) {
+		this.startingBalance = startingBalance;
 		this.receiptUrls = new ArrayList<String>();
 		this.categoryIds = new IdList<Category>();
 		startDate = new Date();
@@ -31,8 +34,8 @@ public class BudgetTerm extends BasicEntity {
 		save();
 	}
 	
-	public BudgetTerm(float income, Date startDate, Date endDate) {
-		this.income = income;
+	public BudgetTerm(float startingBalance, Date startDate, Date endDate) {
+		this.startingBalance = startingBalance;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.receiptUrls = new ArrayList<String>();
@@ -43,10 +46,10 @@ public class BudgetTerm extends BasicEntity {
 	}
 	
 	public static BudgetTerm makeWithPreviousCategories(BudgetTerm previousTerm, float newIncome) {
-		BudgetTerm term = new BudgetTerm(previousTerm.income);
+		BudgetTerm term = new BudgetTerm(newIncome);
 		for(Category category : previousTerm.getCategories()) {
 			if (!term.hasCategory(category.name)) {
-				Category copiedCategory = category.makeCopy(previousTerm.income, newIncome);
+				Category copiedCategory = category.makeCopy(previousTerm.startingBalance, newIncome);
 				term.addCategory(copiedCategory);
 			}
 		}
@@ -108,7 +111,7 @@ public class BudgetTerm extends BasicEntity {
 	}
 	
 	public float getAmountRemaining() {
-		return (income - getAmountSpent());
+		return (startingBalance - getAmountSpent());
 	}
 	
 	public float getAmountSpent() {
@@ -118,7 +121,19 @@ public class BudgetTerm extends BasicEntity {
 		}
 		return sum;
 	}
+	
+	public Date getStartDate() {
+		return startDate;
+	}
+	
+	public Date getEndDate() {
+		return endDate;
+	}
 
+	public float getStartingBalance() {
+		return startingBalance;
+	}
+	
 	public boolean isEnded() {
 		return termEnded;
 	}
@@ -142,6 +157,11 @@ public class BudgetTerm extends BasicEntity {
 		return id;
 	}
 	
+	@Override
+	public int compareTo(BudgetTerm b) {
+		return this.getEndDate().compareTo(b.getEndDate());
+	}
+
 	private void createMiscellaneousCategory() {
 		Category category = new Category("Miscellaneous", (float) 0.0);
 		addCategory(category);

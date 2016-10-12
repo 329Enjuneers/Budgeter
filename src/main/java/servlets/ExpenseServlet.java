@@ -16,27 +16,22 @@ import budgeter.Category;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
 import pages.ExpensePage;
+import pages.HomePage;
 import pages.Page;
 import user.User;
 
-public class ExpenseServlet extends HttpServlet {
+public class ExpenseServlet extends BasicServlet {
 	private static final long serialVersionUID = 1L;
-	private User user;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		user = User.getCurrentUser();
-		PrintWriter out = resp.getWriter();
-		resp.setContentType("text/html");
-		if(user == null)
-		{
-			out.write(new Page(req.getRequestURI()).make());
-			//out.write("You are not logged in! Login <a href='" + userService.createLoginURL(baseUrl) + "'> here </a>");
-			return;
+		try{
+			super.doGet(req, resp);
 		}
+		catch(IOException e) { return; }
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
-			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
+			out.write(new HomePage(req.getRequestURI(),true).make());
 			return;
 		}
 		out.write(new ExpensePage(req.getRequestURI(), new Expense()).make());
@@ -44,12 +39,13 @@ public class ExpenseServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		user = User.getCurrentUser();
-		PrintWriter out = resp.getWriter();
-		resp.setContentType("text/html");
+		try{
+			super.doPost(req, resp);
+		}
+		catch(IOException e) { return; }
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
-			out.write("You have not started a budget term yet! Please visit the <a href='/'>home page</a> to start a new one!");
+			out.write(new HomePage(req.getRequestURI(),true).make());
 			return;
 		}
 
