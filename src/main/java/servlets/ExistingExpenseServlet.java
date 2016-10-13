@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +52,7 @@ public class ExistingExpenseServlet extends BasicServlet {
 		}
 		String action = req.getParameter("action");
 		if (action != null && action.equals("delete")) {
+			System.out.println("Deleting expense");
 			deleteExpense(expense);
 			new Feedback("Expense successfully deleted", "green");
 			resp.sendRedirect("/expense/current");
@@ -92,7 +92,7 @@ public class ExistingExpenseServlet extends BasicServlet {
 		expense.save();
 		moveExpense(expense, categoryName);
 		new Feedback("Expense successfully updated", "green");
-		resp.sendRedirect("/expense/existing?&expenseId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
+		resp.sendRedirect("/expense/existing?&expenseId=" + Long.toString(expense.getId()));
 	}
 
 	private Expense getExpense(String rawExpenseId) {
@@ -132,13 +132,12 @@ public class ExistingExpenseServlet extends BasicServlet {
 		ArrayList<Category> allCategories = term.getCategories();
 		for (Category c : allCategories) {
 			if (c.hasExpense(expense)) {
-				System.out.println("");
 				currentCategory = c;
 				break;
 			}
 		}
 		categoryDestination.addExpense(expense);
-		if (currentCategory != null) {
+		if (currentCategory != null && !currentCategory.equals(categoryDestination)) {
 			currentCategory.removeExpense(expense);
 		}
 	}
