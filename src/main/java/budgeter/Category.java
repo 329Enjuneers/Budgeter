@@ -67,6 +67,13 @@ public class Category extends BasicEntity {
 		return copy;
 	}
 	
+	public boolean equals(Category category) {
+		if (category == null) {
+			return false;
+		}
+		return (getId().equals(category.getId()));
+	}
+	
 	@Override
 	public Long getId() {
 		return id;

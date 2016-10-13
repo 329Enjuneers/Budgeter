@@ -58,6 +58,11 @@ public class ReceiptServlet extends BasicServlet {
             return;
         }
         
+        BudgetTerm term = user.getCurrentBudgetTerm();
+        if (term == null) {
+        	new Feedback("You must have a budget term", "red");
+        	resp.sendRedirect("/");
+        }
         BlobImage blobImage = new BlobImage(blobKeys.get(0));
         String imageUrl = blobImage.getUrl();
         ReceiptParser parser = new ReceiptParser(imageUrl);
