@@ -1,29 +1,23 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 
 import budgeter.BudgetTerm;
 import budgeter.Expense;
 import image.BlobImage;
 import pages.HomePage;
-import pages.Page;
 import pages.UploadReceiptPage;
 import receipt_parser.ReceiptParser;
-import user.User;
 
 public class ReceiptServlet extends BasicServlet {
 	private static final long serialVersionUID = 1L;
@@ -35,7 +29,6 @@ public class ReceiptServlet extends BasicServlet {
 			super.doGet(req, resp);
 		}
 		catch(IOException e) { return; }
-		UserService userService = UserServiceFactory.getUserService();
 		BudgetTerm term = user.getCurrentBudgetTerm();
 		if (term == null) {
 			out.write(new HomePage(req.getRequestURI(),true).make());
@@ -63,9 +56,6 @@ public class ReceiptServlet extends BasicServlet {
         BudgetTerm term = user.getCurrentBudgetTerm();
         BlobImage blobImage = new BlobImage(blobKeys.get(0));
         String imageUrl = blobImage.getUrl();
-        System.out.println("Created image url: " + imageUrl);
-        System.out.println("Instead using: http://lh3.googleusercontent.com/zxe--JDdKH8qw3KDXt7AvLGSfLD2qHHutvwpiS2U-xfE8rgNCw4CaY4bOAPL8Oz0iolZOYOMIhtYGlwveeljDd9kdg8AuonfF7xuA5M5PoQ");
-        imageUrl = "http://lh3.googleusercontent.com/zxe--JDdKH8qw3KDXt7AvLGSfLD2qHHutvwpiS2U-xfE8rgNCw4CaY4bOAPL8Oz0iolZOYOMIhtYGlwveeljDd9kdg8AuonfF7xuA5M5PoQ";
         ReceiptParser parser = new ReceiptParser(imageUrl);
         Expense expense = parser.parse();
         expense.authorId = user.getId();
