@@ -1,17 +1,11 @@
 package pages;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import datastore.IdList;
-import java.util.Comparator;
-import java.util.Collections;
-import java.util.ArrayList;
-import java.text.Format;
 import java.text.DecimalFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 
-import pages.html_builder.Form;
-import budgeter.Category;
 import budgeter.BudgetTerm;
 
 public class HistoryPage extends Page {
@@ -131,9 +125,9 @@ public class HistoryPage extends Page {
 			history += "</tbody>";
 			history += "</table>";
 		}else if(currentTerm == null){
-			history += "<p style='padding:5px'>You will find summry of your previous terms here.</br>Please visit <a href='/'>Home</a> to get started with your first term!</p>";
+			history += "<p style='padding:5px'>You will find summary of your previous terms here.</br>Please visit <a href='/'>Home</a> to get started with your first term!</p>";
 		}else{
-			history += "<p style='padding:5px'>You will find summry of your previous terms after you successfully complete them. For information on your current term, use tabs above. </p>";
+			history += "<p style='padding:5px'>You will find summary of your previous terms after you successfully complete them. For information on your current term, use tabs above. </p>";
 		}
 		history += "</div><br/>";
 		history += "<hr/><br/>";
