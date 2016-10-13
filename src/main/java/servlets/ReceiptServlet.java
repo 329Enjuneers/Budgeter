@@ -14,6 +14,7 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 
 import budgeter.BudgetTerm;
 import budgeter.Expense;
+import feedback.Feedback;
 import image.BlobImage;
 import pages.HomePage;
 import pages.UploadReceiptPage;
@@ -22,6 +23,10 @@ import receipt_parser.ReceiptParser;
 public class ReceiptServlet extends BasicServlet {
 	private static final long serialVersionUID = 1L;
 	private static final BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+	private static final String COULD_NOT_PARSE_RECEIPT = 
+			"Sorry, we could not parse your receipt. " +
+			"Please make sure that image size is less that 1 megabyte, " +
+			"and it's height and width do not exceed 2500 pixels.";
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -52,15 +57,16 @@ public class ReceiptServlet extends BasicServlet {
             out.write("You must provide an image!");
             return;
         }
-
-        BudgetTerm term = user.getCurrentBudgetTerm();
+        
         BlobImage blobImage = new BlobImage(blobKeys.get(0));
         String imageUrl = blobImage.getUrl();
         ReceiptParser parser = new ReceiptParser(imageUrl);
         Expense expense = parser.parse();
+        if (expense.purchasedItems.size() == 0) {
+        	new Feedback(COULD_NOT_PARSE_RECEIPT, "yellow");
+        }
         expense.authorId = user.getId();
         expense.save();
-        term.addReceiptUrl(imageUrl);
         resp.sendRedirect("/expense/existing?expenseId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
 	}
 }

@@ -1,15 +1,13 @@
 //package test.sandbox;
 //
-//import java.text.ParseException;
-//import java.text.SimpleDateFormat;
-//import java.util.Date;
+//import org.json.JSONException;
+//import org.json.JSONObject;
 //
 //import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 //import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 //import com.googlecode.objectify.ObjectifyService;
 //import com.googlecode.objectify.VoidWork;
 //
-//import budgeter.Expense;
 //import feedback.Feedback;
 //
 ///*
@@ -24,14 +22,15 @@
 //
 //		ObjectifyService.run(new VoidWork() {
 //		    public void vrun() {
-//		    	Feedback f = new Feedback("hello");
-//		    	System.out.println(f.getId());
-//		    	System.out.println(f.text);
-//		    	System.out.println(f.getById(1L));
-//		    	f.delete();
-//		    	System.out.println(f.getId());
-//		    	System.out.println(f.text);
-//		    	System.out.println(f.getById(1L));
+//		    	JSONObject json;
+//				try {
+//					json = new JSONObject("{}");
+//					System.out.println(json);
+//				} catch (JSONException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//		    	
 //		    }
 //		});
 //
