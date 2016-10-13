@@ -35,8 +35,6 @@ public class HistoryServlet extends BasicServlet {
 			super.doPost(req, resp);
 		}
 		catch(IOException e) { return; }
-//		PrintWriter out = resp.getWriter();
-//		resp.setContentType("text/html");
 		out.write(new HistoryPage(req.getRequestURI()).make());
 	}
 
