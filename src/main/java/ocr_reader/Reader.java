@@ -15,8 +15,11 @@ public class Reader {
 	public ArrayList<Cluster> read() {
 		ReadRequest request = new ReadRequest(imageUrl);
 		JSONObject json = request.send();
-		ReadResponse response = new ReadResponse(json);
-		ArrayList<Cluster> clusters = makeClusters(response);
+		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
+		if (json != null) {
+			ReadResponse response = new ReadResponse(json);
+			clusters = makeClusters(response);
+		}
 		return clusters;
 	}
 	

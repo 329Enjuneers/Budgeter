@@ -52,7 +52,7 @@ public class ReceiptServlet extends BasicServlet {
             out.write("You must provide an image!");
             return;
         }
-
+        
         BudgetTerm term = user.getCurrentBudgetTerm();
         BlobImage blobImage = new BlobImage(blobKeys.get(0));
         String imageUrl = blobImage.getUrl();
