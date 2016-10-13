@@ -1,5 +1,6 @@
 package pages;
 
+import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import pages.html_builder.Form;
 public class CurrentExpensesPage extends Page{
 	private HashMap<String, ArrayList<Expense>> expenseMap;
 	private String feedback;
+	private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 	
 	public CurrentExpensesPage(String baseUrl, HashMap<String, ArrayList<Expense>> expenseMap) {
 		super(baseUrl);
@@ -100,7 +102,7 @@ public class CurrentExpensesPage extends Page{
 	}
 	
 	private String getTotal(Expense expense) {
-		return "<span>($" + expense.getTotal() + ")</span>";
+		return "<span>($" + decimalFormat.format(expense.getTotal()) + ")</span>";
 	}
 	
 	private String getRemoveButton(Expense expense) {

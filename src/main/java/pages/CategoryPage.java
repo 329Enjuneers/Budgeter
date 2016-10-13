@@ -9,7 +9,7 @@ import pages.html_builder.Form;
 
 public class CategoryPage extends Page {
 	private BudgetTerm term;
-	private DecimalFormat decimalFormat = new DecimalFormat("#.##");
+	private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
 	
 	public CategoryPage(String baseUrl) {
 		super(baseUrl);
