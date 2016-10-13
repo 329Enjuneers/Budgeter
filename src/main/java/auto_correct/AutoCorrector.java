@@ -14,6 +14,9 @@ public class AutoCorrector {
 	
 	public String correct() {
 		AutoCorrectResponse response = sendRequest();
+		if (response == null) {
+			return sentence;
+		}
 		HashMap<String, String> map = response.getReplacements();
 		String newSentence = makeNewSentence(map);
 		return newSentence;
@@ -22,6 +25,9 @@ public class AutoCorrector {
 	private AutoCorrectResponse sendRequest() {
 		AutoCorrectRequest request = new AutoCorrectRequest(sentence);
 		JSONObject json = request.send();
+		if (json == null) {
+			return null;
+		}
 		AutoCorrectResponse response = new AutoCorrectResponse(json);
 		return response;
 	}

@@ -32,6 +32,9 @@ public abstract class BaseRequest {
 	}
 	
 	protected JSONObject convertToJson(HTTPResponse resp) throws JSONException {
+		if (resp == null) {
+			throw new JSONException("Cannot convert null to json");
+		}
 		return new JSONObject(new String(resp.getContent()));
 	}
 	

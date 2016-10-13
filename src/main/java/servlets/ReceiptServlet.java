@@ -58,7 +58,6 @@ public class ReceiptServlet extends BasicServlet {
             return;
         }
         
-        BudgetTerm term = user.getCurrentBudgetTerm();
         BlobImage blobImage = new BlobImage(blobKeys.get(0));
         String imageUrl = blobImage.getUrl();
         ReceiptParser parser = new ReceiptParser(imageUrl);
@@ -68,7 +67,6 @@ public class ReceiptServlet extends BasicServlet {
         }
         expense.authorId = user.getId();
         expense.save();
-        term.addReceiptUrl(imageUrl);
         resp.sendRedirect("/expense/existing?expenseId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
 	}
 }

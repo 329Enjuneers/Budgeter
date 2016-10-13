@@ -3,8 +3,6 @@ package budgeter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-// import java.util.Comparable;
-import java.util.Collections;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -19,32 +17,28 @@ public class BudgetTerm extends BasicEntity implements Comparable<BudgetTerm> {
 	private Date endDate;
 	private float startingBalance;
 	private float endingBalance;
-	private ArrayList<String> receiptUrls;
 	private IdList<Category> categoryIds;
 	private boolean termEnded = false;
-	
 	public BudgetTerm() {} // required for objectify library
-	
+
 	public BudgetTerm(float startingBalance) {
 		this.startingBalance = startingBalance;
-		this.receiptUrls = new ArrayList<String>();
 		this.categoryIds = new IdList<Category>();
 		startDate = new Date();
 		createMiscellaneousCategory();
 		save();
 	}
-	
+
 	public BudgetTerm(float startingBalance, Date startDate, Date endDate) {
 		this.startingBalance = startingBalance;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.receiptUrls = new ArrayList<String>();
 		this.categoryIds = new IdList<Category>();
 		startDate = new Date();
 		createMiscellaneousCategory();
 		save();
 	}
-	
+
 	public static BudgetTerm makeWithPreviousCategories(BudgetTerm previousTerm, float newIncome) {
 		BudgetTerm term = new BudgetTerm(newIncome);
 		for(Category category : previousTerm.getCategories()) {
@@ -56,7 +50,7 @@ public class BudgetTerm extends BasicEntity implements Comparable<BudgetTerm> {
 		term.save();
 		return term;
 	}
-	
+
 	public HashMap<String, ArrayList<Expense>> getExpenses() {
 		HashMap<String, ArrayList<Expense>> map = new HashMap<String, ArrayList<Expense>>();
 		ArrayList<Category> categories = categoryIds.fetch(new Category());
@@ -65,11 +59,11 @@ public class BudgetTerm extends BasicEntity implements Comparable<BudgetTerm> {
 		}
 		return map;
 	}
-	
+
 	public ArrayList<Category> getCategories() {
 		return categoryIds.fetch(new Category());
 	}
-	
+
 	public Category getCategory(String name) {
 		for (Category category : getCategories()) {
 			if (category.name.equals(name)) {
@@ -78,16 +72,16 @@ public class BudgetTerm extends BasicEntity implements Comparable<BudgetTerm> {
 		}
 		return null;
 	}
-	
+
 	public Category getCategory(Long id) {
 		Category instance = new Category();
 		return categoryIds.get(instance, id);
 	}
-	
+
 	public boolean hasCategory(String name) {
 		return getCategory(name) != null;
 	}
-	
+
 	public void addCategory(Category category) throws IllegalStateException{
 		if(hasCategory(category.name)) {
 			throw new IllegalStateException();
@@ -101,19 +95,11 @@ public class BudgetTerm extends BasicEntity implements Comparable<BudgetTerm> {
 		category.delete();
 		save();
 	}
-	
-	public void addReceiptUrl(String servingUrl) {
-		receiptUrls.add(servingUrl);
-	}
-	
-	public ArrayList<String> getReceiptUrls() {
-		return receiptUrls;
-	}
-	
+
 	public float getAmountRemaining() {
 		return (startingBalance - getAmountSpent());
 	}
-	
+
 	public float getAmountSpent() {
 		float sum = 0;
 		for (Category category : getCategories()) {
@@ -121,11 +107,11 @@ public class BudgetTerm extends BasicEntity implements Comparable<BudgetTerm> {
 		}
 		return sum;
 	}
-	
+
 	public Date getStartDate() {
 		return startDate;
 	}
-	
+
 	public Date getEndDate() {
 		return endDate;
 	}
@@ -133,7 +119,7 @@ public class BudgetTerm extends BasicEntity implements Comparable<BudgetTerm> {
 	public float getStartingBalance() {
 		return startingBalance;
 	}
-	
+
 	public boolean isEnded() {
 		return termEnded;
 	}
@@ -143,7 +129,7 @@ public class BudgetTerm extends BasicEntity implements Comparable<BudgetTerm> {
 		endDate = new Date();
 		save();
 	}
-	
+
 	public void removeExpense(Expense expense) {
 		for (Category category : getCategories()) {
 			if (category.hasExpense(expense)) {
@@ -156,7 +142,7 @@ public class BudgetTerm extends BasicEntity implements Comparable<BudgetTerm> {
 	public Long getId() {
 		return id;
 	}
-	
+
 	@Override
 	public int compareTo(BudgetTerm b) {
 		return this.getEndDate().compareTo(b.getEndDate());
