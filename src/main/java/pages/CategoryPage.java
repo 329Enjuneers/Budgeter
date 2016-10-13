@@ -73,7 +73,7 @@ public class CategoryPage extends Page {
 		row.append("<tr>");
 			row.append("<form action='/category?categoryId=" + category.getId() + "' method='post'>");
 			row.append("<td><input name='name' value='" + category.name + "'></td>");
-			row.append("<td><input type='number' name='amountAllocated' value='" + decimalFormat.format(category.amountAllocated) + "'></td>");
+			row.append("<td><input type='number' step='any' min='0' name='amountAllocated' value='" + decimalFormat.format(category.amountAllocated) + "'></td>");
 			row.append("<td>" + decimalFormat.format(category.getAmountSpent()) + "</td>");
 			row.append("<td>" + decimalFormat.format(category.getAmountRemaining()) + "</td>");
 			row.append("<td><input name='action' value='Update' type='submit'><input name='action' value='Delete' type='submit'><input type='reset'></td>");
