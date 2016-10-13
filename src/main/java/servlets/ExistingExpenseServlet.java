@@ -110,9 +110,12 @@ public class ExistingExpenseServlet extends BasicServlet {
 
 		Expense instance = new Expense();
 		Expense expense = instance.getById(expenseId);
-		if (expense == null || !expense.authorId.equals(user.getId())) {
+		if (expense == null) {
 			return null;
 		}
+		// if (expense == null || !expense.authorId.equals(user.getId())) {
+		// 	return null;
+		// }
 		return expense;
 	}
 
