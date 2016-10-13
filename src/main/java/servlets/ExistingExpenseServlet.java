@@ -1,25 +1,19 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-
 import budgeter.BudgetTerm;
+import budgeter.Category;
 import budgeter.Expense;
 import budgeter.PurchasedItem;
 import feedback.Feedback;
 import pages.ExpensePage;
 import pages.HomePage;
-import pages.Page;
-import user.User;
 
 public class ExistingExpenseServlet extends BasicServlet {
 	private static final long serialVersionUID = 1L;
@@ -71,6 +65,7 @@ public class ExistingExpenseServlet extends BasicServlet {
 		String[] names = req.getParameterValues("name");
 		String[] costs = req.getParameterValues("cost");
 		String storeName = req.getParameter("storeName");
+		String categoryName = req.getParameter("category");
 		ArrayList<PurchasedItem> purchasedItems = new ArrayList<PurchasedItem>();
 		if (names.length != costs.length) {
 			out.write("The number of names must equal the number of costs!");
@@ -95,6 +90,7 @@ public class ExistingExpenseServlet extends BasicServlet {
 		expense.purchasedItems = purchasedItems;
 		expense.storeName = storeName;
 		expense.save();
+		moveExpense(expense, categoryName);
 		new Feedback("Expense successfully updated", "green");
 		resp.sendRedirect("/expense/existing?&expenseId=" + URLEncoder.encode(Long.toString(expense.getId()), "UTF-8"));
 	}
@@ -122,5 +118,28 @@ public class ExistingExpenseServlet extends BasicServlet {
 
 	private void deleteExpense(Expense expense) {
 		term.removeExpense(expense);
+	}
+	
+	private void moveExpense(Expense expense, String categoryName) {
+		if (categoryName == null) {
+			return;
+		}
+		Category categoryDestination = term.getCategory(categoryName);
+		if (categoryDestination == null) {
+			return;
+		}
+		Category currentCategory = null;
+		ArrayList<Category> allCategories = term.getCategories();
+		for (Category c : allCategories) {
+			if (c.hasExpense(expense)) {
+				System.out.println("");
+				currentCategory = c;
+				break;
+			}
+		}
+		categoryDestination.addExpense(expense);
+		if (currentCategory != null) {
+			currentCategory.removeExpense(expense);
+		}
 	}
 }

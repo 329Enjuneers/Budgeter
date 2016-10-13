@@ -1,7 +1,6 @@
 //package test.sandbox;
 //
-//import org.json.JSONException;
-//import org.json.JSONObject;
+//import java.text.DecimalFormat;
 //
 //import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 //import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -22,14 +21,9 @@
 //
 //		ObjectifyService.run(new VoidWork() {
 //		    public void vrun() {
-//		    	JSONObject json;
-//				try {
-//					json = new JSONObject("{}");
-//					System.out.println(json);
-//				} catch (JSONException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
+//		    	double d = 1234.234567;
+//		    	DecimalFormat df = new DecimalFormat("#.##");
+//		    	System.out.print(df.format(d));
 //		    	
 //		    }
 //		});
